@@ -1,0 +1,66 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /admin-login.html
+Disallow: /account.html
+Disallow: /login.html
+Disallow: /email-template.html
+Disallow: /order-lookup.html
+Disallow: /payment-success.html
+Disallow: /private/
+Disallow: /api/
+Disallow: /test/
+Disallow: /debug/
+Disallow: /temp/
+Disallow: /backup/
+Disallow: /*?*
+Allow: /
+
+# Googlebot
+User-agent: Googlebot
+Disallow: /admin/
+Disallow: /admin-login.html
+Disallow: /account.html
+Disallow: /login.html
+Disallow: /email-template.html
+Disallow: /order-lookup.html
+Allow: /
+Crawl-delay: 1
+
+# Bingbot
+User-agent: Bingbot
+Disallow: /admin/
+Disallow: /admin-login.html
+Disallow: /account.html
+Disallow: /login.html
+Disallow: /email-template.html
+Disallow: /order-lookup.html
+Allow: /
+Crawl-delay: 1
+
+# Block aggressive SEO/scraping bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: Rogerbot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+# Sitemap
+Sitemap: https://www.vipchinaguide.com/sitemap.xml
+
+# Host
+Host: https://www.vipchinaguide.com

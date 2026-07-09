@@ -1,0 +1,100 @@
+# VIPChinaGuide .htaccess - SEO + Security
+# ============================================================
+
+# Force HTTPS (prevent MITM attacks)
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Remove trailing slashes (canonical)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [R=301,L]
+
+# Add .html if not present
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !\.
+RewriteRule ^(.*)$ $1.html [L]
+
+# ============================================================
+# SECURITY HEADERS (Server Layer)
+# ============================================================
+<IfModule mod_headers.c>
+    # Prevent MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Prevent clickjacking (frame embedding)
+    Header always set X-Frame-Options "DENY"
+    
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Permissions Policy
+    Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=(), payment=(self), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+    
+    # HSTS - Force HTTPS for 1 year (uncomment after confirming HTTPS works)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # Remove server info
+    Header always unset X-Powered-By
+    Header always unset Server
+    
+    # Cache Control for sensitive pages
+    <FilesMatch "^(admin|login|account|order-lookup)\.html$">
+        Header always set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate"
+        Header always set Pragma "no-cache"
+        Header always set Expires "0"
+    </FilesMatch>
+</IfModule>
+
+# ============================================================
+# COMPRESSION
+# ============================================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json
+</IfModule>
+
+# ============================================================
+# CACHE STATIC ASSETS
+# ============================================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+# ============================================================
+# BLOCK MALICIOUS REQUESTS
+# ============================================================
+<IfModule mod_rewrite.c>
+    # Block common exploit paths
+    RewriteCond %{REQUEST_URI} ^/(\.env|\.git|\.svn|\.htaccess|\.htpasswd|wp-admin|wp-login|phpmyadmin|adminer|xmlrpc) [NC,OR]
+    RewriteCond %{REQUEST_URI} \.(bak|config|sql|ini|log|sh|inc|swp|dist|orig|save)$ [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [NC,OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# ============================================================
+# DISABLE DIRECTORY LISTING
+# ============================================================
+Options -Indexes
+
+# ============================================================
+# PROTECT SENSITIVE FILES
+# ============================================================
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(env|config|ini|log|sql|sh|inc|bak|swp)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
