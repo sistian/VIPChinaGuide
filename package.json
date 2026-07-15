@@ -1,0 +1,8 @@
+{
+  "name": "vcg-backend",
+  "version": "1.0.0",
+  "description": "VIPChinaGuide order notification backend — Vercel + Nodemailer + QQ SMTP",
+  "dependencies": {
+    "nodemailer": "^6.9.0"
+  }
+}
