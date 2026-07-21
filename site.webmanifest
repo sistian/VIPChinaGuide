@@ -1,0 +1,21 @@
+{
+  "name": "VIPChinaGuide",
+  "short_name": "VIPChinaGuide",
+  "description": "Private English-speaking tour guides for China travel",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d9488",
+  "icons": [
+    {
+      "src": "images/logo-new.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo-new.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
