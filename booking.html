@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://*.vercel.app; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://vipchinaguide-backend-api.vercel.app; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <meta http-equiv="Permissions-Policy" content="geolocation=(self), microphone=(), camera=(), payment=(self), usb=(), magnetometer=(), gyroscope=(), accelerometer=()">
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Backend API config: replace with your actual Vercel URL after deployment -->
+<script>window.CWG_VCG_API_URL = 'https://vipchinaguide-backend-api.vercel.app';</script>
 <title>Book English Tour Guide China | VIPChinaGuide</title>
 <meta name="description" content="Book your private English-speaking tour guide in China. Licensed guides in 21+ cities. Secure payment. Free cancellation 24h before. Instant confirmation.">
 <meta name="keywords" content="book English tour guide China, hire private guide Beijing, Shanghai guide booking, Xi'an tour guide reservation, Chengdu panda guide book, China tour guide online booking, English guide reservation, book guide China online, private tour guide booking">
@@ -76,6 +79,9 @@
 </script>
 
 <style>
+.currency-conversion{font-size:13px;color:var(--text-light);font-weight:500;white-space:nowrap;display:inline-block;margin-left:6px}
+.price .currency-conversion,.calc-price .currency-conversion,.amount .currency-conversion,.currency .currency-conversion{display:block;margin-left:0;margin-top:3px}
+
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.6;color:#1e293b;background:#f8fafc}
 a{text-decoration:none;color:inherit}
@@ -354,6 +360,9 @@ a{text-decoration:none;color:inherit}
 }
 </style>
 <style>
+.currency-conversion{font-size:13px;color:var(--text-light);font-weight:500;white-space:nowrap;display:inline-block;margin-left:6px}
+.price .currency-conversion,.calc-price .currency-conversion,.amount .currency-conversion,.currency .currency-conversion{display:block;margin-left:0;margin-top:3px}
+
 /* Friendly Links */
 .footer-friendly-links{border-top:1px solid #1e293b;padding:16px 0;margin-top:0;background:#0f172a}
 .footer-friendly-links h4{font-size:14px;font-weight:700;color:#f8fafc;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px}
@@ -401,7 +410,7 @@ a{text-decoration:none;color:inherit}
 <header class="site-header">
   <div class="header-inner">
     <a href="index.html" class="logo">
-    <img src="images/logo-new.png" alt="时间语录" style="height:36px;width:auto;vertical-align:middle;border-radius:4px;margin-right:4px">
+    <picture><source srcset="images/logo-new.webp" type="image/webp"><img src="images/logo-new.png" alt="时间语录" loading="lazy" decoding="async" style="height:36px;width:auto;vertical-align:middle;border-radius:4px;margin-right:4px"></picture>
     <span style="font-size:14px;font-weight:700;color:var(--primary)">时间语录®</span>
     <span style="font-size:18px;font-weight:800;color:var(--primary)">VIPChinaGuide</span>
   </a>
@@ -460,6 +469,16 @@ a{text-decoration:none;color:inherit}
             <option value="shenzhen">Shenzhen</option>
             <option value="hangzhou">Hangzhou</option>
             <option value="qingdao">Qingdao</option>
+            <option value="dalian">Dalian</option>
+            <option value="harbin">Harbin</option>
+            <option value="hefei">Hefei</option>
+            <option value="jinan">Jinan</option>
+            <option value="kunming">Kunming</option>
+            <option value="nanchang">Nanchang</option>
+            <option value="nanjing">Nanjing</option>
+            <option value="suzhou">Suzhou</option>
+            <option value="tianjin">Tianjin</option>
+            <option value="zhengzhou">Zhengzhou</option>
           </select>
         </div>
         <div class="form-group">
@@ -569,8 +588,8 @@ a{text-decoration:none;color:inherit}
       </div>
 
       <div style="display:flex;align-items:center;gap:16px;margin-top:16px;flex-wrap:wrap">
-        <button class="btn-primary" onclick="goToStep2()">Continue to Your Details →</button>
-        <span id="step1PriceDisplay" style="font-size:1.3rem;font-weight:700;color:#22c55e;display:none">≈ <span id="step1PriceValue">¥0</span> CNY</span>
+        <button class="btn-primary" data-action="go-to-step2">Continue to Your Details →</button>
+        <span id="step1PriceDisplay" style="font-size:1.3rem;font-weight:700;color:#22c55e;display:none">≈ <span id="step1PriceValue">¥0 <span class="currency-conversion">(≈ $0 USD · ≈ €0 EUR)</span></span> CNY</span>
       </div>
     </div>
 
@@ -638,8 +657,8 @@ a{text-decoration:none;color:inherit}
       </div>
 
       <div style="display:flex;gap:12px;margin-top:32px">
-        <button class="btn-secondary" onclick="goToStep(1)" style="flex:1">Back</button>
-        <button class="btn-primary" onclick="goToStep3()" style="flex:2">Review & Pay</button>
+        <button class="btn-secondary" data-action="go-to-step" data-step="1" style="flex:1">Back</button>
+        <button class="btn-primary" data-action="go-to-step3" style="flex:2">Review & Pay</button>
       </div>
     </div>
 
@@ -659,12 +678,12 @@ a{text-decoration:none;color:inherit}
 
       <h3 style="font-size:18px;font-weight:700;margin:32px 0 16px">Select Payment Method</h3>
       <div class="payment-methods">
-        <div class="payment-method" id="payPaypal" onclick="selectPayment('paypal')">
+        <div class="payment-method" id="payPaypal" data-action="select-payment" data-method="paypal">
           <div class="icon">💳</div>
           <div class="name">PayPal</div>
           <div class="desc">Scan QR code</div>
         </div>
-        <div class="payment-method" id="payAlipay" onclick="selectPayment('alipay')">
+        <div class="payment-method" id="payAlipay" data-action="select-payment" data-method="alipay">
           <div class="icon">📱</div>
           <div class="name">Alipay</div>
           <div class="desc">Scan QR code</div>
@@ -673,7 +692,7 @@ a{text-decoration:none;color:inherit}
 
       <div id="paymentForm" style="display:none">
         <div class="qr-display">
-          <div class="amount" id="payAmount">¥0</div>
+          <div class="amount" id="payAmount">¥0 <span class="currency-conversion">(≈ $0 USD · ≈ €0 EUR)</span></div>
           <div class="currency" id="payCurrency"></div>
           <div id="qrPlaceholder"></div>
           <p style="color:var(--text-light);font-size:14px;margin-top:16px" id="payInstructions"></p>
@@ -687,9 +706,13 @@ a{text-decoration:none;color:inherit}
         </label>
       </div>
 
+      <div style="position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden" aria-hidden="true">
+        <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" placeholder="Leave this blank">
+      </div>
+
       <div style="display:flex;gap:12px;margin-top:32px">
-        <button class="btn-secondary" onclick="goToStep(2)" style="flex:1">Back</button>
-        <button class="btn-primary" id="submitBtn" onclick="submitOrder()" style="flex:2">I Have Paid — Confirm Order</button>
+        <button class="btn-secondary" data-action="go-to-step" data-step="2" style="flex:1">Back</button>
+        <button class="btn-primary" id="submitBtn" data-action="submit-order" style="flex:2">I Have Paid — Confirm Order</button>
       </div>
 
       <p style="text-align:center;font-size:13px;color:var(--text-light);margin-top:16px">Your guide will be assigned within 24 hours after payment confirmation.</p>
@@ -740,7 +763,7 @@ a{text-decoration:none;color:inherit}
   <div class="footer-grid">
     <div class="footer-brand">
       <a href="index.html" class="logo" style="text-decoration:none;color:#fff">
-        <img src="images/logo-new.png" alt="时间语录" style="height:32px;width:auto;border-radius:4px;vertical-align:middle">
+        <picture><source srcset="images/logo-new.webp" type="image/webp"><img src="images/logo-new.png" alt="时间语录" loading="lazy" decoding="async" style="height:32px;width:auto;border-radius:4px;vertical-align:middle"></picture>
         <span style="font-size:18px;font-weight:800;color:#fff">VIPChinaGuide</span>
       </a>
       <p>Private English-speaking tour guides for China travel. Licensed, verified, and passionate about showing you the real China.</p>
@@ -754,7 +777,7 @@ a{text-decoration:none;color:inherit}
           <a href="images/license.png" target="_blank">View License →</a>
         </div>
         <div class="footer-badge gold">
-          <img src="images/logo-new.png" alt="时间语录" style="width:24px;height:24px;border-radius:50%;object-fit:cover">
+          <picture><source srcset="images/logo-new.webp" type="image/webp"><img src="images/logo-new.png" alt="时间语录" loading="lazy" decoding="async" style="width:24px;height:24px;border-radius:50%;object-fit:cover"></picture>
           <div>
             <div style="font-weight:700">时间语录®</div>
             <div style="font-size:11px;opacity:.8">Registered Trademark · No. 30226018</div>
@@ -788,6 +811,7 @@ a{text-decoration:none;color:inherit}
         <li>📱 +86 155 2777 1775</li>
         <li>✉️ 82839626@qq.com</li>
         <li>💬 WhatsApp available</li>
+        <li>⏰ Service: 9:00 AM - 9:00 PM China Time (CST, UTC+8), Daily</li>
       </ul>
       <div class="footer-address">
         <strong>Headquarters</strong><br>
@@ -855,13 +879,33 @@ const PRICES = {
   xishuangbanna:  { h3:{escort:585, expert:878}, h4:{escort:780, expert:1170}, h5:{escort:930, expert:1395}, h6:{escort:1080, expert:1620}, h7:{escort:1230, expert:1845}, h8:{escort:1326, expert:1950}, h9:{escort:1476, expert:2175}, h10:{escort:1626, expert:2400}, multiday:{escort:1014, expert:1638}, airport:{escort:429, expert:663} },
   guangzhou:      { h3:{escort:585, expert:878}, h4:{escort:780, expert:1170}, h5:{escort:930, expert:1395}, h6:{escort:1080, expert:1620}, h7:{escort:1230, expert:1845}, h8:{escort:1326, expert:1950}, h9:{escort:1476, expert:2175}, h10:{escort:1626, expert:2400}, multiday:{escort:1014, expert:1638}, airport:{escort:429, expert:663} },
   shenzhen:       { h3:{escort:585, expert:878}, h4:{escort:780, expert:1170}, h5:{escort:930, expert:1395}, h6:{escort:1080, expert:1620}, h7:{escort:1230, expert:1845}, h8:{escort:1326, expert:1950}, h9:{escort:1476, expert:2175}, h10:{escort:1626, expert:2400}, multiday:{escort:1014, expert:1638}, airport:{escort:429, expert:663} },
-  hangzhou:       { h3:{escort:585, expert:878}, h4:{escort:780, expert:1170}, h5:{escort:930, expert:1395}, h6:{escort:1080, expert:1620}, h7:{escort:1230, expert:1845}, h8:{escort:1326, expert:1950}, h9:{escort:1476, expert:2175}, h10:{escort:1626, expert:2400}, multiday:{escort:1014, expert:1638}, airport:{escort:429, expert:663} }
+  hangzhou:       { h3:{escort:585, expert:878}, h4:{escort:780, expert:1170}, h5:{escort:930, expert:1395}, h6:{escort:1080, expert:1620}, h7:{escort:1230, expert:1845}, h8:{escort:1326, expert:1950}, h9:{escort:1476, expert:2175}, h10:{escort:1626, expert:2400}, multiday:{escort:1014, expert:1638}, airport:{escort:429, expert:663} },
+  dalian:         { h3:{escort:515, expert:773}, h4:{escort:686, expert:1030}, h5:{escort:818, expert:1228}, h6:{escort:950, expert:1426}, h7:{escort:1082, expert:1624}, h8:{escort:1167, expert:1716}, h9:{escort:1299, expert:1914}, h10:{escort:1431, expert:2112}, multiday:{escort:892, expert:1441}, airport:{escort:378, expert:583} },
+  harbin:         { h3:{escort:515, expert:773}, h4:{escort:686, expert:1030}, h5:{escort:818, expert:1228}, h6:{escort:950, expert:1426}, h7:{escort:1082, expert:1624}, h8:{escort:1167, expert:1716}, h9:{escort:1299, expert:1914}, h10:{escort:1431, expert:2112}, multiday:{escort:892, expert:1441}, airport:{escort:378, expert:583} },
+  hefei:          { h3:{escort:515, expert:773}, h4:{escort:686, expert:1030}, h5:{escort:818, expert:1228}, h6:{escort:950, expert:1426}, h7:{escort:1082, expert:1624}, h8:{escort:1167, expert:1716}, h9:{escort:1299, expert:1914}, h10:{escort:1431, expert:2112}, multiday:{escort:892, expert:1441}, airport:{escort:378, expert:583} },
+  jinan:          { h3:{escort:515, expert:773}, h4:{escort:686, expert:1030}, h5:{escort:818, expert:1228}, h6:{escort:950, expert:1426}, h7:{escort:1082, expert:1624}, h8:{escort:1167, expert:1716}, h9:{escort:1299, expert:1914}, h10:{escort:1431, expert:2112}, multiday:{escort:892, expert:1441}, airport:{escort:378, expert:583} },
+  kunming:        { h3:{escort:585, expert:878}, h4:{escort:780, expert:1170}, h5:{escort:930, expert:1395}, h6:{escort:1080, expert:1620}, h7:{escort:1230, expert:1845}, h8:{escort:1326, expert:1950}, h9:{escort:1476, expert:2175}, h10:{escort:1626, expert:2400}, multiday:{escort:1014, expert:1638}, airport:{escort:429, expert:663} },
+  nanchang:       { h3:{escort:515, expert:773}, h4:{escort:686, expert:1030}, h5:{escort:818, expert:1228}, h6:{escort:950, expert:1426}, h7:{escort:1082, expert:1624}, h8:{escort:1167, expert:1716}, h9:{escort:1299, expert:1914}, h10:{escort:1431, expert:2112}, multiday:{escort:892, expert:1441}, airport:{escort:378, expert:583} },
+  nanjing:        { h3:{escort:585, expert:878}, h4:{escort:780, expert:1170}, h5:{escort:930, expert:1395}, h6:{escort:1080, expert:1620}, h7:{escort:1230, expert:1845}, h8:{escort:1326, expert:1950}, h9:{escort:1476, expert:2175}, h10:{escort:1626, expert:2400}, multiday:{escort:1014, expert:1638}, airport:{escort:429, expert:663} },
+  suzhou:         { h3:{escort:515, expert:773}, h4:{escort:686, expert:1030}, h5:{escort:818, expert:1228}, h6:{escort:950, expert:1426}, h7:{escort:1082, expert:1624}, h8:{escort:1167, expert:1716}, h9:{escort:1299, expert:1914}, h10:{escort:1431, expert:2112}, multiday:{escort:892, expert:1441}, airport:{escort:378, expert:583} },
+  tianjin:        { h3:{escort:515, expert:773}, h4:{escort:686, expert:1030}, h5:{escort:818, expert:1228}, h6:{escort:950, expert:1426}, h7:{escort:1082, expert:1624}, h8:{escort:1167, expert:1716}, h9:{escort:1299, expert:1914}, h10:{escort:1431, expert:2112}, multiday:{escort:892, expert:1441}, airport:{escort:378, expert:583} },
+  zhengzhou:      { h3:{escort:585, expert:878}, h4:{escort:780, expert:1170}, h5:{escort:930, expert:1395}, h6:{escort:1080, expert:1620}, h7:{escort:1230, expert:1845}, h8:{escort:1326, expert:1950}, h9:{escort:1476, expert:2175}, h10:{escort:1626, expert:2400}, multiday:{escort:1014, expert:1638}, airport:{escort:429, expert:663} }
 };
 
-const cityNames = {beijing:'Beijing',shanghai:'Shanghai',xian:"Xi'an",chengdu:'Chengdu',guilin:'Guilin',wuhan:'Wuhan',changsha:'Changsha',shiyan:'Shiyan / Wudang Mountain',qingdao:'Qingdao',zhangjiajie:'Zhangjiajie',chongqing:'Chongqing',lhasa:'Lhasa',urumqi:'Urumqi',dali:'Dali',lijiang:'Lijiang',xishuangbanna:'Xishuangbanna',guangzhou:'Guangzhou',shenzhen:'Shenzhen',hangzhou:'Hangzhou'};
+const cityNames = {beijing:'Beijing',shanghai:'Shanghai',xian:"Xi'an",chengdu:'Chengdu',guilin:'Guilin',wuhan:'Wuhan',changsha:'Changsha',shiyan:'Shiyan / Wudang Mountain',qingdao:'Qingdao',zhangjiajie:'Zhangjiajie',chongqing:'Chongqing',lhasa:'Lhasa',urumqi:'Urumqi',dali:'Dali',lijiang:'Lijiang',xishuangbanna:'Xishuangbanna',guangzhou:'Guangzhou',shenzhen:'Shenzhen',hangzhou:'Hangzhou',dalian:'Dalian',harbin:'Harbin',hefei:'Hefei',jinan:'Jinan',kunming:'Kunming',nanchang:'Nanchang',nanjing:'Nanjing',suzhou:'Suzhou',tianjin:'Tianjin',zhengzhou:'Zhengzhou'};
 const typeNames = {h3:'3 Hours',h4:'4 Hours',h5:'5 Hours',h6:'6 Hours',h7:'7 Hours',h8:'8 Hours (Full Day)',h9:'9 Hours',h10:'10 Hours',multiday:'Multi-Day',airport:'Airport Transfer'};
 const levelNames = {escort:'Escort Guide',expert:'Expert Guide'};
 const natNames = {US:'United States',UK:'United Kingdom',CA:'Canada',AU:'Australia',DE:'Germany',FR:'France',JP:'Japan',KR:'South Korea',SG:'Singapore',MY:'Malaysia',TH:'Thailand',IN:'India',other:'Other'};
+
+
+const AVG_USD_RATE = 7.15; // 1 USD = 7.15 CNY (3-year approximate average)
+const AVG_EUR_RATE = 7.8; // 1 EUR = 7.8 CNY (3-year approximate average)
+
+function formatCurrencyConversion(cnyAmount) {
+  const usd = Math.round(cnyAmount / AVG_USD_RATE);
+  const eur = Math.round(cnyAmount / AVG_EUR_RATE);
+  return `(≈ ${usd} USD · ≈ €${eur} EUR)`;
+}
 
 let currentPrice = 0;
 let usdEstimate = 0;
@@ -921,6 +965,7 @@ function calculatePrice(){
       document.getElementById('quickCity').textContent = cityNames[city];
       document.getElementById('quickMin').textContent = '¥' + minPrice.toLocaleString();
       document.getElementById('quickMax').textContent = '¥' + maxPrice.toLocaleString();
+      document.getElementById('quickConversion').textContent = formatCurrencyConversion(Math.round((minPrice + maxPrice) / 2));
       quickBox.style.display = 'block';
       box.style.display = 'none';
     }
@@ -958,6 +1003,8 @@ function calculatePrice(){
   const step1PriceValue = document.getElementById('step1PriceValue');
   if(step1PriceDisplay && step1PriceValue){
     step1PriceValue.textContent = '¥' + total.toLocaleString();
+    const step1Conv = document.getElementById('step1PriceConversion');
+    if(step1Conv) step1Conv.textContent = formatCurrencyConversion(total);
     step1PriceDisplay.style.display = 'inline';
   }
 
@@ -971,28 +1018,18 @@ function calculatePrice(){
     <div class="summary-row"><span class="label">Base Price${isMulti?` (¥${base} x ${numDays} days x ${tr})` : ` (¥${base} x ${tr})`}</span><span class="value">¥${subtotal.toLocaleString()}</span></div>
     <div class="summary-row"><span class="label">Service Fee (5%)</span><span class="value">¥${serviceFee.toLocaleString()}</span></div>
     <div class="summary-total"><span>Total (CNY)</span><span>¥${total.toLocaleString()}</span></div>
+    <div class="summary-row" style="justify-content:flex-end"><span class="currency-conversion" style="margin-left:0">${formatCurrencyConversion(total)}</span></div>
   `;
   
   fetchExchangeRate(total);
 }
 
-async function fetchExchangeRate(cnyAmount){
+function fetchExchangeRate(cnyAmount){
   const rateBox = document.getElementById('rateBox');
   const rateText = document.getElementById('rateText');
-  
-  if(!exchangeRate){
-    try{
-      const res = await fetch('https://api.exchangerate-api.com/v4/latest/CNY');
-      const data = await res.json();
-      exchangeRate = data.rates.USD;
-    }catch(e){ console.error('Rate fetch failed', e); }
-  }
-  
-  if(exchangeRate){
-    usdEstimate = Math.round(cnyAmount * exchangeRate * 100) / 100;
-    rateBox.style.display = 'flex';
-    rateText.innerHTML = `≈ $${usdEstimate.toFixed(2)} USD <span style="font-weight:400">(1 CNY ≈ ${exchangeRate.toFixed(4)} USD)</span>`;
-  }
+  usdEstimate = Math.round(cnyAmount / AVG_USD_RATE * 100) / 100;
+  rateBox.style.display = 'flex';
+  rateText.innerHTML = `<span class="currency-conversion" style="font-weight:400">${formatCurrencyConversion(cnyAmount)}</span> <span style="color:var(--text-light)">(3-year avg. rates)</span>`;
 }
 
 function goToStep2(){
@@ -1061,9 +1098,9 @@ function buildReviewSummary(){
 
 function buildPaymentSummary(){
   document.getElementById('paymentSummary').innerHTML = `
-    <div class="summary-row"><span class="label">Amount Due (CNY)</span><span class="value">¥${currentPrice.toLocaleString()}</span></div>
-    ${usdEstimate?`<div class="summary-row"><span class="label">Approximate (USD)</span><span class="value">$${usdEstimate.toFixed(2)}</span></div>`:''}
+    <div class="summary-row"><span class="label">Amount Due (CNY)</span><span class="value">¥${currentPrice.toLocaleString()}</span><span class="currency-conversion" style="margin-left:auto">${formatCurrencyConversion(currentPrice)}</span></div>
     <div class="summary-total"><span>Total to Pay</span><span>¥${currentPrice.toLocaleString()}</span></div>
+    <div class="summary-row" style="justify-content:flex-end"><span class="currency-conversion" style="margin-left:0">${formatCurrencyConversion(currentPrice)}</span></div>
   `;
 }
 
@@ -1074,7 +1111,7 @@ function selectPayment(method){
   
   document.getElementById('paymentForm').style.display = 'block';
   document.getElementById('payAmount').textContent = '¥' + currentPrice.toLocaleString();
-  document.getElementById('payCurrency').textContent = usdEstimate ? `≈ $${usdEstimate.toFixed(2)} USD` : '';
+  document.getElementById('payCurrency').innerHTML = '<span class="currency-conversion">' + formatCurrencyConversion(currentPrice) + '</span>';
   
   const qrPlaceholder = document.getElementById('qrPlaceholder');
   const instructions = document.getElementById('payInstructions');
@@ -1083,10 +1120,10 @@ function selectPayment(method){
   
   if(method === 'paypal'){
     qrPlaceholder.innerHTML = '<img src="images/paypal-qr.png" alt="Pay with PayPal" style="max-width:280px;width:100%;border-radius:12px;border:1px solid var(--border)">';
-    instructions.innerHTML = '<strong>Pay with PayPal</strong><br>1. Scan the QR code with your phone camera or PayPal app<br>2. Enter amount: <strong>¥' + currentPrice.toLocaleString() + '</strong><br>3. In the payment note, please write: <strong>"VIPChinaGuide ' + city + ' - ' + email + '"</strong><br>4. After payment, click "I have paid" below';
+    instructions.innerHTML = '<strong>Pay with PayPal</strong><br>1. Scan the QR code with your phone camera or PayPal app<br>2. Enter amount: <strong>¥' + currentPrice.toLocaleString() + ' ' + formatCurrencyConversion(currentPrice) + '</strong><br>3. In the payment note, please write: <strong>"VIPChinaGuide ' + city + ' - ' + email + '"</strong><br>4. After payment, click "I have paid" below';
   } else if(method === 'alipay'){
     qrPlaceholder.innerHTML = '<img src="images/alipay-qr.png" alt="Pay with Alipay" style="max-width:280px;width:100%;border-radius:12px;border:1px solid var(--border)">';
-    instructions.innerHTML = '<strong>Pay with Alipay</strong><br>1. Open Alipay app and tap "Scan"<br>2. Scan the QR code above<br>3. Enter amount: <strong>¥' + currentPrice.toLocaleString() + '</strong><br>4. In the transfer note, please write: <strong>"VIPChinaGuide ' + city + ' - ' + email + '"</strong><br>5. After payment, click "I have paid" below';
+    instructions.innerHTML = '<strong>Pay with Alipay</strong><br>1. Open Alipay app and tap "Scan"<br>2. Scan the QR code above<br>3. Enter amount: <strong>¥' + currentPrice.toLocaleString() + ' ' + formatCurrencyConversion(currentPrice) + '</strong><br>4. In the transfer note, please write: <strong>"VIPChinaGuide ' + city + ' - ' + email + '"</strong><br>5. After payment, click "I have paid" below';
   }
   
   updateSubmitButtonState();
@@ -1159,17 +1196,21 @@ function completeOrder(paymentMethod, transactionId){
   orders.push(order);
   localStorage.setItem('vcg_orders',JSON.stringify(orders));
   
-  // Send order via FormSubmit.co
-  sendOrderToFormSubmit(order);
+  // Send order to Vercel backend
+  sendOrderToBackend(order);
 }
 
-function sendOrderToFormSubmit(order){
+function sendOrderToBackend(order){
   // ⚠️ 部署后替换为你的 Vercel API 地址
   // 例如: https://vcg-backend-xxx.vercel.app/api/send-email
-  const API_URL = 'YOUR_VERCEL_API_URL';
-  
-  // 如果还没配置后端，跳过发邮件，直接跳转
-  if (API_URL === 'YOUR_VERCEL_API_URL') {
+  // 同时把上方 CSP 中的 https://*.vercel.app 替换为具体域名
+  const API_URL = window.CWG_VCG_API_URL || 'YOUR_VERCEL_API_URL';
+
+  // Honeypot: hidden field; if bots fill it, backend will reject
+  const honeypot = document.getElementById('website_url');
+  if (honeypot) order.website_url = honeypot.value;
+
+  if (API_URL === 'YOUR_VERCEL_API_URL' || !API_URL.startsWith('https://')) {
     console.log('Backend not configured yet. Order saved locally only.');
     showToast('Order submitted! Configure backend to enable email notifications.', 'success');
     setTimeout(() => {
@@ -1177,7 +1218,7 @@ function sendOrderToFormSubmit(order){
     }, 2000);
     return;
   }
-  
+
   fetch(API_URL, {
     method: 'POST',
     headers: {
@@ -1186,11 +1227,17 @@ function sendOrderToFormSubmit(order){
     },
     body: JSON.stringify(order)
   })
-  .then(res => res.json())
+  .then(async res => {
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.error || `HTTP ${res.status}`);
+    }
+    return data;
+  })
   .then(data => {
     if (data.success) {
       console.log('✅ Email API response:', data);
-      showToast('Order submitted successfully! Confirmation sent to your email.', 'success');
+      showToast('Order submitted successfully! Confirmation sent.', 'success');
     } else {
       console.error('❌ Email API error:', data);
       showToast('Order submitted! (Email notification may be delayed)', 'success');
@@ -1234,21 +1281,21 @@ calculatePrice();
 updateSubmitButtonState();
 </script>
 
-  <!-- EmailJS SDK removed — using FormSubmit.co instead -->
+  <!-- EmailJS SDK removed — using Vercel backend instead -->
 <script src="js/security.js"></script>
 
 <!-- WhatsApp Float Button -->
 
 <!-- WhatsApp Float Button -->
-<button class="whatsapp-float-btn" onclick="toggleWAPopup()" aria-label="Chat on WhatsApp">
+<button class="whatsapp-float-btn" data-action="toggle-wa-popup" aria-label="Chat on WhatsApp">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
 </button>
 
 <!-- WhatsApp Popup -->
-<div class="wa-popup-overlay" id="waPopup" onclick="closeWAPopup(event)">
-  <div class="wa-popup-card" onclick="event.stopPropagation()">
-    <button class="wa-popup-close" onclick="closeWAPopup()">×</button>
-    <div class="wa-popup-qr"><img src="images/whatsapp-qr.png" alt="WhatsApp QR Code"></div>
+<div class="wa-popup-overlay" id="waPopup" data-action="close-wa-popup" data-pass-event="true">
+  <div class="wa-popup-card" data-action="stop-propagation">
+    <button class="wa-popup-close" data-action="close-wa-popup">×</button>
+    <div class="wa-popup-qr"><picture><source srcset="images/whatsapp-qr.webp" type="image/webp"><img src="images/whatsapp-qr.png" alt="WhatsApp QR Code" loading="lazy" decoding="async"></picture></div>
     <div class="wa-popup-title">Chat on WhatsApp</div>
     <div class="wa-popup-text">Scan the QR code to add our customer service and get more travel information.</div>
     <a href="https://wa.me/8615527771775" target="_blank" rel="noopener noreferrer" class="wa-popup-number">
