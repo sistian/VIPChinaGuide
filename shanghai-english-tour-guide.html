@@ -392,6 +392,58 @@ img{max-width:100%;display:block}
 .city-hero-image:hover img{transform:scale(1.03)}
 .city-hero-caption{position:absolute;bottom:0;left:0;right:0;padding:16px 24px;background:linear-gradient(transparent, rgba(0,0,0,0.65));color:#fff;font-size:0.95rem;font-weight:600}
 @media (max-width:768px){.city-hero-image{height:240px}}
+
+.page-hero {
+  background: linear-gradient(135deg, #0f3d3d 0%, #1a5f5f 50%, #0d6e6e 100%);
+  color: #fff;
+  padding: 48px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="30" r="2" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="20" r="1.5" fill="rgba(255,255,255,0.06)"/><circle cx="60" cy="70" r="2.5" fill="rgba(255,255,255,0.05)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.07)"/></svg>');
+  background-size: 200px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.page-hero .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+.hero-breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 13px; color: rgba(255,255,255,0.6); }
+.hero-breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
+.hero-breadcrumb a:hover { color: #fff; }
+.hero-title { font-size: 38px; font-weight: 800; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.5px; }
+.hero-desc { font-size: 16px; color: rgba(255,255,255,0.8); max-width: 600px; margin-bottom: 20px; line-height: 1.6; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+.btn-primary { display: inline-block; background: #dc2626; color: #fff; padding: 10px 28px; border-radius: 9999px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform 0.2s, background 0.2s; }
+.btn-primary:hover { background: #b91c1c; transform: translateY(-1px); }
+.btn-ghost { display: inline-block; background: rgba(255,255,255,0.12); color: #fff; padding: 10px 28px; border-radius: 9999px; font-weight: 600; font-size: 15px; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.3); transition: background 0.2s; }
+.btn-ghost:hover { background: rgba(255,255,255,0.2); }
+.hero-nav-map { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px; }
+.nav-map-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-transform: uppercase; }
+.nav-pills { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.nav-pill { display: inline-block; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); padding: 5px 14px; border-radius: 9999px; font-size: 13px; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); transition: background 0.2s, color 0.2s; white-space: nowrap; }
+.nav-pill:hover { background: rgba(255,255,255,0.2); color: #fff; }
+@media(max-width: 768px) {
+  .page-hero { padding: 36px 16px 28px; }
+  .hero-title { font-size: 28px; }
+  .nav-pills { gap: 6px; }
+  .nav-pill { font-size: 12px; padding: 4px 10px; }
+}
+
+
+/* City Hero Banner */
+.city-hero-banner{margin:0;padding:0;line-height:0;background:var(--bg)}
+.city-hero-image{width:100%;height:380px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.12)}
+.city-hero-image img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 0.6s ease;display:block}
+.city-hero-image:hover img{transform:scale(1.04)}
+.city-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.3) 50%,rgba(0,0,0,0.6) 100%);display:flex;align-items:flex-end}
+.city-hero-content{padding:32px 40px;width:100%;max-width:1200px;margin:0 auto}
+.city-hero-title{font-size:36px;font-weight:800;color:#ffffff;margin:0 0 8px;text-shadow:0 2px 12px rgba(0,0,0,0.4);letter-spacing:0.3px}
+.city-hero-tagline{font-size:16px;color:rgba(255,255,255,0.9);margin:0;font-weight:500;text-shadow:0 1px 6px rgba(0,0,0,0.35)}
+@media(max-width:768px){.city-hero-image{height:220px}.city-hero-title{font-size:24px}.city-hero-tagline{font-size:13px}.city-hero-content{padding:20px 20px}}
+
 </style>
 </head>
 <body>
@@ -403,6 +455,7 @@ img{max-width:100%;display:block}
       <span style="font-size:18px;font-weight:800;color:var(--primary)">VIPChinaGuide</span>
     </a>
     <nav class="nav-links">
+      <a href="index.html">Home</a>
       <a href="guides.html">Guides</a>
       <a href="pricing.html">Pricing</a>
       <a href="booking.html">Book Now</a>
@@ -412,18 +465,33 @@ img{max-width:100%;display:block}
   </div>
 </header>
 
-<section class="hero">
+
+<section class="page-hero">
   <div class="container">
-    <h1>Shanghai <span>English Private Tour Guide</span><br>The Bund &amp; French Concession</h1>
-    <p>Hire a licensed, English-speaking private guide for Shanghai's iconic skyline, Art Deco architecture, and hidden culinary gems. From The Bund to the French Concession, our expert guides reveal the Paris of the East. Available for half-day, full-day, and business tours.</p>
-    <a href="booking.html?city=shanghai" class="btn-primary">Book a Shanghai Guide Now</a>
-    <a href="guides.html" class="btn-secondary">View All Guides</a>
+    <div class="hero-breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span>Shanghai Tour Guides</span>
+    </div>
+    <h1 class="hero-title">Shanghai English Tour Guide</h1>
+    <p class="hero-desc">Your Ultimate Shanghai Travel Guide — Licensed English Guides for The Bund, Yu Garden, Shanghai Museum & More</p>
+    <div class="hero-actions">
+      <a href="booking.html" class="btn-primary">Book a Shanghai Guide</a>
+      <a href="faq.html" class="btn-ghost">View FAQs</a>
+    </div>
+    <div class="hero-nav-map">
+      <span class="nav-map-label">ON THIS PAGE</span>
+      <div class="nav-pills"><a href="#how-to-get-to-shanghai" class="nav-pill" onclick="scrollTo(event,'how-to-get-to-shanghai')">How to Get to Shanghai</a><a href="#nightlife-in-shanghai" class="nav-pill" onclick="scrollTo(event,'nightlife-in-shanghai')">Nightlife</a><a href="#concerts-and-shows-in-shanghai" class="nav-pill" onclick="scrollTo(event,'concerts-and-shows-in-shanghai')">Concerts & Shows</a><a href="#tea-culture-in-shanghai" class="nav-pill" onclick="scrollTo(event,'tea-culture-in-shanghai')">Tea Culture</a><a href="#sports-events-in-shanghai" class="nav-pill" onclick="scrollTo(event,'sports-events-in-shanghai')">Sports Events</a><a href="#travel-essentials" class="nav-pill" onclick="scrollTo(event,'travel-essentials')">Travel Essentials</a><a href="#faq" class="nav-pill" onclick="scrollTo(event,'faq')">Tour Guide FAQ</a></div>
+    </div>
   </div>
 </section>
-<div class="city-hero-image">
-  <img src="images/cities/Shanghai.jpg" alt="Shanghai The Bund and Lujiazui skyline" loading="eager">
-  <div class="city-hero-caption">Shanghai (上海)</div>
-</div>
+
+
+
+
+
+
+
 
 <section class="section" style="padding-bottom:0">
   <div class="container">
@@ -462,6 +530,103 @@ img{max-width:100%;display:block}
     </div>
   </div>
 </section>
+
+<section class="city-hero-banner" aria-label="Shanghai hero banner">
+  <div class="city-hero-image">
+    <img src="images/cities/Shanghai.jpg" alt="Shanghai — Tour Guide — Licensed English Guides for Bund, Yu Garden & More" width="1200" height="380" loading="eager">
+    <div class="city-hero-overlay">
+      <div class="city-hero-content">
+        <h2 class="city-hero-title">Shanghai</h2>
+        <p class="city-hero-tagline">Tour Guide — Licensed English Guides for Bund, Yu Garden & More</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" style="background:var(--bg)">
+<div class="container">
+<h2 class="section-title" style="text-align:center;margin-bottom:8px">🗓️ Best Time to Visit Shanghai</h2>
+<p class="section-subtitle" style="text-align:center;margin-bottom:32px">
+Plan your perfect Shanghai trip with our seasonal guide — weather, events, and travel tips for every time of year.
+</p>
+<div style="max-width:900px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#16a34a22,#16a34a11);border-bottom:1px solid #16a34a33">
+    <span style="font-size:28px">🌸</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">🌸 Spring (Mar–May)</span>
+        <span style="display:inline-block;background:#16a34a;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Best Season</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">15–25°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">15–25°C, pleasant weather, cherry blossoms along the Bund. Ideal for walking tours and photography.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#d9770622,#d9770611);border-bottom:1px solid #d9770633">
+    <span style="font-size:28px">☀️</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">☀️ Summer (Jun–Sep)</span>
+        <span style="display:inline-block;background:#d97706;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Hot & Humid</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">28–35°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">28–35°C, high humidity, frequent typhoons in August. Still good for indoor attractions and nightlife.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#16a34a22,#16a34a11);border-bottom:1px solid #16a34a33">
+    <span style="font-size:28px">🍂</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">🍂 Autumn (Oct–Nov)</span>
+        <span style="display:inline-block;background:#16a34a;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Best Season</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">18–25°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">18–25°C, comfortable, autumnal colors. Perfect weather for the Bund, Yu Garden, and French Concession strolls.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#3b82f622,#3b82f611);border-bottom:1px solid #3b82f633">
+    <span style="font-size:28px">❄️</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">❄️ Winter (Dec–Feb)</span>
+        <span style="display:inline-block;background:#3b82f6;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Cold & Dry</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">2–10°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">2–10°C, crisp and dry. Lowest hotel prices. Indoor attractions like Shanghai Tower and museums are ideal.</p>
+  </div>
+</div>
+<div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:16px;padding:24px;color:#fff">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">🏆 Best Season to Visit</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Autumn (October–November) — the best season to travel to Shanghai</p>
+    </div>
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">💰 Budget Tip</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Winter (December–February) offers the lowest hotel rates in Shanghai</p>
+    </div>
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">📅 Monthly Overview</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Mar–May: Spring | Jun–Sep: Summer | Oct–Nov: Autumn | Dec–Feb: Winter</p>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
 <section class="section">
   <div class="container">
     <h2 class="section-title">Top Shanghai Attractions With an English Guide</h2>
@@ -591,37 +756,10 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <h2 class="section-title" style="text-align:center;margin-bottom:28px">✨ Travel Essentials for Shanghai</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px">
-      <!-- ChinaWheely -->
-      <div style="background:linear-gradient(135deg,#0d9488,#06b6d4);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">🚗</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Airport Transfer & Car Service</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Local drivers for airport pickup, attraction transfers & private car charter. Safe, reliable, English-speaking support.</p>
-        <a href="https://www.chinawheely.com" style="display:inline-block;background:#fff;color:#0d9488;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Book on ChinaWheely →</a>
-      </div>
-      <!-- ChinaWiFiGo -->
-      <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">📶</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Pocket WiFi for China</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Unlimited 5G pocket WiFi delivered to your hotel. No Chinese ID needed. Full Google, WhatsApp & Instagram access.</p>
-        <a href="https://www.chinawifigo.com" style="display:inline-block;background:#fff;color:#6366f1;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Pre-Order WiFi →</a>
-      </div>
-      <!-- MediEscortChina -->
-      <div style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">🏥</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Medical & Wellness</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Health checkups, dental cleaning & more. Much cheaper than in US/Europe. Add a wellness stop to your trip.</p>
-        <a href="https://www.mediescortchina.com" style="display:inline-block;background:#fff;color:#059669;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Learn More →</a>
-      </div>
-    </div>
-  </div>
-</section>
+
 <section class="section" style="background:var(--bg)">
   <div class="container">
-    <h2 class="section-title" style="text-align:center;margin-bottom:28px">🎯 Related Shanghai Tour Topics</h2>
+    <h2  class="section-title" style="text-align:center;margin-bottom:28px">🎯 Related Shanghai Tour Topics</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
       <a href="shanghai-museums.html" style="background:var(--card-bg);border-radius:12px;padding:20px;border:1px solid var(--border);text-align:center;transition:all .2s;text-decoration:none;display:block" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
         <div style="font-size:32px;margin-bottom:8px">🏛️</div>
@@ -653,7 +791,105 @@ img{max-width:100%;display:block}
 </section>
 <section class="section">
   <div class="container">
-    <h2 class="section-title">Shanghai Tour Guide FAQ</h2>
+    
+
+<section class="section" style="background:var(--bg)">
+  <div class="container">
+    <h2 id="how-to-get-to-shanghai"      class="section-title" style="text-align:center;margin-bottom:8px">🚆 How to Get to Shanghai</h2>
+    <p class="section-subtitle" style="text-align:center;margin-bottom:32px">Metro, taxi, ride-hailing, train & bus — everything you need to get around Shanghai easily.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;max-width:1100px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚇</span><h4 style="font-size:16px;font-weight:700;margin:0">Shanghai Metro — 20 Lines</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Get a 公共交通卡 at any station (CNY 20 deposit, min CNY 100 load) — saves 20% on peak fares. Official app: 上海地铁 Metro. WeChat/Alipay QR. Runs 5am-midnight.</p><a href="https://www.shmetro.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Shanghai Metro Map →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚕</span><h4 style="font-size:16px;font-weight:700;margin:0">Shanghai Taxi Fares</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Starts CNY 16 (day, 3 km), CNY 21 (night 23:00-05:00). CNY 2.7/km after 3 km. All metered. Alipay/WeChat accepted.</p><a href="https://www.didiglobal.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book via DiDi →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚗</span><h4 style="font-size:16px;font-weight:700;margin:0">DiDi Ride-Hailing (滴滴出行)</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Citywide with English UI. Alipay has integrated ride-hailing. DiDi to Pudong Airport (CNY 150-200) much cheaper than taxi (CNY 250+).</p><a href="https://www.didiglobal.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Download DiDi →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚄</span><h4 style="font-size:16px;font-weight:700;margin:0">Shanghai Train Stations</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Shanghai Hongqiao (上海虹桥) — biggest HSR hub. Shanghai Station (上海站) — classic north-south. Shanghai South (上海南) — Hangzhou (1h), Jinan.</p><a href="https://www.12306.cn/index/" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book Train Tickets →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚌</span><h4 style="font-size:16px;font-weight:700;margin:0">Shanghai Long-Distance Bus</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Hongqiao Long-Distance Bus Terminal (虹桥长途客运站) in Hongqiao transport hub.</p><a href="https://www.ectrip.com.cn" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Search Bus Routes →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🎫</span><h4 style="font-size:16px;font-weight:700;margin:0">How to Buy Train & Bus Tickets</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">HSR: 12306.cn, 12306 app, or Trip.com. Metro: tokens or mobile QR. Bus: 携程 or at counter.</p><a href="https://www.trip.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book on Trip.com →</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg)">
+  <div class="container">
+    <h2 id="nightlife-in-shanghai"      class="section-title" style="text-align:center;margin-bottom:8px">🌙 Shanghai Nightlife & Late-Night Food</h2>
+    <p class="section-subtitle" style="text-align:center;margin-bottom:32px">Shanghai's nightlife is legendary — from Art Deco cocktail bars to 24-hour noodle shops. Here's where the city comes alive after dark.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;cursor:pointer" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🌃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">The Bund at Night</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The iconic waterfront promenade with colonial buildings lit up in neon. Walk from the Peace Hotel to the Waigaoqiao building — Shanghai's most romantic evening stroll.</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;cursor:pointer" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🍜</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Nanjing Road Night Walk</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Pedestrian shopping street transformed at night with LED screens and crowds. Connects People's Square to the Bund with endless food options.</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;cursor:pointer" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🍺</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Former French Concession Bars</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The tree-lined streets of the former French Concession are packed with boutique cocktail bars, wine cellars, and live music venues in beautifully restored shikumen townhouses.</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;cursor:pointer" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🥟</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">24-Hour Paradise for Late-Night Eaters</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Shanghai never sleeps — 24-hour soup dumpling shops, midnight noodles at Jiaotong University area, and the Wujiang Road food street that comes alive at 11pm.</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;cursor:pointer" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🌆</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Xintiandi Nightlife</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The renovated shikumen district with upscale bars, cocktail lounges, and restaurants — stylish evening destination with a preserved historical architecture backdrop.</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;cursor:pointer" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🎵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">JZ Club & Live Jazz Venues</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Shanghai's legendary jazz scene — JZ Club, House of Blues & Jazz, and the rock venues on Dongping Road. Live music every night of the week.</p></div></div>
+
+    </div>
+    <div style="text-align:center;margin-top:24px">
+      <a href="nightlife-in-shanghai.html" style="display:inline-block;background:#7c3aed;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Nightlife Guide →</a>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="concerts-and-shows-in-shanghai"     class="section-title" style="text-align:center;margin-bottom:8px">🎭 Shanghai Concerts and Shows</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Shanghai is China's entertainment capital — from the Shanghai Opera House to underground jazz bars and massive arena concerts. Here's where to find the best performances.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎭</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai Opera House Performances (上海大剧院)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The Shanghai Opera House is the city's premier performing arts venue — Shanghai Philharmonic concerts, ballet, Chinese opera, and Broadway touring productions. Book through the official website or your guide.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎷</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Jz Club Shanghai — World-Class Jazz</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Shanghai's most famous jazz venue — Jz Club hosts the best jazz musicians in Asia with nightly live performances. Also has an annual Jz Festival (usually November). Covers from CNY 100-300.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎸</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai International Music Festival</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Held annually (usually October) — classical music, jazz, and world music performances across the city's major concert halls. International orchestras and soloists headline.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎤</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Mercedes-Benz Arena Shanghai Concerts</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Shanghai's largest arena — major international pop stars, K-pop groups, and Chinese A-list celebrities perform here. Check local ticketing platforms (Mai Mai, Damai) for upcoming shows.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏛️</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai International Film Festival Screenings</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Held annually in June — film screenings, red carpet premieres, and director talks at venues across the city. One of Asia's most prestigious film festivals.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎹</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai Symphony Hall Performances</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">One of China's finest concert halls — the Shanghai Symphony Orchestra performs here with international guest conductors. Also hosts chamber music and solo recitals. Acoustics rival the best in Asia.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="concerts-and-shows-in-shanghai.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Shows Guide →</a></div></div></section>
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="tea-culture-in-shanghai"     class="section-title" style="text-align:center;margin-bottom:8px">🍵 Shanghai Tea Culture Tour</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Shanghai is home to some of China's most fascinating tea traditions - from historic tea houses to famous local varieties and time-honored brewing rituals.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai Dim Sum Tea Culture (早茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Shanghai's morning tea (早茶) tradition combines exquisite dim sum with Longjing (Dragon Well) green tea. Famous spots include Yuyuan Garden area and the historic Huangpu River front.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Longjing Tea (龙井茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Hangzhou's famous Dragon Well green tea - available fresh in Shanghai's best tea houses. The flat, mellow leaves produce a distinctive chestnut aroma.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Maojian Tea (毛尖茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Shanghai's nearby Jiangsu and Anhui provinces produce famous green teas served in the city's traditional tea houses along with premium oolong varieties.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🏮</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Nanjing Road Tea Quarter</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The area around Nanjing Road has a concentration of traditional tea houses where Shanghai's elite gather for afternoon tea ceremonies.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Pu'er and Aged Tea Culture</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Shanghai has developed a culture of aging pu'er and collecting aged white tea. Premium aged pu'er cakes are served in exclusive Shanghai tea houses.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍶</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Sweet Fermented Rice Tea (酒酿茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">A unique Shanghai winter specialty - fermented rice pudding served in warm tea. Available at traditional dessert shops in the old town.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="tea-culture-in-shanghai.html" style="display:inline-block;background:#16a34a;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Tea Culture Guide →</a></div></div></section>
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="sports-events-in-shanghai"     class="section-title" style="text-align:center;margin-bottom:8px">⚽ Shanghai Major Sports Events</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Shanghai hosts major national and international sporting events throughout the year - from world-class marathons to professional tournaments.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎾</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai Rolex Masters (上海劳力士大师赛)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">ATP Masters 1000 tennis tournament held annually at Qizhong Stadium in October. One of nine Masters events globally, part of the ATP Tour. Features the world's top male tennis players competing for ranking points and prize money.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏎️</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">F1 Chinese Grand Prix (中国大奖赛)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Formula 1 World Championship race at Shanghai International Circuit (上海国际赛车场). Usually held in April. The 5.4km circuit features iconic corners including the 'Dragon Tail'. World champion drivers compete annually.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai International Marathon (上海国际马拉松)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">One of China's most prestigious marathons - IAAF Gold Label certified. The full course passes the Bund, across the Huangpu River, and through the historic French Concession. Usually held in November.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">⚽</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai Shenhua & SIPG - Chinese Super League</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Chinese Super League matches at Hongkou Football Stadium and Shanghai Oriental Sports Center. Season runs March through November. International players join each transfer window.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏀</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai Sharks - CBA Basketball</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Home games at Shanghai Oriental Sports Center. Yao Ming's former team plays in the Chinese Basketball Association. Regular season runs October to April.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏊</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Shanghai Open Water Swimming Championship</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Annual open water swimming event held in the Huangpu River. Athletes swim across the historic river with views of the Bund skyline. Usually held in October.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="sports-events-in-shanghai.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Sports Guide →</a></div></div></section>
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <h2 id="travel-essentials"     class="section-title" style="text-align:center;margin-bottom:28px">✨ Travel Essentials for Shanghai</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px">
+      <!-- ChinaWheely -->
+      <div style="background:linear-gradient(135deg,#0d9488,#06b6d4);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">🚗</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Airport Transfer & Car Service</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Local drivers for airport pickup, attraction transfers & private car charter. Safe, reliable, English-speaking support.</p>
+        <a href="https://www.chinawheely.com" style="display:inline-block;background:#fff;color:#0d9488;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Book on ChinaWheely →</a>
+      </div>
+      <!-- ChinaWiFiGo -->
+      <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">📶</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Pocket WiFi for China</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Unlimited 5G pocket WiFi delivered to your hotel. No Chinese ID needed. Full Google, WhatsApp & Instagram access.</p>
+        <a href="https://www.chinawifigo.com" style="display:inline-block;background:#fff;color:#6366f1;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Pre-Order WiFi →</a>
+      </div>
+      <!-- MediEscortChina -->
+      <div style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">🏥</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Medical & Wellness</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Health checkups, dental cleaning & more. Much cheaper than in US/Europe. Add a wellness stop to your trip.</p>
+        <a href="https://www.mediescortchina.com" style="display:inline-block;background:#fff;color:#059669;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Learn More →</a>
+      </div>
+    </div>
+  </div>
+</section><section class="section" style="background:var(--bg)">
+<div class="container">
+<h2 class="section-title" style="text-align:center;margin-bottom:8px">🐉 Chinese Zodiac in Shanghai</h2>
+<p class="section-subtitle" style="text-align:center;margin-bottom:32px">
+The Chinese zodiac (十二生肖) features 12 animals — Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog, Pig. Each sign's personality shapes the ideal travel style for Shanghai. Find your zodiac sign for personalized Shanghai travel recommendations!
+</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1100px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐀</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐀 Rat (鼠) — Clever & Curious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Quick-witted, adaptable, loves food & comfort. Prefers flexible itineraries with great value.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Short scenic drives, foodie walks, beach relaxation</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐂</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐂 Ox (牛) — Steady & Patient</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Reliable, loves planning ahead, enjoys nature at a slow, steady pace.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Eco-resorts, hiking trails, countryside B&Bs</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐅</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐅 Tiger (虎) — Brave & Adventurous</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Bold, loves challenges and extremes. Thrives on high-energy, pioneering experiences.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Mountain hiking, kayaking, off-road adventures</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐇</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐇 Rabbit (兔) — Gentle & Comfort-Seeking</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Kind, values comfort and serenity. Prefers slow travel away from crowds.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Hot spring resorts, countryside retreats, lakeside calm</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐉</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐉 Dragon (龙) — Confident & Ambitious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Charismatic, loves luxury and landmark destinations. Aims high in everything.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Luxury hotels, premium shopping, iconic landmarks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐍</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐍 Snake (蛇) — Thoughtful & Observant</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Deep, detail-oriented, loves art, culture and quiet observation of beauty.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Art museums, ancient towns, photography tours</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐴</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐴 Horse (马) — Free-Spirited & Social</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Energetic, loves freedom and spontaneous plans. Enjoys meeting locals along the way.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Spontaneous road trips, cycling, hiking, music festivals</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐐</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐐 Goat (羊) — Peaceful & Artistic</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Calm, loves natural beauty and tranquility. Enjoys art, folk traditions and quiet reflection.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Scenic mountains & lakes, cultural immersion, meditation</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐒</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐒 Monkey (猴) — Clever & Curious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Playful, loves novelty and interactive experiences. Tends to get distracted though!</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Interactive museums, VR zones, wildlife parks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐓</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐓 Rooster (鸡) — Detail-Oriented & Precise</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Perfectionist, loves structure and efficiency. Expects five-star service and top logistics.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Luxury定制 tours, tight schedules, photography routes</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐕</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐕 Dog (狗) — Loyal & Nature-Loving</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Devoted, trustworthy, thrives outdoors. Loves group travel with close friends.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Long hikes, camping, volunteer tourism, nature walks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐖</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐖 Pig (猪) — Easygoing & Pleasure-Seeking</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Laid-back, loves good food and comfort. Enjoys sharing moments with others.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Shanghai Best: Food tours, night markets, resort relaxation, beach slow living</p></div></div>
+</div>
+<div style="text-align:center;margin-top:28px">
+<a href="zodiac-travel-in-shanghai.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Zodiac Travel Guide for Shanghai →</a>
+</div>
+</div>
+</section>
+
+
+
+<h2 id="faq"    class="section-title">Shanghai Tour Guide FAQ</h2>
     <p class="section-subtitle">Common questions about hiring an English guide in Shanghai.</p>
     <div class="faq-list">
       <div class="faq-item active">
@@ -811,33 +1047,7 @@ img{max-width:100%;display:block}
 .fl-list a:hover i,.friendly-links-list a:hover i{color:#06b6d4}
 @media(max-width:640px){.fl-list,.friendly-links-list{justify-content:center}.fl-section h4,.footer-friendly-links h4{text-align:center;justify-content:center}}
 </style>
-<style>/* Nearby Cities Section */
-.nearby-cities-section {
-  padding: 60px 0;
-  background: var(--bg);
-}
-.nearby-cities-section .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.nearby-cities-title {
-  font-size: 28px;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 10px;
-  color: #f8fafc;
-}
-.nearby-cities-subtitle {
-  text-align: center;
-  color: #94a3b8;
-  margin-bottom: 32px;
-}
-.nearby-cities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
+<style>
 .nearby-city-card {
   background: var(--card-bg);
   border-radius: 14px;
@@ -881,49 +1091,18 @@ img{max-width:100%;display:block}
   .nearby-cities-grid { grid-template-columns: 1fr; }
 }
 </style>
-<section class="nearby-cities-section">
+<section style="background:linear-gradient(135deg,#0d9488,#14b8a6);padding:48px 24px;text-align:center">
   <div class="container">
-    <h2 class="nearby-cities-title">Nearby Cities You May Also Like</h2>
-    <p class="nearby-cities-subtitle">Explore more destinations across China</p>
-    <div class="nearby-cities-grid">
-      <a href="beijing-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Beijing.jpg" alt="Beijing English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Beijing</div>
-          <div class="nearby-city-tagline">Imperial Capital & Modern Hub</div>
-        </div>
-      </a>
-      <a href="hangzhou-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Hangzhou.jpg" alt="Hangzhou English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Hangzhou</div>
-          <div class="nearby-city-tagline">West Lake & Dragon Well Tea</div>
-        </div>
-      </a>
-      <a href="shenzhen-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Shenzhen.jpg" alt="Shenzhen English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Shenzhen</div>
-          <div class="nearby-city-tagline">Tech Innovation & Theme Parks</div>
-        </div>
-      </a>
-      <a href="guangzhou-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Guangzhou.jpg" alt="Guangzhou English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Guangzhou</div>
-          <div class="nearby-city-tagline">Cantonese Food & Canton Tower</div>
-        </div>
-      </a>
-      <a href="xian-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Xi’an.jpg" alt="Xi'an English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Xi'an</div>
-          <div class="nearby-city-tagline">Ancient Capital & Terracotta Warriors</div>
-        </div>
-      </a>
-    </div>
+    <h2 style="color:#fff;font-size:28px;font-weight:800;margin-bottom:12px">Travel Planning Guide for Shanghai</h2>
+    <p style="color:rgba(255,255,255,0.88);font-size:17px;max-width:600px;margin:0 auto 24px;line-height:1.7">
+      Everything you need to plan your Shanghai trip — visas, best time to visit, transport tips, and budget advice — all in one place.
+    </p>
+    <a href="booking.html?city=shanghai" style="display:inline-block;background:#fff;color:#0d9488;padding:12px 32px;border-radius:9999px;font-weight:700;font-size:15px;text-decoration:none">
+      Book a Shanghai Guide →
+    </a>
   </div>
 </section>
+
 <footer class="site-footer">
   <div class="footer-grid">
     <div class="footer-brand">
@@ -1025,7 +1204,7 @@ document.querySelectorAll('.faq-question').forEach(q=>{
 </button>
 
 <!-- WhatsApp Popup -->
-<div class="wa-popup-overlay" id="waPopup" onclick="closeWAPopup(event)">
+<div class="wa-popup-overlay" onclick="closeWAPopup(event)">
   <div class="wa-popup-card" onclick="event.stopPropagation()">
     <button class="wa-popup-close" onclick="closeWAPopup()">×</button>
     <div class="wa-popup-qr"><img src="images/whatsapp-qr.png" alt="WhatsApp QR Code"></div>

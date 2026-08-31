@@ -376,6 +376,58 @@ img{max-width:100%;display:block}
 .city-hero-image:hover img{transform:scale(1.03)}
 .city-hero-caption{position:absolute;bottom:0;left:0;right:0;padding:16px 24px;background:linear-gradient(transparent, rgba(0,0,0,0.65));color:#fff;font-size:0.95rem;font-weight:600}
 @media (max-width:768px){.city-hero-image{height:240px}}
+
+.page-hero {
+  background: linear-gradient(135deg, #0f3d3d 0%, #1a5f5f 50%, #0d6e6e 100%);
+  color: #fff;
+  padding: 48px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="30" r="2" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="20" r="1.5" fill="rgba(255,255,255,0.06)"/><circle cx="60" cy="70" r="2.5" fill="rgba(255,255,255,0.05)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.07)"/></svg>');
+  background-size: 200px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.page-hero .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+.hero-breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 13px; color: rgba(255,255,255,0.6); }
+.hero-breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
+.hero-breadcrumb a:hover { color: #fff; }
+.hero-title { font-size: 38px; font-weight: 800; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.5px; }
+.hero-desc { font-size: 16px; color: rgba(255,255,255,0.8); max-width: 600px; margin-bottom: 20px; line-height: 1.6; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+.btn-primary { display: inline-block; background: #dc2626; color: #fff; padding: 10px 28px; border-radius: 9999px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform 0.2s, background 0.2s; }
+.btn-primary:hover { background: #b91c1c; transform: translateY(-1px); }
+.btn-ghost { display: inline-block; background: rgba(255,255,255,0.12); color: #fff; padding: 10px 28px; border-radius: 9999px; font-weight: 600; font-size: 15px; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.3); transition: background 0.2s; }
+.btn-ghost:hover { background: rgba(255,255,255,0.2); }
+.hero-nav-map { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px; }
+.nav-map-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-transform: uppercase; }
+.nav-pills { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.nav-pill { display: inline-block; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); padding: 5px 14px; border-radius: 9999px; font-size: 13px; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); transition: background 0.2s, color 0.2s; white-space: nowrap; }
+.nav-pill:hover { background: rgba(255,255,255,0.2); color: #fff; }
+@media(max-width: 768px) {
+  .page-hero { padding: 36px 16px 28px; }
+  .hero-title { font-size: 28px; }
+  .nav-pills { gap: 6px; }
+  .nav-pill { font-size: 12px; padding: 4px 10px; }
+}
+
+
+/* City Hero Banner */
+.city-hero-banner{margin:0;padding:0;line-height:0;background:var(--bg)}
+.city-hero-image{width:100%;height:380px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.12)}
+.city-hero-image img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 0.6s ease;display:block}
+.city-hero-image:hover img{transform:scale(1.04)}
+.city-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.3) 50%,rgba(0,0,0,0.6) 100%);display:flex;align-items:flex-end}
+.city-hero-content{padding:32px 40px;width:100%;max-width:1200px;margin:0 auto}
+.city-hero-title{font-size:36px;font-weight:800;color:#ffffff;margin:0 0 8px;text-shadow:0 2px 12px rgba(0,0,0,0.4);letter-spacing:0.3px}
+.city-hero-tagline{font-size:16px;color:rgba(255,255,255,0.9);margin:0;font-weight:500;text-shadow:0 1px 6px rgba(0,0,0,0.35)}
+@media(max-width:768px){.city-hero-image{height:220px}.city-hero-title{font-size:24px}.city-hero-tagline{font-size:13px}.city-hero-content{padding:20px 20px}}
+
 </style>
 </head>
 <body>
@@ -386,6 +438,7 @@ img{max-width:100%;display:block}
       <span style="font-size:18px;font-weight:800;color:var(--primary)">VIPChinaGuide</span>
     </a>
     <nav class="nav-links">
+      <a href="index.html">Home</a>
       <a href="guides.html">Guides</a>
       <a href="pricing.html">Pricing</a>
       <a href="booking.html">Book Now</a>
@@ -394,47 +447,37 @@ img{max-width:100%;display:block}
     </nav>
   </div>
 </header>
-<section class="hero">
+
+
+<section class="page-hero">
   <div class="container">
-    <h1>Dali <span>English Private Tour Guide</span></h1>
-    <p>Hire a licensed, English-speaking private guide for Dali. Our expert guides bring local knowledge, history, and culture to life. Available for half-day, full-day, and multi-day tours. Book now for an unforgettable experience!</p>
-    <a href="booking.html?city=dali" class="btn-primary">Book a Dali Guide Now</a>
-    <a href="guides.html" class="btn-secondary">View All Guides</a>
-  </div>
-</section>
-<div class="city-hero-image">
-  <img src="images/cities/Dali.jpg" alt="Dali Erhai Lake and Bai villages" loading="eager">
-  <div class="city-hero-caption">Dali (大理)</div>
-</div>
-</div>
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <h2 class="section-title" style="text-align:center;margin-bottom:28px">✨ Travel Essentials for Dali</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px">
-      <!-- ChinaWheely -->
-      <div style="background:linear-gradient(135deg,#0d9488,#06b6d4);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">🚗</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Airport Transfer & Car Service</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Local drivers for airport pickup, attraction transfers & private car charter. Safe, reliable, English-speaking support.</p>
-        <a href="https://www.chinawheely.com" style="display:inline-block;background:#fff;color:#0d9488;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Book on ChinaWheely →</a>
-      </div>
-      <!-- ChinaWiFiGo -->
-      <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">📶</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Pocket WiFi for China</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Unlimited 5G pocket WiFi delivered to your hotel. No Chinese ID needed. Full Google, WhatsApp & Instagram access.</p>
-        <a href="https://www.chinawifigo.com" style="display:inline-block;background:#fff;color:#6366f1;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Pre-Order WiFi →</a>
-      </div>
-      <!-- MediEscortChina -->
-      <div style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">🏥</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Medical & Wellness</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Health checkups, dental cleaning & more. Much cheaper than in US/Europe. Add a wellness stop to your trip.</p>
-        <a href="https://www.mediescortchina.com" style="display:inline-block;background:#fff;color:#059669;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Learn More →</a>
-      </div>
+    <div class="hero-breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span>Dali Tour Guides</span>
+    </div>
+    <h1 class="hero-title">Dali English Tour Guide</h1>
+    <p class="hero-desc">Your Ultimate Dali Travel Guide — Licensed English Guides for Erhai Lake, Dali Old Town & More</p>
+    <div class="hero-actions">
+      <a href="booking.html" class="btn-primary">Book a Dali Guide</a>
+      <a href="faq.html" class="btn-ghost">View FAQs</a>
+    </div>
+    <div class="hero-nav-map">
+      <span class="nav-map-label">ON THIS PAGE</span>
+      <div class="nav-pills"><a href="#how-to-get-to-dali" class="nav-pill" onclick="scrollTo(event,'how-to-get-to-dali')">How to Get to Dali</a><a href="#nightlife-in-dali" class="nav-pill" onclick="scrollTo(event,'nightlife-in-dali')">Nightlife</a><a href="#concerts-and-shows-in-dali" class="nav-pill" onclick="scrollTo(event,'concerts-and-shows-in-dali')">Concerts & Shows</a><a href="#tea-culture-in-dali" class="nav-pill" onclick="scrollTo(event,'tea-culture-in-dali')">Tea Culture</a><a href="#sports-events-in-dali" class="nav-pill" onclick="scrollTo(event,'sports-events-in-dali')">Sports Events</a><a href="#travel-essentials" class="nav-pill" onclick="scrollTo(event,'travel-essentials')">Travel Essentials</a><a href="#faq" class="nav-pill" onclick="scrollTo(event,'faq')">Tour Guide FAQ</a></div>
     </div>
   </div>
 </section>
+
+
+</div>
+
+
+
+
+
+
+
 <section class="section" style="padding-bottom:0">
   <div class="container">
     <div class="city-overview">
@@ -474,6 +517,103 @@ img{max-width:100%;display:block}
     </div>
   </div>
 </section>
+
+<section class="city-hero-banner" aria-label="Dali hero banner">
+  <div class="city-hero-image">
+    <img src="images/cities/Dali.jpg" alt="Dali — Tour Guide — Licensed English Guides for Erhai Lake & More" width="1200" height="380" loading="eager">
+    <div class="city-hero-overlay">
+      <div class="city-hero-content">
+        <h2 class="city-hero-title">Dali</h2>
+        <p class="city-hero-tagline">Tour Guide — Licensed English Guides for Erhai Lake & More</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" style="background:var(--bg)">
+<div class="container">
+<h2 class="section-title" style="text-align:center;margin-bottom:8px">🗓️ Best Time to Visit Dali</h2>
+<p class="section-subtitle" style="text-align:center;margin-bottom:32px">
+Plan your perfect Dali trip with our seasonal guide — weather, events, and travel tips for every time of year.
+</p>
+<div style="max-width:900px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#16a34a22,#16a34a11);border-bottom:1px solid #16a34a33">
+    <span style="font-size:28px">🌸</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">🌸 Spring (Mar–May)</span>
+        <span style="display:inline-block;background:#16a34a;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Best Season</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">12–25°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">12–25°C, Erhai Lake crystal clear, wildflowers on Cangshan Mountain. Ideal for cycling and photography.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#16a34a22,#16a34a11);border-bottom:1px solid #16a34a33">
+    <span style="font-size:28px">☀️</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">☀️ Summer (Jun–Sep)</span>
+        <span style="display:inline-block;background:#16a34a;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Best Season</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">18–28°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">18–28°C, warm with occasional rain, green countryside and dramatic Cangshan views. Peak season with best scenery.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#16a34a22,#16a34a11);border-bottom:1px solid #16a34a33">
+    <span style="font-size:28px">🍂</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">🍂 Autumn (Oct–Nov)</span>
+        <span style="display:inline-block;background:#16a34a;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Best Season</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">10–22°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">10–22°C, clear skies, harvest season. Erhai Lake cycling at its finest with golden洱海 views.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#3b82f622,#3b82f611);border-bottom:1px solid #3b82f633">
+    <span style="font-size:28px">❄️</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">❄️ Winter (Dec–Feb)</span>
+        <span style="display:inline-block;background:#3b82f6;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Mild & Sunny</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">5–18°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">5–18°C, mild winter sunshine, quiet season. Perfect for a peaceful retreat with stunning snow-capped Cangshan backdrops.</p>
+  </div>
+</div>
+<div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:16px;padding:24px;color:#fff">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">🏆 Best Season to Visit</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Spring (March–May) and Autumn (October–November) — the best seasons to travel to Dali</p>
+    </div>
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">💰 Budget Tip</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Winter (December–February) offers the lowest prices and most peaceful atmosphere</p>
+    </div>
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">📅 Monthly Overview</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Mar–May: Spring | Jun–Sep: Summer | Oct–Nov: Autumn | Dec–Feb: Winter</p>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
 <section class="section">
   <div class="container">
     <h2 class="section-title">Explore Dali With an English Guide</h2>
@@ -602,7 +742,7 @@ img{max-width:100%;display:block}
 </section>
 <section class="section" style="background:var(--bg)">
   <div class="container">
-    <h2 class="section-title" style="text-align:center;margin-bottom:28px">🎯 Related Dali Tour Topics</h2>
+    <h2  class="section-title" style="text-align:center;margin-bottom:28px">🎯 Related Dali Tour Topics</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
       <a href="dali-museums.html" style="background:var(--card-bg);border-radius:12px;padding:20px;border:1px solid var(--border);text-align:center;transition:all .2s;text-decoration:none;display:block" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
         <div style="font-size:32px;margin-bottom:8px">🏛️</div>
@@ -634,7 +774,81 @@ img{max-width:100%;display:block}
 </section>
 <section class="section">
   <div class="container">
-    <h2 class="section-title">Dali Tour Guide FAQ</h2>
+    
+
+<section class="section" style="background:var(--bg)">
+  <div class="container">
+    <h2 id="how-to-get-to-dali"      class="section-title" style="text-align:center;margin-bottom:8px">🚆 How to Get to Dali</h2>
+    <p class="section-subtitle" style="text-align:center;margin-bottom:32px">Metro, taxi, ride-hailing, train & bus — everything you need to get around Dali easily.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;max-width:1100px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚌</span><h4 style="font-size:16px;font-weight:700;margin:0">Dali Bus Network</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">No metro in Dali. Rent an electric bike (CNY 30-60/day) for Erhai Lake. Buses and taxis cover the rest.</p><a href="https://www.dl.gov.cn" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Search Bus Routes →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚕</span><h4 style="font-size:16px;font-weight:700;margin:0">Dali Taxi Fares</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Starts CNY 7 for 2 km, CNY 1.5/km. Very cheap citywide. Negotiate for day trips.</p><a href="https://www.didiglobal.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book via DiDi →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚗</span><h4 style="font-size:16px;font-weight:700;margin:0">DiDi Ride-Hailing (滴滴出行)</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Available but less reliable in rural Erhai Lake area. Taxis more available in old town.</p><a href="https://www.didiglobal.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Download DiDi →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚄</span><h4 style="font-size:16px;font-weight:700;margin:0">Dali Train Station</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Dali Railway Station (大理站): HSR from Kunming (2h, CNY 145). From Lijiang (1.5h, CNY 70).</p><a href="https://www.12306.cn/index/" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book Train Tickets →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚌</span><h4 style="font-size:16px;font-weight:700;margin:0">Dali Long-Distance Bus</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Dali Bus Station (大理汽车客运站): buses to Lijiang (2.5h), Kunming (4h), Dali Airport (1h).</p><a href="https://www.dl.gov.cn" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Search Bus Routes →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🎫</span><h4 style="font-size:16px;font-weight:700;margin:0">How to Buy Train & Bus Tickets</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Train: 12306.cn. Dali-Lijiang tickets sell out in peak season — book 2-3 days ahead.</p><a href="https://www.trip.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book on Trip.com →</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="nightlife-in-dali"      class="section-title" style="text-align:center;margin-bottom:8px">🌙 Dali Nightlife and Late-Night Food</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Dali nightlife is legendary among backpackers — lakeside bars, live music and a festive atmosphere until early hours.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🍺</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Old Town Bars and Live Music</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Narrow streets packed with bars — live music venues, cocktail bars and casual backpacker pubs. Best atmosphere in Yunnan.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🌙</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Erhai Lake Moonrise</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Most romantic experience in Dali — watching the moon rise over Erhai Lake from the eastern shore, best from Shuanglang.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🍜</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Old Town Night Market Food</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Night market every evening — Bai minority snacks, grilled cheese, local noodles and cheap beer at outdoor tables.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🎵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Catherine Bar and Dali Live Music</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">30-year Dali institution — live music, bonfires and legendary atmosphere drawing travelers worldwide.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🌊</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Lakeside Deng Bars</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Boutique bars near Erhai Lake — quieter than old town with lake views and relaxed vibe.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Traditional Tea House Night</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Traditional tea houses in old town where you can sample Dali tie-guan-yin tea in a peaceful setting.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="nightlife-in-dali.html" style="display:inline-block;background:#7c3aed;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Nightlife Guide →</a></div></div></section>
+
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="concerts-and-shows-in-dali"     class="section-title" style="text-align:center;margin-bottom:8px">🎭 Dali Concerts & Shows</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Dali's nightlife and arts scene is one of the most vibrant in Yunnan — from intimate live music in courtyard bars to annual music festivals under the Cangshan mountains.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Old Town Live Music Bars</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The narrow streets of the old town are filled with small live music venues every evening — local Yunnan bands, folk musicians, and traveling artists perform in courtyard bars. Cover charge usually CNY 20-50. Best explored with a local guide who knows tonight's lineup.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎸</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali International Music Festival</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Held annually in Dali (usually April/May), this multi-day outdoor festival attracts musicians from across China and Southeast Asia. Past lineups have included indie rock, folk, and electronic acts. Tickets sell out quickly.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎭</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Bai Minority Cultural Performance</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Evening cultural shows presenting traditional Bai dances, music, and ceremonies. Performed by local Bai artists in the old town's main theater. A window into Yunnan's rich ethnic heritage.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎤</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Catherine's Bar — Legendary Open Mic</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Dali's most famous bar, Catherine's has been running open mic nights for over 30 years. Musicians of all levels perform for an appreciative international crowd. The bonfire nights are legendary.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🌙</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Erhai Lake Moonrise Cultural Events</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Seasonal evening events at Erhai Lake — traditional Bai music performances on the shore as the moon rises over the water. Organized by local cultural groups, usually in summer and autumn.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎻</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali University Arts Centre Performances</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The Dali University Arts Centre hosts classical Chinese music, traditional instrument performances, and theater productions throughout the year. Open to visitors. Check with your guide for the current schedule.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="concerts-and-shows-in-dali.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Shows Guide →</a></div></div></section>
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="tea-culture-in-dali"     class="section-title" style="text-align:center;margin-bottom:8px">🍵 Dali Tea Culture Tour</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Dali is home to some of China's most fascinating tea traditions - from historic tea houses to famous local varieties and time-honored brewing rituals.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Yunnan Pu'er Tea (云南普洱茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Dali is a gateway to Yunnan's famous pu'er tea region. Dali's tea markets sell authentic pu'er from Xishuangbanna and Pu'er City.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Bai Tieguanyin (大理铁观音)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Anxi oolong variety grown in the Dali area - distinctive floral notes with mineral quality from Cangshan Mountain terroir.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🏮</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Old Town Tea Houses (古城茶馆)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Famous tea house street in Dali's old town - dozens of tea houses serving Yunnan teas in beautiful traditional Bai architecture.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Herbal Tea (凉茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Traditional herbal teas from Yunnan herbs - popular in Dali's tea houses. Unique Yunnan medicinal tea culture.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Cangshan Mountain Tea (苍山茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Tea grown on the slopes of Cangshan Mountain - rare, hand-crafted teas from high altitude. Available at specialty shops.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Tieguanyin Oolong</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Premium oolong teas from the Dali area - floral, smooth flavor with distinctive Yunnan terroir.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="tea-culture-in-dali.html" style="display:inline-block;background:#16a34a;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Tea Culture Guide →</a></div></div></section>
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="sports-events-in-dali"     class="section-title" style="text-align:center;margin-bottom:8px">⚽ Dali Major Sports Events</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Dali hosts major national and international sporting events throughout the year - from world-class marathons to professional tournaments.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🚴</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Tour of Dali - UCI Asia Tour Cycling Race</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">International UCI cycling race through Dali and the Dali Bai ethnic region. Multiple stages through Erhai Lake and Cangshan Mountains. Usually held in March. Top Asian and international cycling teams compete.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Lake Marathon (大理洱海马拉松)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Marathon and half marathon around Erhai Lake (洱海). Scenic course with Erhai Lake on one side and Cangshan Mountains on the other. International participants combine race with Dali's cultural attractions.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏔️</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali High Altitude Mountain Bike Race</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Mountain bike race at altitude in the Dali area. Technical terrain through Yunnan highland scenery. Attracts regional mountain biking enthusiasts.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Dali Ancient Town Half Marathon</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Half marathon starting and ending in Dali's famous ancient town. Course passes Bai minority architecture and the Three Pagodas. Popular with tourists who enjoy combining running with cultural visits.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🚣</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Erhai Lake Rowing Race</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Traditional boat rowing race on Erhai Lake. Local teams compete in traditional long boats. Cultural event celebrating Yunnan's water heritage. Usually in March-April.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Cangshan Mountain Hiking Race</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Trail hiking and running event up Cangshan Mountain. Steep climbs rewarded with panoramic views of Erhai Lake and Dali valley. Multiple difficulty levels.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="sports-events-in-dali.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Sports Guide →</a></div></div></section>
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <h2 id="travel-essentials"     class="section-title" style="text-align:center;margin-bottom:28px">✨ Travel Essentials for Dali</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px">
+      <!-- ChinaWheely -->
+      <div style="background:linear-gradient(135deg,#0d9488,#06b6d4);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">🚗</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Airport Transfer & Car Service</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Local drivers for airport pickup, attraction transfers & private car charter. Safe, reliable, English-speaking support.</p>
+        <a href="https://www.chinawheely.com" style="display:inline-block;background:#fff;color:#0d9488;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Book on ChinaWheely →</a>
+      </div>
+      <!-- ChinaWiFiGo -->
+      <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">📶</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Pocket WiFi for China</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Unlimited 5G pocket WiFi delivered to your hotel. No Chinese ID needed. Full Google, WhatsApp & Instagram access.</p>
+        <a href="https://www.chinawifigo.com" style="display:inline-block;background:#fff;color:#6366f1;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Pre-Order WiFi →</a>
+      </div>
+      <!-- MediEscortChina -->
+      <div style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">🏥</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Medical & Wellness</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Health checkups, dental cleaning & more. Much cheaper than in US/Europe. Add a wellness stop to your trip.</p>
+        <a href="https://www.mediescortchina.com" style="display:inline-block;background:#fff;color:#059669;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Learn More →</a>
+      </div>
+    </div>
+  </div>
+</section><section class="section" style="background:var(--bg)">
+<div class="container">
+<h2 class="section-title" style="text-align:center;margin-bottom:8px">🐉 Chinese Zodiac in Dali</h2>
+<p class="section-subtitle" style="text-align:center;margin-bottom:32px">
+The Chinese zodiac (十二生肖) features 12 animals — Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog, Pig. Each sign's personality shapes the ideal travel style for Dali. Find your zodiac sign for personalized Dali travel recommendations!
+</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1100px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐀</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐀 Rat (鼠) — Clever & Curious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Quick-witted, adaptable, loves food & comfort. Prefers flexible itineraries with great value.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Short scenic drives, foodie walks, beach relaxation</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐂</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐂 Ox (牛) — Steady & Patient</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Reliable, loves planning ahead, enjoys nature at a slow, steady pace.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Eco-resorts, hiking trails, countryside B&Bs</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐅</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐅 Tiger (虎) — Brave & Adventurous</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Bold, loves challenges and extremes. Thrives on high-energy, pioneering experiences.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Mountain hiking, kayaking, off-road adventures</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐇</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐇 Rabbit (兔) — Gentle & Comfort-Seeking</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Kind, values comfort and serenity. Prefers slow travel away from crowds.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Hot spring resorts, countryside retreats, lakeside calm</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐉</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐉 Dragon (龙) — Confident & Ambitious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Charismatic, loves luxury and landmark destinations. Aims high in everything.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Luxury hotels, premium shopping, iconic landmarks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐍</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐍 Snake (蛇) — Thoughtful & Observant</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Deep, detail-oriented, loves art, culture and quiet observation of beauty.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Art museums, ancient towns, photography tours</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐴</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐴 Horse (马) — Free-Spirited & Social</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Energetic, loves freedom and spontaneous plans. Enjoys meeting locals along the way.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Spontaneous road trips, cycling, hiking, music festivals</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐐</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐐 Goat (羊) — Peaceful & Artistic</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Calm, loves natural beauty and tranquility. Enjoys art, folk traditions and quiet reflection.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Scenic mountains & lakes, cultural immersion, meditation</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐒</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐒 Monkey (猴) — Clever & Curious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Playful, loves novelty and interactive experiences. Tends to get distracted though!</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Interactive museums, VR zones, wildlife parks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐓</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐓 Rooster (鸡) — Detail-Oriented & Precise</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Perfectionist, loves structure and efficiency. Expects five-star service and top logistics.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Luxury定制 tours, tight schedules, photography routes</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐕</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐕 Dog (狗) — Loyal & Nature-Loving</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Devoted, trustworthy, thrives outdoors. Loves group travel with close friends.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Long hikes, camping, volunteer tourism, nature walks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐖</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐖 Pig (猪) — Easygoing & Pleasure-Seeking</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Laid-back, loves good food and comfort. Enjoys sharing moments with others.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Dali Best: Food tours, night markets, resort relaxation, beach slow living</p></div></div>
+</div>
+<div style="text-align:center;margin-top:28px">
+<a href="zodiac-travel-in-dali.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Zodiac Travel Guide for Dali →</a>
+</div>
+</div>
+</section>
+<h2 id="faq"    class="section-title">Dali Tour Guide FAQ</h2>
     <p class="section-subtitle">Common questions about hiring an English guide in Dali.</p>
     <div class="faq-list">
       <div class="faq-item active">
@@ -757,33 +971,7 @@ img{max-width:100%;display:block}
 .fl-list a:hover i,.friendly-links-list a:hover i{color:#06b6d4}
 @media(max-width:640px){.fl-list,.friendly-links-list{justify-content:center}.fl-section h4,.footer-friendly-links h4{text-align:center;justify-content:center}}
 </style>
-<style>/* Nearby Cities Section */
-.nearby-cities-section {
-  padding: 60px 0;
-  background: var(--bg);
-}
-.nearby-cities-section .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.nearby-cities-title {
-  font-size: 28px;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 10px;
-  color: #f8fafc;
-}
-.nearby-cities-subtitle {
-  text-align: center;
-  color: #94a3b8;
-  margin-bottom: 32px;
-}
-.nearby-cities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
+<style>
 .nearby-city-card {
   background: var(--card-bg);
   border-radius: 14px;
@@ -827,49 +1015,18 @@ img{max-width:100%;display:block}
   .nearby-cities-grid { grid-template-columns: 1fr; }
 }
 </style>
-<section class="nearby-cities-section">
+<section style="background:linear-gradient(135deg,#0d9488,#14b8a6);padding:48px 24px;text-align:center">
   <div class="container">
-    <h2 class="nearby-cities-title">Nearby Cities You May Also Like</h2>
-    <p class="nearby-cities-subtitle">Explore more destinations across China</p>
-    <div class="nearby-cities-grid">
-      <a href="chengdu-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Chengdu.jpg" alt="Chengdu English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Chengdu</div>
-          <div class="nearby-city-tagline">Pandas, Hot Pot & Tea Houses</div>
-        </div>
-      </a>
-      <a href="xian-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Xi’an.jpg" alt="Xi'an English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Xi'an</div>
-          <div class="nearby-city-tagline">Ancient Capital & Terracotta Warriors</div>
-        </div>
-      </a>
-      <a href="beijing-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Beijing.jpg" alt="Beijing English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Beijing</div>
-          <div class="nearby-city-tagline">Imperial Capital & Modern Hub</div>
-        </div>
-      </a>
-      <a href="shanghai-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Shanghai.jpg" alt="Shanghai English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Shanghai</div>
-          <div class="nearby-city-tagline">The Bund & Skyline Metropolis</div>
-        </div>
-      </a>
-      <a href="chongqing-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Chongqing.jpg" alt="Chongqing English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Chongqing</div>
-          <div class="nearby-city-tagline">Mountain City & Hot Pot</div>
-        </div>
-      </a>
-    </div>
+    <h2 style="color:#fff;font-size:28px;font-weight:800;margin-bottom:12px">Travel Planning Guide for Dali</h2>
+    <p style="color:rgba(255,255,255,0.88);font-size:17px;max-width:600px;margin:0 auto 24px;line-height:1.7">
+      Everything you need to plan your Dali trip — visas, best time to visit, transport tips, and budget advice — all in one place.
+    </p>
+    <a href="booking.html?city=dali" style="display:inline-block;background:#fff;color:#0d9488;padding:12px 32px;border-radius:9999px;font-weight:700;font-size:15px;text-decoration:none">
+      Book a Dali Guide →
+    </a>
   </div>
 </section>
+
 <footer class="site-footer">
   <div class="footer-grid">
     <div class="footer-brand">
@@ -964,7 +1121,7 @@ document.querySelectorAll('.faq-question').forEach(q=>{
 </button>
 
 <!-- WhatsApp Popup -->
-<div class="wa-popup-overlay" id="waPopup" onclick="closeWAPopup(event)">
+<div class="wa-popup-overlay" onclick="closeWAPopup(event)">
   <div class="wa-popup-card" onclick="event.stopPropagation()">
     <button class="wa-popup-close" onclick="closeWAPopup()">×</button>
     <div class="wa-popup-qr"><img src="images/whatsapp-qr.png" alt="WhatsApp QR Code"></div>

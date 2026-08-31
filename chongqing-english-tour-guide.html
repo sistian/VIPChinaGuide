@@ -376,6 +376,58 @@ img{max-width:100%;display:block}
 .city-hero-image:hover img{transform:scale(1.03)}
 .city-hero-caption{position:absolute;bottom:0;left:0;right:0;padding:16px 24px;background:linear-gradient(transparent, rgba(0,0,0,0.65));color:#fff;font-size:0.95rem;font-weight:600}
 @media (max-width:768px){.city-hero-image{height:240px}}
+
+.page-hero {
+  background: linear-gradient(135deg, #0f3d3d 0%, #1a5f5f 50%, #0d6e6e 100%);
+  color: #fff;
+  padding: 48px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="30" r="2" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="20" r="1.5" fill="rgba(255,255,255,0.06)"/><circle cx="60" cy="70" r="2.5" fill="rgba(255,255,255,0.05)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.07)"/></svg>');
+  background-size: 200px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.page-hero .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+.hero-breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 13px; color: rgba(255,255,255,0.6); }
+.hero-breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
+.hero-breadcrumb a:hover { color: #fff; }
+.hero-title { font-size: 38px; font-weight: 800; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.5px; }
+.hero-desc { font-size: 16px; color: rgba(255,255,255,0.8); max-width: 600px; margin-bottom: 20px; line-height: 1.6; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+.btn-primary { display: inline-block; background: #dc2626; color: #fff; padding: 10px 28px; border-radius: 9999px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform 0.2s, background 0.2s; }
+.btn-primary:hover { background: #b91c1c; transform: translateY(-1px); }
+.btn-ghost { display: inline-block; background: rgba(255,255,255,0.12); color: #fff; padding: 10px 28px; border-radius: 9999px; font-weight: 600; font-size: 15px; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.3); transition: background 0.2s; }
+.btn-ghost:hover { background: rgba(255,255,255,0.2); }
+.hero-nav-map { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px; }
+.nav-map-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-transform: uppercase; }
+.nav-pills { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.nav-pill { display: inline-block; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); padding: 5px 14px; border-radius: 9999px; font-size: 13px; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); transition: background 0.2s, color 0.2s; white-space: nowrap; }
+.nav-pill:hover { background: rgba(255,255,255,0.2); color: #fff; }
+@media(max-width: 768px) {
+  .page-hero { padding: 36px 16px 28px; }
+  .hero-title { font-size: 28px; }
+  .nav-pills { gap: 6px; }
+  .nav-pill { font-size: 12px; padding: 4px 10px; }
+}
+
+
+/* City Hero Banner */
+.city-hero-banner{margin:0;padding:0;line-height:0;background:var(--bg)}
+.city-hero-image{width:100%;height:380px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.12)}
+.city-hero-image img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 0.6s ease;display:block}
+.city-hero-image:hover img{transform:scale(1.04)}
+.city-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.3) 50%,rgba(0,0,0,0.6) 100%);display:flex;align-items:flex-end}
+.city-hero-content{padding:32px 40px;width:100%;max-width:1200px;margin:0 auto}
+.city-hero-title{font-size:36px;font-weight:800;color:#ffffff;margin:0 0 8px;text-shadow:0 2px 12px rgba(0,0,0,0.4);letter-spacing:0.3px}
+.city-hero-tagline{font-size:16px;color:rgba(255,255,255,0.9);margin:0;font-weight:500;text-shadow:0 1px 6px rgba(0,0,0,0.35)}
+@media(max-width:768px){.city-hero-image{height:220px}.city-hero-title{font-size:24px}.city-hero-tagline{font-size:13px}.city-hero-content{padding:20px 20px}}
+
 </style>
 </head>
 <body>
@@ -386,6 +438,7 @@ img{max-width:100%;display:block}
       <span style="font-size:18px;font-weight:800;color:var(--primary)">VIPChinaGuide</span>
     </a>
     <nav class="nav-links">
+      <a href="index.html">Home</a>
       <a href="guides.html">Guides</a>
       <a href="pricing.html">Pricing</a>
       <a href="booking.html">Book Now</a>
@@ -394,46 +447,35 @@ img{max-width:100%;display:block}
     </nav>
   </div>
 </header>
-<section class="hero">
+
+
+<section class="page-hero">
   <div class="container">
-    <h1>Chongqing <span>English Private Tour Guide</span></h1>
-    <p>Hire a licensed, English-speaking private guide for Chongqing. Our expert guides bring local knowledge, history, and culture to life. Available for half-day, full-day, and multi-day tours. Book now for an unforgettable experience!</p>
-    <a href="booking.html?city=chongqing" class="btn-primary">Book a Chongqing Guide Now</a>
-    <a href="guides.html" class="btn-secondary">View All Guides</a>
-  </div>
-</section>
-<div class="city-hero-image">
-  <img src="images/cities/Chongqing.jpg" alt="Chongqing Hongya Cave and night cityscape" loading="eager">
-  <div class="city-hero-caption">Chongqing (重庆)</div>
-</div>
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <h2 class="section-title" style="text-align:center;margin-bottom:28px">✨ Travel Essentials for Chongqing</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px">
-      <!-- ChinaWheely -->
-      <div style="background:linear-gradient(135deg,#0d9488,#06b6d4);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">🚗</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Airport Transfer & Car Service</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Local drivers for airport pickup, attraction transfers & private car charter. Safe, reliable, English-speaking support.</p>
-        <a href="https://www.chinawheely.com" style="display:inline-block;background:#fff;color:#0d9488;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Book on ChinaWheely →</a>
-      </div>
-      <!-- ChinaWiFiGo -->
-      <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">📶</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Pocket WiFi for China</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Unlimited 5G pocket WiFi delivered to your hotel. No Chinese ID needed. Full Google, WhatsApp & Instagram access.</p>
-        <a href="https://www.chinawifigo.com" style="display:inline-block;background:#fff;color:#6366f1;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Pre-Order WiFi →</a>
-      </div>
-      <!-- MediEscortChina -->
-      <div style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-radius:16px;padding:24px;text-align:center">
-        <div style="font-size:36px;margin-bottom:8px">🏥</div>
-        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Medical & Wellness</h4>
-        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Health checkups, dental cleaning & more. Much cheaper than in US/Europe. Add a wellness stop to your trip.</p>
-        <a href="https://www.mediescortchina.com" style="display:inline-block;background:#fff;color:#059669;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Learn More →</a>
-      </div>
+    <div class="hero-breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span>Chongqing Tour Guides</span>
+    </div>
+    <h1 class="hero-title">Chongqing English Tour Guide</h1>
+    <p class="hero-desc">Your Ultimate Chongqing Travel Guide — Licensed English Guides for Yangtze River, Hongya Dong & More</p>
+    <div class="hero-actions">
+      <a href="booking.html" class="btn-primary">Book a Chongqing Guide</a>
+      <a href="faq.html" class="btn-ghost">View FAQs</a>
+    </div>
+    <div class="hero-nav-map">
+      <span class="nav-map-label">ON THIS PAGE</span>
+      <div class="nav-pills"><a href="#how-to-get-to-chongqing" class="nav-pill" onclick="scrollTo(event,'how-to-get-to-chongqing')">How to Get to Chongqing</a><a href="#nightlife-in-chongqing" class="nav-pill" onclick="scrollTo(event,'nightlife-in-chongqing')">Nightlife</a><a href="#concerts-and-shows-in-chongqing" class="nav-pill" onclick="scrollTo(event,'concerts-and-shows-in-chongqing')">Concerts & Shows</a><a href="#tea-culture-in-chongqing" class="nav-pill" onclick="scrollTo(event,'tea-culture-in-chongqing')">Tea Culture</a><a href="#sports-events-in-chongqing" class="nav-pill" onclick="scrollTo(event,'sports-events-in-chongqing')">Sports Events</a><a href="#travel-essentials" class="nav-pill" onclick="scrollTo(event,'travel-essentials')">Travel Essentials</a><a href="#faq" class="nav-pill" onclick="scrollTo(event,'faq')">Tour Guide FAQ</a></div>
     </div>
   </div>
 </section>
+
+
+
+
+
+
+
+
 <section class="section" style="padding-bottom:0">
   <div class="container">
     <div class="city-overview">
@@ -471,6 +513,103 @@ img{max-width:100%;display:block}
     </div>
   </div>
 </section>
+
+<section class="city-hero-banner" aria-label="Chongqing hero banner">
+  <div class="city-hero-image">
+    <img src="images/cities/Chongqing.jpg" alt="Chongqing — Tour Guide — Licensed English Guides for Yangtze River & More" width="1200" height="380" loading="eager">
+    <div class="city-hero-overlay">
+      <div class="city-hero-content">
+        <h2 class="city-hero-title">Chongqing</h2>
+        <p class="city-hero-tagline">Tour Guide — Licensed English Guides for Yangtze River & More</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" style="background:var(--bg)">
+<div class="container">
+<h2 class="section-title" style="text-align:center;margin-bottom:8px">🗓️ Best Time to Visit Chongqing</h2>
+<p class="section-subtitle" style="text-align:center;margin-bottom:32px">
+Plan your perfect Chongqing trip with our seasonal guide — weather, events, and travel tips for every time of year.
+</p>
+<div style="max-width:900px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#16a34a22,#16a34a11);border-bottom:1px solid #16a34a33">
+    <span style="font-size:28px">🌸</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">🌸 Spring (Mar–May)</span>
+        <span style="display:inline-block;background:#16a34a;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Best Season</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">15–24°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">15–24°C, comfortable, azaleas bloom across the city. Perfect for Yangtze River cruises and Hongyadong nights.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#d9770622,#d9770611);border-bottom:1px solid #d9770633">
+    <span style="font-size:28px">☀️</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">☀️ Summer (Jun–Sep)</span>
+        <span style="display:inline-block;background:#d97706;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Hot & Humid</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">28–38°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">28–38°C, famously hot 'furnace city.' Morning and evening walks along Jialing River recommended.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#16a34a22,#16a34a11);border-bottom:1px solid #16a34a33">
+    <span style="font-size:28px">🍂</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">🍂 Autumn (Oct–Nov)</span>
+        <span style="display:inline-block;background:#16a34a;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Best Season</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">16–24°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">16–24°C, cool and comfortable. Best time for hiking Wulong Karst and exploring Ciqikou old town.</p>
+  </div>
+</div><div style="background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s;margin-bottom:16px" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+  <div style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#3b82f622,#3b82f611);border-bottom:1px solid #3b82f633">
+    <span style="font-size:28px">❄️</span>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:16px;color:var(--text)">❄️ Winter (Dec–Feb)</span>
+        <span style="display:inline-block;background:#3b82f6;color:#fff;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700">Mild & Foggy</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-light);margin:4px 0 0">6–12°C</p>
+    </div>
+  </div>
+  <div style="padding:14px 20px">
+    <p style="font-size:14px;color:var(--text);line-height:1.7;margin:0">6–12°C, cold but mild compared to north. Unique foggy atmosphere, fewer tourists, great for hot pot.</p>
+  </div>
+</div>
+<div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:16px;padding:24px;color:#fff">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">🏆 Best Season to Visit</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Spring (March–May) and Autumn (October–November) — the best seasons to travel to Chongqing</p>
+    </div>
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">💰 Budget Tip</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Winter (December–February) has the lowest hotel prices and fewer crowds</p>
+    </div>
+    <div>
+      <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">📅 Monthly Overview</h4>
+      <p style="font-size:14px;color:#fff;line-height:1.6;margin:0">Mar–May: Spring | Jun–Sep: Summer | Oct–Nov: Autumn | Dec–Feb: Winter</p>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
 <section class="section">
   <div class="container">
     <h2 class="section-title">Explore Chongqing With an English Guide</h2>
@@ -599,7 +738,7 @@ img{max-width:100%;display:block}
 </section>
 <section class="section" style="background:var(--bg)">
   <div class="container">
-    <h2 class="section-title" style="text-align:center;margin-bottom:28px">🎯 Related Chongqing Tour Topics</h2>
+    <h2  class="section-title" style="text-align:center;margin-bottom:28px">🎯 Related Chongqing Tour Topics</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
       <a href="chongqing-museums.html" style="background:var(--card-bg);border-radius:12px;padding:20px;border:1px solid var(--border);text-align:center;transition:all .2s;text-decoration:none;display:block" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
         <div style="font-size:32px;margin-bottom:8px">🏛️</div>
@@ -631,7 +770,84 @@ img{max-width:100%;display:block}
 </section>
 <section class="section">
   <div class="container">
-    <h2 class="section-title">Chongqing Tour Guide FAQ</h2>
+    
+
+<section class="section" style="background:var(--bg)">
+  <div class="container">
+    <h2 id="how-to-get-to-chongqing"      class="section-title" style="text-align:center;margin-bottom:8px">🚆 How to Get to Chongqing</h2>
+    <p class="section-subtitle" style="text-align:center;margin-bottom:32px">Metro, taxi, ride-hailing, train & bus — everything you need to get around Chongqing easily.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;max-width:1100px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚇</span><h4 style="font-size:16px;font-weight:700;margin:0">Chongqing Metro — 10+ Lines</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Chongqing Metro has 10+ lines including Line 2 — the world's most dramatic, running through residential towers and over flyovers. Official app: 重庆轨道交通. Due to 3D geography, metro stations span multiple levels.</p><a href="https://www.cqmetro.cn" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Chongqing Metro Map →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚕</span><h4 style="font-size:16px;font-weight:700;margin:0">Chongqing Taxi Fares</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Starts CNY 10 for 3 km, CNY 2/km thereafter. Trust your driver on route — shortest distance is rarely fastest in this vertical city. All metered.</p><a href="https://www.didiglobal.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book via DiDi →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚗</span><h4 style="font-size:16px;font-weight:700;margin:0">DiDi Ride-Hailing (滴滴出行)</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Primary and often more reliable than taxis in this complex geography. Use for Nanshan, Ciqikou, and airport trips.</p><a href="https://www.didiglobal.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Download DiDi →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚄</span><h4 style="font-size:16px;font-weight:700;margin:0">Chongqing Train Stations</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Chongqing North (重庆北) — main HSR hub. Chongqing (重庆站) — classic in city center. Chongqing West (重庆西) — new hub. WARNING: North Station has 2 plazas 1.5 km apart.</p><a href="https://www.12306.cn/index/" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book Train Tickets →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🚌</span><h4 style="font-size:16px;font-weight:700;margin:0">Chongqing Long-Distance Bus</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">Chongqing Bus Station (重庆汽车站) in Yuzhou District. Buses to Chengdu and Sichuan destinations.</p><a href="https://www.cqbus.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Search Bus Routes →</a></div>
+<div style="background:var(--card-bg);border-radius:14px;padding:22px;border:1px solid var(--border)"><div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><span style="font-size:30px">🎫</span><h4 style="font-size:16px;font-weight:700;margin:0">How to Buy Train & Bus Tickets</h4></div><p style="font-size:14px;color:var(--text-light);line-height:1.7;margin:0 0 10px">HSR: 12306.cn or Trip.com. Always confirm which station — North or West — before booking.</p><a href="https://www.trip.com" target="_blank" rel="noopener" style="display:inline-block;background:#0d9488;color:#fff;padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px">Book on Trip.com →</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="nightlife-in-chongqing"      class="section-title" style="text-align:center;margin-bottom:8px">🌙 Chongqing Nightlife and Late-Night Food</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Chongqing at night is spectacular — glowing skyscrapers above two rivers, late-night hot pot restaurants, and the world-class cable car over the Yangtze at night.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🌃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Jiefangbei CBD Night View</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Chongqing central business district spectacular at night — neon-lit streets of Jiefangbei, one of China most vibrant nighttime commercial districts.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🍲</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Hualongqiao Night Food Street</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Newest popular food street — hundreds of vendors serving hot pot, noodles, skewers and cold beer until 2am.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🌉</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Hongyadong Night View</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Iconic stilted building complex on cliff above Jialing River dramatically lit at night — symbol of Chongqing nightlife.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🍺</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Yangtze River Cruise at Night</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Night cruise on Yangtze or Jialing River passes under illuminated bridges — one of China most beautiful urban night views.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🌶️</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Late-Night Hot Pot on Nanbin Road</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Nanbin Road south bank outdoor hot pot restaurants where locals eat until 3am with river views.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:48px">🎵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Guanyinqiao Bar District (观音桥)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Most popular bar and club area — pedestrian street with hundreds of bars, KTV and late-night entertainment.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="nightlife-in-chongqing.html" style="display:inline-block;background:#7c3aed;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Nightlife Guide →</a></div></div></section>
+
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="concerts-and-shows-in-chongqing"     class="section-title" style="text-align:center;margin-bottom:8px">&#x1F3AD; Chongqing Concerts and Shows</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Chongqing's performance scene is as dramatic as its geography — from riverside cultural shows to the city's growing indie music scene and major arena concerts.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎭</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">重庆川剧 (Chongqing Sichuan Opera) Performances</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Sichuan Opera — face-changing Bian Lian (变脸), fire-spitting, and acrobatics — performed at the Chongqing Sichuan Opera Theatre. Nightly performances in an intimate theater setting.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎸</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">重庆音乐节 (Chongqing Music Festival)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Held annually (usually October) — multi-genre outdoor music festival with Chinese and Asian indie, rock, and electronic acts. Multi-day event at outdoor venues near the Jialing River.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎤</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px"> Chongqing Grand Theatre Performances</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The city's main performing arts venue — ballet, opera, Chinese classical music, and touring theatrical productions. Check monthly schedule through your guide.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏟️</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">重庆奥体中心 (Chongqing Olympic Sports Centre) Concerts</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Major arena concerts — Chinese pop and rock artists, and occasional international performers. One of southwest China's largest venues.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎭</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">两江之夜 (Two Rivers Night) Cultural Cruise Shows</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Evening performances on the Yangtze and Jialing River — traditional Chinese music, dance, and cultural performances combined with the city's spectacular night views. Usually combined with dinner cruise.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🎸</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Chongqing Indie Music Venues</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">A growing indie and underground music scene — local rock bands, indie acts, and occasional touring performers at small venues in the Jiefangbei and Yuzhou districts.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="concerts-and-shows-in-chongqing.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Shows Guide &#x2192;</a></div></div></section>
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="tea-culture-in-chongqing"     class="section-title" style="text-align:center;margin-bottom:8px">🍵 Chongqing Tea Culture Tour</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Chongqing is home to some of China's most fascinating tea traditions - from historic tea houses to famous local varieties and time-honored brewing rituals.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Jasmine Green Tea (茉莉花茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">The most popular tea in Chongqing - jasmine-scented green tea served at every meal. The city's abundant street tea stalls serve it constantly.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍶</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Sweet Corn Tea (玉米茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Unique Chongqing staple - tea made from roasted corn kernels. Sold at street stalls throughout the city - warming, nutty, and refreshing.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Emei Shan Tea (峨眉山茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Green tea from nearby Emei Shan - one of Sichuan's Four Famous Mountains. Fresh, vegetal flavor available in Chongqing's tea houses.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🏮</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Ciqioukou Tea Market (磁器口茶馆)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Famous tea street market in the historic Ciqioukou ancient town - dozens of tea stalls serving local and provincial teas in traditional settings.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Chongqing Cold Tea (凉茶)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Traditional herbal teas unique to Chongqing's hot, humid climate. Brewed from medicinal herbs and roots - an essential part of local food culture.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:48px">🍵</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Sichuan Xinyang Mao Jian (信阳毛尖)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Henan green tea widely consumed in Chongqing - the light, refreshing flavor complements the spicy local cuisine.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="tea-culture-in-chongqing.html" style="display:inline-block;background:#16a34a;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Tea Culture Guide →</a></div></div></section>
+<section class="section" style="background:var(--bg)"><div class="container"><h2 id="sports-events-in-chongqing"     class="section-title" style="text-align:center;margin-bottom:8px">⚽ Chongqing Major Sports Events</h2><p class="section-subtitle" style="text-align:center;margin-bottom:32px">Chongqing hosts major national and international sporting events throughout the year - from world-class marathons to professional tournaments.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:0 auto"><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Chongqing International Marathon (重庆国际马拉松)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Held annually in March. The riverside course along the Yangtze and Jialing Rivers features dramatic cityscape and mountain backdrop. Known as one of China's most challenging but scenic marathons.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">⚽</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Chongqing Lifan FC - Chinese Super League</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Home matches at Chongqing Olympic Sports Centre. Chinese Super League football March-November with passionate local fanbase.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Three Gorges Marathon (三峡马拉松)</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Marathon event running along the Yangtze River near Chongqing. Scenic course through the Three Gorges region. Attracts runners interested in China's most dramatic river scenery.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏊</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Yangtze River Open Water Swim</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Annual open water swimming event in the Yangtze River. Athletes swim sections of China's longest river with views of the mountain-ringed city.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🥋</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Chongqing Wushu Championships</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Annual martial arts competition showcasing traditional and modern wushu styles. Held at Chongqing Sports Centre.</p></div></div><div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:120px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:48px">🏃</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Jinfo Mountain Trail Running Race</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0">Mountain trail race in the Jinfo Mountain area of Chongqing. Attracts ultra runners with technical terrain and forest scenery.</p></div></div></div><div style="text-align:center;margin-top:24px"><a href="sports-events-in-chongqing.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Sports Guide →</a></div></div></section>
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <h2 id="travel-essentials"     class="section-title" style="text-align:center;margin-bottom:28px">✨ Travel Essentials for Chongqing</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px">
+      <!-- ChinaWheely -->
+      <div style="background:linear-gradient(135deg,#0d9488,#06b6d4);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">🚗</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Airport Transfer & Car Service</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Local drivers for airport pickup, attraction transfers & private car charter. Safe, reliable, English-speaking support.</p>
+        <a href="https://www.chinawheely.com" style="display:inline-block;background:#fff;color:#0d9488;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Book on ChinaWheely →</a>
+      </div>
+      <!-- ChinaWiFiGo -->
+      <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">📶</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Pocket WiFi for China</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Unlimited 5G pocket WiFi delivered to your hotel. No Chinese ID needed. Full Google, WhatsApp & Instagram access.</p>
+        <a href="https://www.chinawifigo.com" style="display:inline-block;background:#fff;color:#6366f1;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Pre-Order WiFi →</a>
+      </div>
+      <!-- MediEscortChina -->
+      <div style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">🏥</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:8px">Medical & Wellness</h4>
+        <p style="font-size:14px;opacity:.9;margin-bottom:16px">Health checkups, dental cleaning & more. Much cheaper than in US/Europe. Add a wellness stop to your trip.</p>
+        <a href="https://www.mediescortchina.com" style="display:inline-block;background:#fff;color:#059669;padding:10px 24px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">Learn More →</a>
+      </div>
+    </div>
+  </div>
+</section><section class="section" style="background:var(--bg)">
+<div class="container">
+<h2 class="section-title" style="text-align:center;margin-bottom:8px">🐉 Chinese Zodiac in Chongqing</h2>
+<p class="section-subtitle" style="text-align:center;margin-bottom:32px">
+The Chinese zodiac (十二生肖) features 12 animals — Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog, Pig. Each sign's personality shapes the ideal travel style for Chongqing. Find your zodiac sign for personalized Chongqing travel recommendations!
+</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1100px;margin:0 auto">
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐀</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐀 Rat (鼠) — Clever & Curious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Quick-witted, adaptable, loves food & comfort. Prefers flexible itineraries with great value.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Short scenic drives, foodie walks, beach relaxation</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐂</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐂 Ox (牛) — Steady & Patient</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Reliable, loves planning ahead, enjoys nature at a slow, steady pace.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Eco-resorts, hiking trails, countryside B&Bs</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐅</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐅 Tiger (虎) — Brave & Adventurous</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Bold, loves challenges and extremes. Thrives on high-energy, pioneering experiences.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Mountain hiking, kayaking, off-road adventures</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐇</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐇 Rabbit (兔) — Gentle & Comfort-Seeking</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Kind, values comfort and serenity. Prefers slow travel away from crowds.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Hot spring resorts, countryside retreats, lakeside calm</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐉</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐉 Dragon (龙) — Confident & Ambitious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Charismatic, loves luxury and landmark destinations. Aims high in everything.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Luxury hotels, premium shopping, iconic landmarks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐍</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐍 Snake (蛇) — Thoughtful & Observant</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Deep, detail-oriented, loves art, culture and quiet observation of beauty.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Art museums, ancient towns, photography tours</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐴</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐴 Horse (马) — Free-Spirited & Social</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Energetic, loves freedom and spontaneous plans. Enjoys meeting locals along the way.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Spontaneous road trips, cycling, hiking, music festivals</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐐</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐐 Goat (羊) — Peaceful & Artistic</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Calm, loves natural beauty and tranquility. Enjoys art, folk traditions and quiet reflection.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Scenic mountains & lakes, cultural immersion, meditation</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐒</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐒 Monkey (猴) — Clever & Curious</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Playful, loves novelty and interactive experiences. Tends to get distracted though!</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Interactive museums, VR zones, wildlife parks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐓</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐓 Rooster (鸡) — Detail-Oriented & Precise</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Perfectionist, loves structure and efficiency. Expects five-star service and top logistics.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Luxury定制 tours, tight schedules, photography routes</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐕</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐕 Dog (狗) — Loyal & Nature-Loving</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Devoted, trustworthy, thrives outdoors. Loves group travel with close friends.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Long hikes, camping, volunteer tourism, nature walks</p></div></div>
+<div style="background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:transform .2s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="height:110px;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-size:44px">🐖</div><div style="padding:16px"><h4 style="font-size:15px;font-weight:700;margin-bottom:4px">🐖 Pig (猪) — Easygoing & Pleasure-Seeking</h4><p style="font-size:13px;color:var(--text-light);line-height:1.6;margin:0 0 8px">Personality: Laid-back, loves good food and comfort. Enjoys sharing moments with others.</p><p style="font-size:12px;color:#dc2626;font-weight:600;margin:0">→ Chongqing Best: Food tours, night markets, resort relaxation, beach slow living</p></div></div>
+</div>
+<div style="text-align:center;margin-top:28px">
+<a href="zodiac-travel-in-chongqing.html" style="display:inline-block;background:#dc2626;color:#fff;padding:11px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none">View Full Zodiac Travel Guide for Chongqing →</a>
+</div>
+</div>
+</section>
+
+
+
+<h2 id="faq"    class="section-title">Chongqing Tour Guide FAQ</h2>
     <p class="section-subtitle">Common questions about hiring an English guide in Chongqing.</p>
     <div class="faq-list">
       <div class="faq-item active">
@@ -787,33 +1003,7 @@ img{max-width:100%;display:block}
 .fl-list a:hover i,.friendly-links-list a:hover i{color:#06b6d4}
 @media(max-width:640px){.fl-list,.friendly-links-list{justify-content:center}.fl-section h4,.footer-friendly-links h4{text-align:center;justify-content:center}}
 </style>
-<style>/* Nearby Cities Section */
-.nearby-cities-section {
-  padding: 60px 0;
-  background: var(--bg);
-}
-.nearby-cities-section .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.nearby-cities-title {
-  font-size: 28px;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 10px;
-  color: #f8fafc;
-}
-.nearby-cities-subtitle {
-  text-align: center;
-  color: #94a3b8;
-  margin-bottom: 32px;
-}
-.nearby-cities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
+<style>
 .nearby-city-card {
   background: var(--card-bg);
   border-radius: 14px;
@@ -857,49 +1047,18 @@ img{max-width:100%;display:block}
   .nearby-cities-grid { grid-template-columns: 1fr; }
 }
 </style>
-<section class="nearby-cities-section">
+<section style="background:linear-gradient(135deg,#0d9488,#14b8a6);padding:48px 24px;text-align:center">
   <div class="container">
-    <h2 class="nearby-cities-title">Nearby Cities You May Also Like</h2>
-    <p class="nearby-cities-subtitle">Explore more destinations across China</p>
-    <div class="nearby-cities-grid">
-      <a href="chengdu-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Chengdu.jpg" alt="Chengdu English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Chengdu</div>
-          <div class="nearby-city-tagline">Pandas, Hot Pot & Tea Houses</div>
-        </div>
-      </a>
-      <a href="xian-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Xi’an.jpg" alt="Xi'an English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Xi'an</div>
-          <div class="nearby-city-tagline">Ancient Capital & Terracotta Warriors</div>
-        </div>
-      </a>
-      <a href="changsha-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Changsha.jpg" alt="Changsha English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Changsha</div>
-          <div class="nearby-city-tagline">Hunan Culture & Street Food</div>
-        </div>
-      </a>
-      <a href="wuhan-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Wuhan.jpg" alt="Wuhan English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Wuhan</div>
-          <div class="nearby-city-tagline">Yellow Crane Tower & East Lake</div>
-        </div>
-      </a>
-      <a href="guangzhou-english-tour-guide.html" class="nearby-city-card">
-        <img src="images/cities/Guangzhou.jpg" alt="Guangzhou English private tour guide" class="nearby-city-img" loading="lazy" onerror="this.style.display='none'">
-        <div class="nearby-city-info">
-          <div class="nearby-city-name">Guangzhou</div>
-          <div class="nearby-city-tagline">Cantonese Food & Canton Tower</div>
-        </div>
-      </a>
-    </div>
+    <h2 style="color:#fff;font-size:28px;font-weight:800;margin-bottom:12px">Travel Planning Guide for Chongqing</h2>
+    <p style="color:rgba(255,255,255,0.88);font-size:17px;max-width:600px;margin:0 auto 24px;line-height:1.7">
+      Everything you need to plan your Chongqing trip — visas, best time to visit, transport tips, and budget advice — all in one place.
+    </p>
+    <a href="booking.html?city=chongqing" style="display:inline-block;background:#fff;color:#0d9488;padding:12px 32px;border-radius:9999px;font-weight:700;font-size:15px;text-decoration:none">
+      Book a Chongqing Guide →
+    </a>
   </div>
 </section>
+
 <footer class="site-footer">
   <div class="footer-grid">
     <div class="footer-brand">
@@ -994,7 +1153,7 @@ document.querySelectorAll('.faq-question').forEach(q=>{
 </button>
 
 <!-- WhatsApp Popup -->
-<div class="wa-popup-overlay" id="waPopup" onclick="closeWAPopup(event)">
+<div class="wa-popup-overlay" onclick="closeWAPopup(event)">
   <div class="wa-popup-card" onclick="event.stopPropagation()">
     <button class="wa-popup-close" onclick="closeWAPopup()">×</button>
     <div class="wa-popup-qr"><img src="images/whatsapp-qr.png" alt="WhatsApp QR Code"></div>
