@@ -1,4 +1,6 @@
 User-agent: *
+Disallow: /VIPChinaGuide_Concerts_Shows_Report.html
+Disallow: /SITE_SCAN_REPORT.md
 Disallow: /admin/
 Disallow: /admin-login.html
 Disallow: /account.html

@@ -1,0 +1,751 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.6;color:#1e293b;background:#fff}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+
+:root{--primary:#0d9488;--primary-dark:#0f766e;--accent:#f97316;--text:#1e293b;--text-light:#64748b;--bg:#f8fafc;--card-bg:#fff;--border:#e2e8f0;--shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+
+.site-header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:6px;font-size:20px;font-weight:800}
+.logo-text{color:var(--primary);font-weight:800}
+.logo-vip{color:#f59e0b}
+.logo-china{color:#ef4444}
+.logo-guide{color:#0d9488}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--text);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--primary)}
+
+.hero{background:linear-gradient(135deg,#0d9488 0%,#14b8a6 50%,#06b6d4 100%);color:#fff;padding:120px 24px 80px;position:relative;overflow:hidden}.hero .container{display:flex;align-items:center;justify-content:center;gap:40px}.hero-content{flex:1;min-width:0}.hero-mascot{flex-shrink:0;text-align:center}.hero-mascot img{max-width:280px;width:100%;height:auto;border-radius:50%;box-shadow:0 20px 60px rgba(0,0,0,0.3);transition:transform .3s;background:rgba(255,255,255,0.1);backdrop-filter:blur(4px)}.hero-mascot img:hover{transform:scale(1.05)}@media(max-width:900px){.hero .container{flex-direction:column;text-align:center;gap:24px}.hero-mascot{display:none}}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2220%22 cy=%2230%22 r=%222%22 fill=%22rgba(255,255,255,0.1)%22/><circle cx=%2280%22 cy=%2220%22 r=%221.5%22 fill=%22rgba(255,255,255,0.08)%22/><circle cx=%2260%22 cy=%2270%22 r=%222.5%22 fill=%22rgba(255,255,255,0.06)%22/><circle cx=%2240%22 cy=%2280%22 r=%221%22 fill=%22rgba(255,255,255,0.1)%22/></svg>');background-size:200px;opacity:.5}
+.hero .container{position:relative;z-index:1}
+.hero h1{font-size:52px;font-weight:800;margin-bottom:16px;line-height:1.2}
+.hero h1 span{color:#fef3c7;font-style:italic}
+.hero p{font-size:20px;opacity:.9;max-width:640px;margin:0 auto 40px}
+
+.btn-primary{display:inline-block;background:#fff;color:var(--primary);padding:16px 36px;border-radius:12px;font-size:16px;font-weight:700;transition:all .2s;box-shadow:var(--shadow-lg)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1)}
+.btn-secondary{display:inline-block;background:transparent;color:#fff;padding:16px 36px;border-radius:12px;font-size:16px;font-weight:700;border:2px solid rgba(255,255,255,.5);transition:all .2s;margin-left:12px}
+.btn-secondary:hover{background:rgba(255,255,255,.1)}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section{padding:80px 0}
+.section-alt{background:var(--bg)}
+
+.card{background:var(--card-bg);border-radius:16px;padding:32px;box-shadow:var(--shadow);border:1px solid var(--border);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+
+.section-title{font-size:32px;font-weight:700;color:var(--text);text-align:center;margin-bottom:16px}
+.section-subtitle{text-align:center;color:var(--text-light);font-size:16px;margin-bottom:48px;max-width:600px;margin-left:auto;margin-right:auto}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px;text-align:center;padding:40px 0}
+.stat-number{font-size:48px;font-weight:800;color:var(--primary)}
+.stat-label{font-size:14px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+.feature-icon{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px}
+
+.guide-card{background:var(--card-bg);border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;transition:transform .2s}
+.guide-card:hover{transform:translateY(-4px)}
+.guide-avatar{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;margin:0 auto 12px}
+.guide-header{padding:24px 24px 0;text-align:center}
+.guide-name{font-size:20px;font-weight:700;margin-bottom:4px}
+.guide-meta{font-size:13px;color:var(--text-light);margin-bottom:12px}
+.guide-body{padding:0 24px 24px}
+.guide-bio{font-size:14px;color:var(--text-light);line-height:1.6;margin-bottom:16px}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-right:4px}
+.badge-green{background:#d1fae5;color:#065f46}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.badge-orange{background:#ffedd5;color:#9a3412}
+.badge-purple{background:#f3e8ff;color:#7c3aed}
+.guide-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;justify-content:center}
+.guide-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.price{font-size:20px;font-weight:700;color:var(--accent)}
+
+/* Price Calculator */
+.calc-box{background:var(--bg);border-radius:16px;padding:32px;max-width:800px;margin:0 auto}
+.calc-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end}
+.calc-group{flex:1;min-width:180px}
+.calc-group label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.calc-group select,.calc-group input{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:15px;background:#fff}
+.calc-group select:focus,.calc-group input:focus{outline:none;border-color:var(--primary)}
+.calc-result{background:#fff;border-radius:12px;padding:20px;margin-top:16px;border:1px solid var(--border)}
+.calc-price{font-size:36px;font-weight:800;color:var(--accent)}
+.calc-detail{font-size:14px;color:var(--text-light);margin-top:4px}
+.calc-btn{background:var(--primary);color:#fff;padding:14px 32px;border-radius:8px;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:background .2s;flex-shrink:0}
+.calc-btn:hover{background:var(--primary-dark)}
+
+.cta-section{background:linear-gradient(135deg,#0d9488,#06b6d4);color:#fff;padding:80px 24px;text-align:center}
+.cta-section h2{font-size:36px;font-weight:800;margin-bottom:16px}
+.cta-section p{font-size:18px;opacity:.9;margin-bottom:32px}
+
+@media(max-width:768px){
+.hero h1{font-size:32px}
+.section{padding:48px 0}
+
+.btn-secondary{margin-left:0;margin-top:12px}
+.calc-row{flex-direction:column}
+.calc-group{min-width:100%}
+}
+
+/* ===== CITY ROUTES ===== */
+.city-routes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.city-card{background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:transform .2s,box-shadow .2s}
+.city-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.city-header{padding:20px 24px;color:#fff;position:relative;background:#1e293b}
+.city-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.3)}
+.city-name{font-size:22px;font-weight:800;margin-bottom:2px}
+.city-tagline{font-size:13px;opacity:.85;font-weight:500}
+.city-routes{padding:16px 20px}
+.route-item{display:flex;align-items:flex-start;gap:12px;padding:10px 8px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s;border-radius:8px}
+.route-item:last-child{border-bottom:none}
+.route-item:hover{background:var(--bg)}
+.route-icon{font-size:20px;flex-shrink:0;width:32px;text-align:center}
+.route-info{flex:1;min-width:0}
+.route-name{font-size:14px;font-weight:600;color:var(--text);display:block;margin-bottom:2px}
+.route-desc{font-size:12px;color:var(--text-light);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.route-arrow{color:var(--primary);font-size:18px;flex-shrink:0;opacity:0;transition:opacity .2s,transform .2s}
+.route-item:hover .route-arrow{opacity:1;transform:translateX(4px)}
+.route-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:6px;text-transform:uppercase;letter-spacing:.5px}
+.route-tag-popular{background:#fef3c7;color:#92400e}
+.route-tag-food{background:#fee2e2;color:#991b1b}
+.route-tag-photo{background:#dbeafe;color:#1e40af}
+.route-tag-adventure{background:#d1fae5;color:#065f46}
+.route-tag-culture{background:#f3e8ff;color:#6b21a8}
+.city-footer{padding:12px 20px 16px;text-align:center;border-top:1px solid var(--border)}
+.city-footer a{color:var(--primary);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:4px;transition:gap .2s}
+.city-footer a:hover{gap:8px}
+@media(max-width:768px){.city-routes-grid{grid-template-columns:1fr}}
+.site-footer{background:#000;color:#94a3b8;padding:60px 24px 24px}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.6fr 0.9fr 0.9fr 1.4fr;gap:40px;margin-bottom:40px}
+.footer-brand .logo{font-size:22px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.footer-brand .logo img{height:52px;width:auto;border-radius:50%;object-fit:cover;vertical-align:middle}
+.footer-brand p{font-size:14px;line-height:1.7;color:#94a3b8;margin-bottom:16px}
+.footer-badges{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.footer-badge{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:13px}
+.footer-badge.green{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:#22c55e}
+.footer-badge.gold{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);color:#f59e0b}
+.footer-badge a{margin-left:auto;font-size:12px;text-decoration:underline;white-space:nowrap}
+.footer-badge.green a{color:#22c55e}
+.footer-badge.gold a{color:#f59e0b}
+.footer-col h4{color:#fff;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:.5px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:10px;font-size:14px}
+.footer-col a{color:#94a3b8;transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-map{margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid #1e293b}
+.footer-address{font-size:13px;line-height:1.7;color:#94a3b8;margin-top:8px}
+.footer-bottom{border-top:1px solid #1e293b;margin-top:40px;padding-top:24px;text-align:center;font-size:13px;color:#64748b}
+.footer-bottom a{color:#94a3b8;text-decoration:underline}
+
+.footer-friendly-links{
+  border-top:1px solid #1e293b;
+  border-bottom:1px solid #1e293b;
+  padding:16px 0;
+  margin-top:0;
+  background:rgba(15,23,42,0.3);
+}
+.footer-friendly-links h4{
+  font-size:14px;
+  font-weight:700;
+  color:#f8fafc;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.footer-friendly-links h4 i{color:#818cf8;font-size:12px;}
+.friendly-links-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 20px;
+  justify-content:center;
+}
+.friendly-links-list a{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:13px;
+  color:#94a3b8;
+  padding:3px 0;
+  transition:color .2s;
+  text-decoration:none;
+}
+.friendly-links-list a i{font-size:11px;color:#818cf8;transition:color .2s;}
+.friendly-links-list a:hover{color:#f8fafc;}
+.friendly-links-list a:hover i{color:#22d3ee;}
+@media(max-width:640px){
+  .friendly-links-list{justify-content:center;}
+  .footer-friendly-links h4{text-align:center;justify-content:center;}
+}
+
+@media(max-width:900px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+}
+@media(max-width:640px){
+  .footer-grid{grid-template-columns:1fr;gap:32px}
+}
+
+/* ===== WhatsApp Float Button ===== */
+.whatsapp-float-btn{position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 12px rgba(37,211,102,.4);cursor:pointer;z-index:999;transition:transform .3s,box-shadow .3s;border:none;animation:waPulse 2s infinite}
+.whatsapp-float-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(37,211,102,.6);animation:none}
+.whatsapp-float-btn svg{width:32px;height:32px;fill:currentColor}
+@keyframes waPulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+
+/* WhatsApp Popup */
+.wa-popup-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.wa-popup-overlay.active{display:flex;opacity:1}
+.wa-popup-card{background:#fff;border-radius:20px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2);transform:scale(.9);transition:transform .3s;position:relative}
+.wa-popup-overlay.active .wa-popup-card{transform:scale(1)}
+.wa-popup-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:24px;color:#94a3b8;cursor:pointer;transition:color .2s}
+.wa-popup-close:hover{color:#1e293b}
+.wa-popup-qr{width:260px;height:260px;margin:0 auto 20px;border-radius:12px;overflow:hidden;border:2px solid #e2e8f0}
+.wa-popup-qr img{width:100%;height:100%;object-fit:contain}
+.wa-popup-title{font-size:18px;font-weight:700;color:#1e293b;margin-bottom:8px}
+.wa-popup-text{font-size:14px;color:#64748b;line-height:1.6;margin-bottom:20px}
+.wa-popup-number{display:inline-flex;align-items:center;gap:8px;background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:12px 20px;font-size:16px;font-weight:600;color:#166534;text-decoration:none;transition:background .2s}
+.wa-popup-number:hover{background:#dcfce7}
+.wa-popup-number svg{width:20px;height:20px;fill:#25d366}
+.wa-popup-hint{font-size:12px;color:#94a3b8;margin-top:12px}
+
+@media(max-width:480px){
+.whatsapp-float-btn{width:52px;height:52px;font-size:24px;bottom:16px;right:16px}
+.wa-popup-card{padding:28px 20px}
+.wa-popup-qr{width:200px;height:200px}
+}
+  4%{opacity:.12;transform:scale(1.02)}
+  12.5%{opacity:.12;transform:scale(1.04)}
+  16.5%{opacity:0;transform:scale(1.05)}
+  100%{opacity:0;transform:scale(1.05)}
+}
+@keyframes marqueeScroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+/* ===== CITY PHOTO BANNER RESPONSIVE ===== */
+@media(max-width:768px){
+  .city-photo-banner img{height:91px!important}
+}
+
+/* ===== MOBILE RESPONSIVE ENHANCEMENTS ===== */
+
+/* Mobile: 0-480px (phones) */
+@media(max-width:480px){
+  .container{padding:0 12px!important}
+  .header-inner{padding:0 12px!important;height:56px!important}
+  .logo{font-size:16px!important}
+  .logo img{height:44px!important}
+  .hero{padding:50px 16px 36px!important}
+  .hero h1,.page-hero h1{font-size:24px!important;line-height:1.3!important}
+  .hero p,.page-hero p{font-size:15px!important}
+  .page-hero{padding:50px 16px 36px!important}
+  .section{padding:24px 0!important}
+  .section-title{font-size:22px!important}
+  .section-subtitle{font-size:14px!important}
+  .card-grid,.places-grid,.overview-grid,.extras-grid,.pricing-grid,.footer-grid,.stats-grid,.city-banners,.city-info-grid,.itinerary-grid,.card-row,.grid,.features-grid{grid-template-columns:1fr!important;gap:16px!important}
+  .card,.place-card,.overview-card,.extras-card,.pricing-card,.pc,.step,.payment-method,.form-card,.city-card,.guide-card,.feature-card,.summary-box{padding:16px!important;border-radius:12px!important}
+  .btn-primary,.btn,.btn-secondary{padding:14px 20px!important;font-size:15px!important}
+  .form-row{flex-direction:column!important;gap:0!important}
+  .form-row .form-group{flex:none!important;width:100%!important}
+  .form-group{margin-bottom:16px!important}
+  .form-input,.form-select,.form-textarea{padding:12px 14px!important;font-size:15px!important}
+  .step-indicator{flex-direction:column!important;gap:8px!important}
+  .step-connector{display:none!important}
+  .payment-methods{flex-direction:column!important;gap:12px!important}
+  .summary-box{padding:16px!important;margin:16px 0!important}
+  .summary-row{padding:8px 0!important;font-size:14px!important}
+  .summary-total{font-size:18px!important}
+  .pricing-price{font-size:2rem!important}
+  .pricing-price .currency{font-size:1.25rem!important}
+  .footer-grid{padding:32px 0!important}
+  .footer-col h4{font-size:13px!important}
+  .footer-col li{font-size:13px!important}
+  .footer-brand .logo{font-size:18px!important}
+  .footer-bottom{padding-top:16px!important;font-size:12px!important}
+  .cta-section{padding:40px 16px!important}
+  .cta-section h2{font-size:24px!important}
+  .cta-section p{font-size:15px!important}
+  .page-hero h1{font-size:26px!important}
+  .breadcrumb{padding:12px 0!important;font-size:12px!important}
+  .intro-box{padding:16px!important;margin-bottom:20px!important;font-size:14px!important}
+  .ib{padding:16px!important;margin-bottom:20px!important;font-size:14px!important}
+  .pc{padding:16px!important}
+  .pc h4{font-size:15px!important}
+  .pc p{font-size:13px!important}
+  .hl{font-size:11px!important}
+  .trust-badges{gap:1rem!important;margin-top:2rem!important}
+  .trust-badge i{font-size:1.5rem!important}
+  .trust-badge p{font-size:12px!important}
+  .exchange-rate{padding:8px!important;font-size:13px!important}
+  .qr-display{padding:20px!important}
+  .qr-display .amount{font-size:28px!important}
+  .qr-display img{max-width:220px!important}
+  .toast{padding:12px 20px!important;font-size:14px!important}
+  .city-overview{padding:20px!important}
+  .city-overview h3{font-size:17px!important}
+  .overview-card{padding:14px!important}
+  .overview-card .big{font-size:18px!important}
+  .city-extras{padding:20px!important}
+  .extras-card{padding:14px!important}
+  .route-card{padding:14px!important}
+  .guide-card{padding:14px!important}
+  .review-card{padding:14px!important}
+  .faq-item{padding:14px!important}
+  .blog-card{padding:14px!important}
+  .experience-card{padding:14px!important}
+  .img-responsive,.card img,.hero img{max-width:100%!important;height:auto!important}
+  table{display:block!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+  .mobile-only{display:block!important}
+  .desktop-only{display:none!important}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr!important}
+  .flex-row{flex-direction:column!important}
+  .flex-col{flex-direction:column!important}
+  .text-center-mobile{text-align:center!important}
+  .mb-1-mobile{margin-bottom:0.5rem!important}
+  .mb-2-mobile{margin-bottom:1rem!important}
+  .w-100-mobile{width:100%!important}
+}
+
+/* Small Tablet: 481-767px */
+@media(min-width:481px) and (max-width:767px){
+  .container{padding:0 16px!important}
+  .header-inner{padding:0 16px!important}
+  .hero h1,.page-hero h1{font-size:28px!important}
+  .hero p,.page-hero p{font-size:16px!important}
+  .section{padding:32px 0!important}
+  .section-title{font-size:24px!important}
+  .card-grid,.places-grid,.overview-grid,.extras-grid,.pricing-grid,.stats-grid,.city-banners,.city-info-grid{grid-template-columns:repeat(2,1fr)!important;gap:16px!important}
+  .footer-grid{grid-template-columns:repeat(2,1fr)!important;gap:24px!important}
+  .form-row{flex-direction:column!important;gap:0!important}
+  .step-indicator{flex-wrap:wrap!important;justify-content:center!important}
+  .step-connector{width:20px!important}
+  .card,.place-card,.overview-card,.extras-card,.pricing-card,.pc{padding:18px!important}
+  .btn-primary,.btn{padding:14px 24px!important}
+  .pricing-price{font-size:2.5rem!important}
+  .summary-box{padding:20px!important}
+  .cta-section{padding:48px 20px!important}
+  .cta-section h2{font-size:26px!important}
+  .page-hero h1{font-size:28px!important}
+  .intro-box{padding:20px!important}
+  .ib{padding:20px!important}
+  .city-overview{padding:24px!important}
+  .city-extras{padding:24px!important}
+  .grid-3{grid-template-columns:repeat(2,1fr)!important}
+  .grid-4{grid-template-columns:repeat(2,1fr)!important}
+}
+
+/* Tablet: 768-1024px */
+@media(min-width:768px) and (max-width:1024px){
+  .container{padding:0 20px!important}
+  .header-inner{padding:0 20px!important}
+  .card-grid,.places-grid,.overview-grid,.extras-grid,.stats-grid,.city-banners{grid-template-columns:repeat(2,1fr)!important;gap:18px!important}
+  .pricing-grid{grid-template-columns:repeat(2,1fr)!important;gap:18px!important}
+  .footer-grid{grid-template-columns:repeat(2,1fr)!important;gap:28px!important}
+  .nav-links{gap:20px!important}
+  .nav-links a{font-size:13px!important}
+  .hero h1{font-size:32px!important}
+  .page-hero h1{font-size:34px!important}
+  .section{padding:36px 0!important}
+  .card,.place-card,.overview-card,.extras-card{padding:20px!important}
+  .btn-primary,.btn{padding:14px 28px!important}
+  .pricing-price{font-size:2.75rem!important}
+  .summary-box{padding:24px!important}
+  .cta-section{padding:52px 24px!important}
+  .cta-section h2{font-size:28px!important}
+  .intro-box{padding:24px!important}
+  .ib{padding:24px!important}
+  .city-overview{padding:28px!important}
+  .city-extras{padding:28px!important}
+  .grid-3{grid-template-columns:repeat(2,1fr)!important}
+  .grid-4{grid-template-columns:repeat(2,1fr)!important}
+}
+
+/* Large Tablet / Small Laptop: 1025-1200px */
+@media(min-width:1025px) and (max-width:1200px){
+  .container{padding:0 24px!important}
+  .header-inner{padding:0 24px!important}
+  .card-grid,.places-grid,.stats-grid{grid-template-columns:repeat(3,1fr)!important;gap:18px!important}
+  .pricing-grid{grid-template-columns:repeat(3,1fr)!important;gap:18px!important}
+  .footer-grid{grid-template-columns:repeat(3,1fr)!important;gap:30px!important}
+  .city-banners{grid-template-columns:repeat(2,1fr)!important}
+  .city-info-grid{grid-template-columns:repeat(2,1fr)!important}
+  .overview-grid{grid-template-columns:repeat(2,1fr)!important}
+  .extras-grid{grid-template-columns:repeat(2,1fr)!important}
+  .hero h1{font-size:38px!important}
+  .page-hero h1{font-size:38px!important}
+  .section{padding:40px 0!important}
+  .btn-primary,.btn{padding:15px 30px!important}
+  .grid-4{grid-template-columns:repeat(3,1fr)!important}
+}
+
+/* Mobile Navigation Toggle */
+.mobile-nav-toggle{display:none;cursor:pointer;font-size:24px;color:var(--text);padding:8px;border-radius:8px;background:transparent;border:none}
+@media(max-width:768px){
+  .mobile-nav-toggle{display:block!important}
+  .nav-links{position:fixed;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);padding:16px 24px;flex-direction:column;gap:12px;z-index:99;display:none!important;box-shadow:0 4px 6px rgba(0,0,0,.1)}
+  .nav-links.active{display:flex!important}
+  .nav-links a{display:block;padding:10px 0;font-size:16px;border-bottom:1px solid #f1f5f9}
+  .nav-links a:last-child{border-bottom:none}
+}
+</style><style>
+/* Tour Photo Banner */
+.tour-photo-section {
+  padding: 0;
+  overflow: hidden;
+  background: #0f172a;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.tour-photo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px 6px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.tour-photo-badge {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tour-photo-badge i { color: #22d3ee; font-size: 12px; }
+.tour-photo-count { display: none; }
+.tour-photo-hint {
+  font-size: 12px;
+  color: #22c55e;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  animation: pulseHint 2s ease-in-out infinite;
+}
+.tour-photo-hint i { font-size: 11px; }
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.tour-photo-scroll {
+  column-count: 7;
+  column-gap: 12px;
+  padding: 0 24px 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.tour-photo-scroll::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.tour-photo-thumb {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  break-inside: avoid;
+  margin-bottom: 12px;
+  display: block;
+}
+.tour-photo-thumb:hover {
+  box-shadow: 0 6px 20px rgba(34,211,238,0.25);
+  z-index: 2;
+  position: relative;
+  transform: scale(1.02);
+}
+
+/* Anti-download protection */
+.tour-photo-section, .tour-lightbox {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.tour-photo-thumb, .tour-lightbox-img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: auto;
+}
+
+/* Lightbox Watermark */
+.tour-lightbox-watermark {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.35;
+}
+.tour-lightbox-watermark::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: repeating-linear-gradient(
+    -35deg,
+    transparent,
+    transparent 50px,
+    rgba(34, 197, 94, 0.4) 50px,
+    rgba(34, 197, 94, 0.4) 52px
+  );
+}
+.tour-lightbox-watermark::after {
+  content: 'www.vipchinaguide.com';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: rgba(34, 197, 94, 0.45);
+  letter-spacing: 12px;
+  white-space: nowrap;
+  text-transform: lowercase;
+}
+.tour-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  background: rgba(0,0,0,0.92);
+  backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.tour-lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+.tour-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tour-lightbox-img {
+  max-height: 70vh;
+  max-width: 85vw;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  display: none;
+}
+.tour-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 10;
+}
+.tour-lightbox-close:hover { background: rgba(255,255,255,0.2); }
+.tour-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 10;
+}
+.tour-lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+.tour-lightbox-prev { left: 20px; }
+.tour-lightbox-next { right: 20px; }
+.tour-lightbox-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+}
+#tourPhotoHint { font-size: 11px; opacity: 0.5; }
+
+@media (max-width: 1024px) {
+  .tour-photo-scroll { column-count: 4; }
+}
+
+@media (max-width: 768px) {
+  .tour-photo-scroll { padding: 0 12px 16px; column-count: 2; }
+  .tour-photo-header { padding: 8px 12px 4px; }
+  .tour-photo-thumb { width: 100%; height: auto; }
+  .tour-lightbox-nav { width: 40px; height: 40px; font-size: 14px; }
+  .tour-lightbox-prev { left: 8px; }
+  .tour-lightbox-next { right: 8px; }
+  .tour-lightbox-img { max-height: 60vh; max-width: 92vw; }
+  #tourPhotoHint { display: none; }
+}
+</style></head><body style="margin:0"><footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="logo" style="text-decoration:none;color:#fff">
+        <img src="images/logo-new.png" alt="WiFigo - Private Tour Guide China" style="height:52px;width:auto;border-radius:50%;object-fit:cover;vertical-align:middle">
+        <span style="font-size:14px;font-weight:700;color:var(--primary)">时间语录®</span>
+        <span style="font-size:18px;font-weight:800;color:#fff">VIPChinaGuide</span>
+      </a>
+      <p>Private English-speaking tour guides for China travel. Licensed, verified, and passionate about showing you the real China.</p>
+      <div class="footer-badges">
+        <div class="footer-badge green">
+          <span style="font-size:18px;font-weight:700">✓</span>
+          <div>
+            <div style="font-weight:700">Licensed & Verified</div>
+            <div style="font-size:11px;opacity:.8">Travel Agency License · L-HUB-101603</div>
+          </div>
+          <a href="images/license.png" target="_blank">View License →</a>
+        </div>
+        <div class="footer-badge gold">
+          <img src="images/logo-new.png" alt="WiFigo - Private Tour Guide China" style="width:24px;height:24px;border-radius:50%;object-fit:cover">
+          <div>
+            <div style="font-weight:700">时间语录®</div>
+            <div style="font-size:11px;opacity:.8">Registered Trademark · No. 30226018</div>
+          </div>
+          <a href="trademark.html">View Certificate →</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="guides.html">Find a Guide</a></li>
+        <li><a href="experiences.html">Experiences</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="booking.html">Book Now</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="order-lookup.html">Order Lookup</a></li>
+        <li><a href="careers.html">Join Us</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <ul>
+        <li>📱 +86 155 2777 1775</li>
+        <li>✉️ 82839626@qq.com</li>
+        <li>💬 WhatsApp available</li>
+      </ul>
+      <div class="footer-address">
+        <strong>Headquarters</strong><br>
+        No. 2622, Hang Lung Plaza Office Building<br>
+        No. 688 Jinghan Avenue, Qiaokou District<br>
+        Wuhan, Hubei, China 430030<br>
+        <a href="https://amap.com/search?query=%E6%81%92%E9%9A%86%E5%B9%BF%E5%9C%BA%E6%AD%A6%E6%B1%89" target="_blank" rel="noopener noreferrer" style="color:var(--primary)">📍 View on Map →</a>
+      </div>
+      <div class="footer-map" style="margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid #1e293b;background:#0f172a;position:relative">
+        <a href="https://ditu.amap.com/search?query=%E6%AD%A6%E6%B1%89%E6%81%92%E9%9A%86%E5%B9%BF%E5%9C%BA" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+          <div style="height:160px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e3a5f,#0f172a);position:relative;overflow:hidden">
+            <!-- Decorative map elements -->
+            <div style="position:absolute;inset:0;opacity:.15">
+              <div style="position:absolute;top:20%;left:15%;width:60%;height:2px;background:#fff;transform:rotate(-5deg)"></div>
+              <div style="position:absolute;top:40%;left:10%;width:70%;height:2px;background:#fff;transform:rotate(3deg)"></div>
+              <div style="position:absolute;top:60%;left:20%;width:50%;height:2px;background:#fff;transform:rotate(-2deg)"></div>
+              <div style="position:absolute;top:30%;left:30%;width:2px;height:40%;background:#fff"></div>
+              <div style="position:absolute;top:25%;left:55%;width:2px;height:50%;background:#fff"></div>
+              <div style="position:absolute;top:50%;left:70%;width:2px;height:30%;background:#fff"></div>
+            </div>
+            <!-- Map pin -->
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2">
+              <div style="font-size:32px;margin-bottom:4px">📍</div>
+            </div>
+            <!-- Center content -->
+            <div style="text-align:center;color:#94a3b8;z-index:3;position:relative">
+              <div style="font-size:14px;font-weight:600;margin-bottom:4px">View on Map</div>
+              <div style="font-size:12px;color:#64748b">Hang Lung Plaza, Wuhan</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+      
+    <div class="footer-col" style="text-align:center">
+      <h4 style="text-align:center">What is 时间语录?</h4>
+      <p style="font-size:12px;color:#94a3b8;line-height:1.6;margin-bottom:16px;font-style:italic;text-align:center">A name from Wuhan, by the shores of East Lake,<br>where Zhuangzi once dreamed he was a butterfly.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;text-align:left">
+        <div style="background:#1e293b;border-radius:10px;padding:12px 10px;text-align:center">
+          <div style="font-size:22px;margin-bottom:4px">⏳</div>
+          <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-bottom:2px">时 · Shí</div>
+          <div style="font-size:11px;color:#94a3b8;line-height:1.4">Every moment passes once. We help you hold them.</div>
+        </div>
+        <div style="background:#1e293b;border-radius:10px;padding:12px 10px;text-align:center">
+          <div style="font-size:22px;margin-bottom:4px">🚪</div>
+          <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-bottom:2px">间 · Jiān</div>
+          <div style="font-size:11px;color:#94a3b8;line-height:1.4">The pause between notes that makes music.</div>
+        </div>
+        <div style="background:#1e293b;border-radius:10px;padding:12px 10px;text-align:center">
+          <div style="font-size:22px;margin-bottom:4px">💬</div>
+          <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-bottom:2px">语 · Yǔ</div>
+          <div style="font-size:11px;color:#94a3b8;line-height:1.4">Not a script — a real conversation.</div>
+        </div>
+        <div style="background:#1e293b;border-radius:10px;padding:12px 10px;text-align:center">
+          <div style="font-size:22px;margin-bottom:4px">✂️</div>
+          <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-bottom:2px">录 · Lù</div>
+          <div style="font-size:11px;color:#94a3b8;line-height:1.4">We carve your journey before it fades.</div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,#0d3320,#0d3d2a);border-radius:12px;padding:16px;text-align:center;border:1px solid #065f46">
+        <p style="font-size:14px;color:#6ee7b7;font-weight:600;margin-bottom:4px;text-align:center">"Time. Voice. Kept."</p>
+        <p style="font-size:12px;color:#86efac;line-height:1.6;text-align:center">We take the fleeting moments of your China trip — the sounds, the laughter, the "I can't believe this is real" feeling — and help you hold them forever.</p>
+      </div>
+    </div>
+  
+
+
+
+  <div class="footer-friendly-links">
+    <div class="footer-container">
+      <h4><i class="fas fa-link"></i> Friendly Links</h4>
+      <div class="friendly-links-list">
+        <a href="https://www.vipchinaguide.com" target="_blank" rel="noopener noreferrer"><i class="fas fa-compass"></i> VIPChinaGuide - Tour Guide Service</a>
+        <a href="https://www.Chinawheely.com" target="_blank" rel="noopener noreferrer"><i class="fas fa-car"></i> Chinawheely - Car Service</a>
+        <a href="https://www.MediEscortChina.com" target="_blank" rel="noopener noreferrer"><i class="fas fa-heartbeat"></i> MediEscortChina - Medical Entry Service</a>
+        <a href="https://www.ChinaWiFiGo.com" target="_blank" rel="noopener noreferrer"><i class="fas fa-wifi"></i> ChinaWiFiGo - Pocket WiFi Service</a>
+        <a href="https://www.wuhan.video" target="_blank" rel="noopener noreferrer"><i class="fas fa-video"></i> Wuhan Video Guide</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 VIPChinaGuide. All rights reserved. | 时间语录® is a registered trademark of Wuhan City Zhierchong Culture and Tourism Co., Ltd.</p>
+  </div>
+</footer><div style="height:100px"></div></body></html>
