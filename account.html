@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://suhvbuhppiqqaylvdzsg.supabase.co; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -113,6 +113,12 @@
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr 1fr!important;gap:16px!important;align-items:start}.footer-col{text-align:left!important;min-width:0}.footer-col *{overflow-wrap:break-word;word-break:break-word}.footer-col h4{text-align:center}}
 </style>
 <link rel="canonical" href="https://www.vipchinaguide.com/account.html">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.SUPABASE_URL = 'https://suhvbuhppiqqaylvdzsg.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
+</script>
+<script src="lib/supabase-client.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -290,73 +296,66 @@
 </footer>
 <script src="js/main.js"></script>
 <script>
-function renderAccount() {
-  const user = getUser();
-  const container = document.getElementById('accountContent');
-  if (!user) return;
-  const orders = getOrders().filter(o => o.email === user.email).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  const urlParams = new URLSearchParams(window.location.search);
-  const highlightOrder = urlParams.get('order');
-  let ordersHtml = '';
-  if (orders.length === 0) {
-    ordersHtml = `
-      <div class="card" style="padding:40px; text-align:center;">
-        <div style="font-size:48px; margin-bottom:16px;">📋</div>
-        <h3 style="font-size:20px; margin-bottom:8px;">No Bookings Yet</h3>
-        <p style="color:var(--text-secondary); margin-bottom:24px;">You haven't made any bookings yet. Ready to explore China?</p>
-        <a href="experiences.html" class="btn-primary">Find an Experience</a>
-      </div>
-    `;
+function renderAccount(user, supabaseOrders) {
+  var container = document.getElementById('accountContent');
+  var localOrders = user ? getOrders().filter(function(o){ return o.email === user.email; }) : [];
+  var all = (supabaseOrders||[]).concat(localOrders);
+  var seen = {};
+  all = all.filter(function(o){ var k = o.order_no||o.id; if(seen[k]) return false; seen[k]=true; return true; });
+  all.sort(function(a,b){ return new Date(b.created_at||b.createdAt)-new Date(a.created_at||a.createdAt); });
+  if (!user) {
+    container.innerHTML = '<div class="card" style="padding:48px;text-align:center;"><h2 style="margin-bottom:12px">Please Sign In</h2><p style="color:var(--text-secondary);margin-bottom:24px">Sign in to view your account and bookings.</p><a href="login.html" class="btn-primary">Sign In / Sign Up</a></div>';
+    return;
+  }
+  var name = user.name || user.email.split('@')[0];
+  var initials = name.charAt(0).toUpperCase();
+  var highlight = new URLSearchParams(window.location.search).get('order');
+  var html = '';
+  if (all.length === 0) {
+    html = '<div class="card" style="padding:40px;text-align:center;"><div style="font-size:48px;margin-bottom:16px">📋</div><h3 style="font-size:20px;margin-bottom:8px">No Bookings Yet</h3><p style="color:var(--text-secondary);margin-bottom:24px">You haven\'t made any bookings yet.</p><a href="experiences.html" class="btn-primary">Find an Experience</a></div>';
   } else {
-    ordersHtml = orders.map(o => {
-      const statusClass = o.status === 'confirmed' ? 'status-confirmed' : o.status === 'active' ? 'status-active' : o.status === 'completed' ? 'status-completed' : o.status === 'cancelled' ? 'status-cancelled' : 'status-pending';
-      const statusLabel = o.status.charAt(0).toUpperCase() + o.status.slice(1);
-      const cityName = CITIES.find(c => c.id === o.city)?.name || o.city;
-      const typeLabel = o.serviceType === 'experience' ? 'Experience' : o.serviceType === 'guide_halfday' ? 'Half Day' : o.serviceType === 'guide_fullday' ? 'Full Day' : o.serviceType === 'guide_multiday' ? 'Multi-Day' : 'Airport Transfer';
-      const levelLabel = o.guideLevel === 'expert' ? 'Expert Guide' : 'Escort';
-      const isHighlighted = o.id === highlightOrder;
-      return `
-        <div class="card" style="padding:28px; margin-bottom:20px; ${isHighlighted ? 'border:2px solid var(--primary); box-shadow: 0 0 0 4px rgba(13,148,136,0.1);' : ''}">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
-            <div>
-              <div style="font-size:13px; color:var(--text-secondary); margin-bottom:4px;">Order #${o.id}</div>
-              <h3 style="font-size:20px; margin-bottom:4px;">${cityName} — ${typeLabel}</h3>
-              <div style="font-size:14px; color:var(--text-secondary);">${formatDate(o.tourDate)} ${o.endDate ? 'to ' + formatDate(o.endDate) : ''}</div>
-            </div>
-            <span class="badge ${statusClass}">${statusLabel}</span>
-          </div>
-          <div style="display:flex; gap:24px; flex-wrap:wrap; margin-bottom:16px; font-size:14px; color:var(--text-secondary);">
-            <div><i class="fas fa-user" style="color:var(--primary); margin-right:6px;"></i>${levelLabel}</div>
-            <div><i class="fas fa-users" style="color:var(--primary); margin-right:6px;"></i>${o.travelers} traveler${o.travelers > 1 ? 's' : ''}</div>
-            <div><i class="fas fa-hotel" style="color:var(--primary); margin-right:6px;"></i>${o.hotel}</div>
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-top:1px solid var(--bg-warm); padding-top:16px;">
-            <div style="font-size:20px; font-weight:700; color:var(--accent);">¥${o.total}</div>
-            <div style="display:flex; gap:8px;">
-              <a href="order-lookup.html?order=${o.id}&email=${encodeURIComponent(o.email)}" class="btn-ghost" style="padding:8px 16px; font-size:13px;">View Details</a>
-            </div>
-          </div>
-        </div>
-      `;
+    html = all.map(function(o) {
+      var st = o.status||'pending';
+      var scls = st==='confirmed'?'status-confirmed':st==='completed'?'status-completed':st==='cancelled'?'status-cancelled':'status-pending';
+      var slbl = st.charAt(0).toUpperCase()+st.slice(1);
+      var cName = (typeof CITIES!=='undefined' && CITIES.find ? (CITIES.find(function(c){return c.id===o.city;})||{}).name:'')||o.city||'';
+      var svc = o.service_type||o.serviceType||'';
+      var lvl = (o.guide_level||o.guideLevel)==='expert'?'Expert Guide':'Escort';
+      var trav = o.travelers||o.num_days||1;
+      var price = o.price_cny||o.price||0;
+      var oid = o.order_no||o.id;
+      var odate = o.travel_date||o.travel_month||'';
+      var ml = o.order_no ? 'manage-order.html?order_no='+encodeURIComponent(o.order_no) : null;
+      var dl = ml||('order-lookup.html?order='+encodeURIComponent(o.id||'')+'&email='+encodeURIComponent(o.email||''));
+      var hl = oid === highlight;
+      return '<div class="card" style="padding:28px;margin-bottom:20px;'+(hl?'border:2px solid var(--primary);box-shadow:0 0 0 4px rgba(13,148,136,0.1);':'')+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;"><div><div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px">Order #'+oid+'</div><h3 style="font-size:20px;margin-bottom:4px">'+cName+(svc?' — '+svc:'')+'</h3>'+(odate?'<div style="font-size:14px;color:var(--text-secondary)">'+odate+'</div>':'')+'</div><span class="badge '+scls+'">'+slbl+'</span></div><div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:16px;font-size:14px;color:var(--text-secondary)"><div><i class="fas fa-user" style="color:var(--primary);margin-right:6px"></i>'+lvl+'</div><div><i class="fas fa-users" style="color:var(--primary);margin-right:6px"></i>'+trav+' traveler'+(trav>1?'s':'')+'</div>'+(o.hotel?'<div><i class="fas fa-hotel" style="color:var(--primary);margin-right:6px"></i>'+o.hotel+'</div>':'')+'</div><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid var(--bg-warm);padding-top:16px;"><div style="font-size:20px;font-weight:700;color:var(--accent)">'+(price?'¥'+price:'TBD')+'</div><div style="display:flex;gap:8px"><a href="'+dl+'" class="btn-ghost" style="padding:8px 16px;font-size:13px">View Details</a></div></div></div>';
     }).join('');
   }
-  container.innerHTML = `
-    <div class="card" style="padding:28px; margin-bottom:28px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
-      <div style="width:56px; height:56px; border-radius:50%; background:var(--primary); color:var(--text); display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700;">${user.name[0]}</div>
-      <div>
-        <h2 style="font-size:20px; margin-bottom:2px;">${user.name}</h2>
-        <p style="font-size:14px; color:var(--text-secondary); margin:0;">${user.email}</p>
-      </div>
-      <div style="margin-left:auto;">
-        <button onclick="logout()" class="btn-ghost" style="padding:8px 16px; font-size:13px; color:var(--text-secondary);">Logout</button>
-      </div>
-    </div>
-    <h2 style="font-size:22px; margin-bottom:20px;">My Bookings</h2>
-    ${ordersHtml}
-  `;
+  container.innerHTML = '<div class="card" style="padding:28px;margin-bottom:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><div style="width:56px;height:56px;border-radius:50%;background:var(--primary);color:var(--text);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700">'+initials+'</div><div><h2 style="font-size:20px;margin-bottom:2px">'+name+'</h2><p style="font-size:14px;color:var(--text-secondary);margin:0">'+user.email+'</p></div><div style="margin-left:auto"><button onclick="logout()" class="btn-ghost" style="padding:8px 16px;font-size:13px;color:var(--text-secondary)">Logout</button></div></div><h2 style="font-size:22px;margin-bottom:20px">My Bookings</h2>'+html;
 }
 const user = getUser();
-if (user) renderAccount();
+if (user) renderAccount(user, []);
+// Auto-check Supabase session on load
+(function() {
+  var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
+  if (!supabase) return;
+  supabase.auth.getSession().then(function(res) {
+    var session = res.data.session;
+    if (!session) { renderAccount(null, []); return; }
+    var u = session.user;
+    var meta = u.user_metadata || {};
+    var appUser = { id: u.id, name: meta.full_name || u.email.split('@')[0], email: u.email };
+    setUser(appUser);
+    // Fetch user's orders from Supabase
+    supabase.from('orders').select('*').eq('user_id', u.id).order('created_at', {ascending:false}).then(function(qres) {
+      renderAccount(appUser, qres.data || []);
+    }).catch(function() { renderAccount(appUser, []); });
+  }).catch(function() { renderAccount(null, []); });
+  // Listen for auth changes
+  supabase.auth.onAuthStateChange(function(ev, session) {
+    if (ev === 'SIGNED_OUT') { setUser(null); renderAccount(null, []); }
+  });
+})();
 </script>
 
 <script type="application/ld+json">

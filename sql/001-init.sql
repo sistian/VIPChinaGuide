@@ -58,6 +58,8 @@ create table if not exists public.orders (
   phone text,
   nationality text,
   passport_no text,
+  dob date,
+  emergency_contact text,
 
   -- 行程
   city text,

@@ -61,17 +61,30 @@
 
 ## 第六步：验证
 
-```bash
-# 1. 接口活着（应返回 405 Method not allowed）
-curl -i https://www.vipchinaguide.com/api/send-email
+### P2 订单接口（/api/orders）
 
-# 2. 发一封测试邮件（应返回 {"success":true}，同时 QQ 邮箱收到通知）
-curl -X POST https://www.vipchinaguide.com/api/send-email \
+```bash
+# 1. 接口活着（GET 无参数应返回 400）
+curl -i 'https://www.vipchinaguide.com/api/orders'
+
+# 2. 下单一单（Supabase 配好后：返回 order_no，管理员收到通知，客户收到含管理链接的确认邮件）
+curl -X POST https://www.vipchinaguide.com/api/orders \
   -H 'Content-Type: application/json' \
-  -d '{"id":"VCG-TEST-001","firstName":"Test","lastName":"User","email":"test@example.com","city":"Beijing","serviceType":"Private Tour","travelers":"2","price":1200}'
+  -d '{"firstName":"Test","lastName":"User","email":"test@example.com","city":"Beijing","serviceType":"day-tour","numDays":"1","travelers":"2","travelMonth":"Oct 2026","price":1200,"paymentMethod":"alipay","transactionId":"QR-TEST-1"}'
+
+# 3. 凭邮件链接查单（把上一步返回的 order_no 和邮件里的 token 填进来）
+curl 'https://www.vipchinaguide.com/api/orders?order_no=VCG-XXXXXXXX-XXXXXXXX&token=邮件里的token'
 ```
 
-前端验证：打开 `booking.html` 提交一单 → QQ 邮箱收到新订单通知。
+Supabase 未配置时：下单自动降级为只发管理员邮件（与旧 /api/send-email 行为一致），查单接口返回 503。
+
+### 兼容旧接口（/api/send-email）
+
+```bash
+curl -i https://www.vipchinaguide.com/api/send-email   # 应返回 405 Method not allowed
+```
+
+前端验证：打开 `booking.html` 提交一单 → QQ 邮箱收到新订单通知 → 客户邮箱收到确认邮件（含 72 小时有效的查单链接 manage-order.html）。
 
 ## 第七步：把自己设为管理员（P5 后台启用时用）
 

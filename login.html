@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://suhvbuhppiqqaylvdzsg.supabase.co; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -113,6 +113,12 @@
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr 1fr!important;gap:16px!important;align-items:start}.footer-col{text-align:left!important;min-width:0}.footer-col *{overflow-wrap:break-word;word-break:break-word}.footer-col h4{text-align:center}}
 </style>
 <link rel="canonical" href="https://www.vipchinaguide.com/login.html">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.SUPABASE_URL = 'https://suhvbuhppiqqaylvdzsg.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
+</script>
+<script src="lib/supabase-client.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -338,21 +344,50 @@ function switchTab(tab) {
 function handleSignIn(e) {
   e.preventDefault();
   const form = e.target;
-  const email = form.email.value;
-  const user = { name: email.split('@')[0], email: email };
-  setUser(user);
-  showToast('Signed in successfully!', 'success');
-  setTimeout(() => { location.href = 'account.html'; }, 800);
+  const email = form.email.value.trim();
+  const password = form.password.value;
+  if (!email || !password) { showToast('Please enter email and password.', 'error'); return; }
+  const btn = form.querySelector('button[type=submit]');
+  const orig = btn.textContent; btn.disabled = true; btn.textContent = 'Signing in...';
+  var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
+  if (!supabase) { showToast('Auth not configured.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
+  supabase.auth.signInWithPassword({ email: email, password: password })
+    .then(function(res) {
+      if (res.error) { showToast(res.error.message || 'Sign in failed.', 'error'); btn.disabled = false; btn.textContent = orig; }
+      else {
+        var user = res.data.user;
+        var meta = user.user_metadata || {};
+        setUser({ id: user.id, name: meta.full_name || email.split('@')[0], email: user.email });
+        showToast('Signed in successfully!', 'success');
+        setTimeout(function() { location.href = 'account.html'; }, 800);
+      }
+    })
+    .catch(function(err) { showToast('Network error, please retry.', 'error'); btn.disabled = false; btn.textContent = orig; });
 }
 function handleSignUp(e) {
   e.preventDefault();
   const form = e.target;
-  const name = form.name.value;
-  const email = form.email.value;
-  const user = { name: name, email: email };
-  setUser(user);
-  showToast('Account created! Welcome to VIPChinaGuide.', 'success');
-  setTimeout(() => { location.href = 'account.html'; }, 800);
+  const name = form.name.value.trim();
+  const email = form.email.value.trim();
+  const password = form.password.value;
+  if (!name || !email || !password) { showToast('Please fill in all fields.', 'error'); return; }
+  if (password.length < 6) { showToast('Password must be at least 6 characters.', 'error'); return; }
+  const btn = form.querySelector('button[type=submit]');
+  const orig = btn.textContent; btn.disabled = true; btn.textContent = 'Creating account...';
+  var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
+  if (!supabase) { showToast('Auth not configured.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
+  supabase.auth.signUp({
+    email: email, password: password,
+    options: { data: { full_name: name } }
+  })
+    .then(function(res) {
+      if (res.error) { showToast(res.error.message || 'Sign up failed.', 'error'); btn.disabled = false; btn.textContent = orig; }
+      else if (res.data.user) {
+        showToast('Account created! Check your email to confirm before signing in.', 'success');
+        setTimeout(function() { location.href = 'account.html'; }, 2000);
+      }
+    })
+    .catch(function(err) { showToast('Network error, please retry.', 'error'); btn.disabled = false; btn.textContent = orig; });
 }
 </script>
 

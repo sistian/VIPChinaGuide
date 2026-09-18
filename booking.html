@@ -10,8 +10,6 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Backend API config: replace with your actual Vercel URL after deployment -->
-<script>window.CWG_VCG_API_URL = 'https://vipchinaguide-backend-api.vercel.app';</script>
 <title>Book a China Tour Guide | China Travel Guide | VIPChinaGuide</title>
 <meta name="description" content="Book a licensed English-speaking China travel guide.">
 <meta name="keywords" content="book English tour guide China, hire private guide Beijing, Shanghai guide booking, Xi'an tour guide reservation, Chengdu panda guide book, China tour guide online booking, English guide reservation, book guide China online, private tour guide booking">
@@ -1235,7 +1233,7 @@ function completeOrder(paymentMethod, transactionId){
     lastName: document.getElementById('lastName').value,
     passport: document.getElementById('passport').value,
     nationality: document.getElementById('nationality').value,
-    dob: document.getElementById('dob').value,
+    dob: (document.getElementById('dob').value || '').slice(0, 10),
     email: document.getElementById('email').value,
     phone: document.getElementById('phone').value,
     emergency: document.getElementById('emergency').value,
@@ -1267,10 +1265,8 @@ function completeOrder(paymentMethod, transactionId){
 }
 
 function sendOrderToBackend(order){
-  // 同源部署（推荐）：默认走本站 /api，无需再配置后端地址
-  // 如仍想指向独立后端，可设置 window.CWG_VCG_API_URL = 'https://xxx.vercel.app/api/send-email'
-  const external = window.CWG_VCG_API_URL;
-  const API_URL = external && external.startsWith('https://') ? external : '/api/send-email';
+  // 同源部署：直接提交本站 /api/orders（落库 + 管理员通知 + 客户确认邮件）
+  const API_URL = '/api/orders';
 
   // Honeypot: hidden field; if bots fill it, backend will reject
   const honeypot = document.getElementById('website_url');
@@ -1292,22 +1288,27 @@ function sendOrderToBackend(order){
     return data;
   })
   .then(data => {
-    if (data.success) {
-      console.log('✅ Email API response:', data);
-      showToast('Order submitted successfully! Confirmation sent.', 'success');
-    } else {
-      console.error('❌ Email API error:', data);
-      showToast('Order submitted! (Email notification may be delayed)', 'success');
+    console.log('✅ Order API response:', data);
+    // 服务端生成的正式订单号（以它为准）
+    const finalNo = data.order_no || order.id;
+    if (data.order_no) {
+      order.id = data.order_no;
+      try {
+        const orders = JSON.parse(localStorage.getItem('vcg_orders')||'[]');
+        if (orders.length) orders[orders.length-1].id = data.order_no;
+        localStorage.setItem('vcg_orders', JSON.stringify(orders));
+      } catch(e){}
     }
+    showToast('Order confirmed! A confirmation email is on its way.', 'success');
     setTimeout(() => {
-      window.location.href = 'payment-success.html?order=' + order.id;
+      window.location.href = 'payment-success.html?order=' + encodeURIComponent(finalNo);
     }, 2000);
   })
   .catch(err => {
-    console.error('❌ Email API error:', err);
-    showToast('Order submitted! (Email notification may be delayed)', 'success');
+    console.error('❌ Order API error:', err);
+    showToast('Order submitted! (Confirmation email may be delayed)', 'success');
     setTimeout(() => {
-      window.location.href = 'payment-success.html?order=' + order.id;
+      window.location.href = 'payment-success.html?order=' + encodeURIComponent(order.id);
     }, 2000);
   });
 }

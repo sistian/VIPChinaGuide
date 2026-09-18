@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Order | VIPChinaGuide</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#0d9488;--primary-dark:#0f766e;--accent:#f97316;--text:#1e293b;--text-light:#64748b;--bg:#f8fafc;--border:#e2e8f0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px}
+.wrap{max-width:560px;width:100%}
+.header{text-align:center;margin:24px 0 8px}
+.header a{color:var(--primary);text-decoration:none;font-weight:bold;font-size:20px}
+.header h1{font-size:24px;margin-top:20px;color:var(--text)}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:32px;margin-top:20px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.state{display:none;text-align:center;padding:24px 0}
+.state.show{display:block}
+.spinner{width:44px;height:44px;border:4px solid #e2e8f0;border-top-color:var(--primary);border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err-icon{font-size:44px;margin-bottom:12px}
+.badge{display:inline-block;padding:6px 16px;border-radius:999px;font-weight:bold;font-size:13px;letter-spacing:.5px}
+.badge.pending{background:#fef3c7;color:#b45309}
+.badge.confirmed{background:#d1fae5;color:#047857}
+.badge.change_pending{background:#ede9fe;color:#6d28d9}
+.badge.completed{background:#e0f2fe;color:#075985}
+.badge.cancelled{background:#fee2e2;color:#b91c1c}
+.order-no{font-size:15px;color:var(--text-light);margin:12px 0 4px}
+.order-no b{color:var(--text);font-size:18px;letter-spacing:.5px}
+dl{margin-top:20px}
+dl div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #f1f5f9}
+dl div:last-child{border-bottom:none}
+dt{color:var(--text-light);font-size:14px;flex-shrink:0}
+dd{font-weight:600;text-align:right;word-break:break-word}
+.price{color:var(--accent);font-size:18px}
+.note{margin-top:20px;padding:14px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;color:#92400e;font-size:13px;line-height:1.6}
+.help{margin-top:16px;text-align:center;color:var(--text-light);font-size:13px;line-height:1.8}
+.help a{color:var(--primary);text-decoration:none;font-weight:600}
+.footer{margin-top:auto;padding:24px 0 8px;color:#94a3b8;font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <a href="/">VIPChinaGuide</a>
+    <h1>My Booking</h1>
+  </div>
+
+  <div class="card">
+    <div id="loading" class="state show">
+      <div class="spinner"></div>
+      <p>Loading your order…</p>
+    </div>
+
+    <div id="error" class="state">
+      <div class="err-icon">🔗</div>
+      <h2 style="margin-bottom:8px">Link not valid</h2>
+      <p style="color:var(--text-light);font-size:14px;line-height:1.7">This link is invalid, expired, or already used.<br>Private links are valid for 72 hours after booking.</p>
+      <p style="margin-top:16px;font-size:14px">Need a new link? Email us at <a href="mailto:82839626@qq.com" style="color:var(--primary)">82839626@qq.com</a> with your order number.</p>
+    </div>
+
+    <div id="order" class="state">
+      <div id="badge" class="badge pending">PENDING VERIFICATION</div>
+      <p class="order-no">Order No.<br><b id="order-no">—</b></p>
+      <dl>
+        <div><dt>Name</dt><dd id="f-name">—</dd></div>
+        <div><dt>City</dt><dd id="f-city">—</dd></div>
+        <div><dt>Service</dt><dd id="f-service">—</dd></div>
+        <div><dt>Guide Level</dt><dd id="f-guide">—</dd></div>
+        <div><dt>Travelers</dt><dd id="f-travelers">—</dd></div>
+        <div><dt>Travel Date</dt><dd id="f-date">—</dd></div>
+        <div><dt>Hotel / Meeting Point</dt><dd id="f-hotel">—</dd></div>
+        <div><dt>Payment Method</dt><dd id="f-payment">—</dd></div>
+        <div><dt>Total</dt><dd id="f-price" class="price">—</dd></div>
+        <div><dt>Submitted</dt><dd id="f-created">—</dd></div>
+      </dl>
+      <div class="note" id="note"></div>
+    </div>
+  </div>
+
+  <div class="help">
+    Reschedule or cancel? Reply to your confirmation email, or<br>
+    📧 <a href="mailto:82839626@qq.com">82839626@qq.com</a> · 📱 WhatsApp/WeChat: +86 155 2777 1775<br>
+    <a href="/">← Back to VIPChinaGuide</a>
+  </div>
+
+  <div class="footer">VIPChinaGuide · Private China Tours with Licensed Guides</div>
+</div>
+
+<script>
+(function(){
+  var qs = new URLSearchParams(location.search);
+  var orderNo = qs.get('order_no') || '';
+  var token = qs.get('token') || '';
+  var $ = function(id){ return document.getElementById(id); };
+
+  function show(id){ ['loading','error','order'].forEach(function(s){ $(s).classList.toggle('show', s===id); }); }
+
+  if(!orderNo || !token){ show('error'); return; }
+
+  fetch('/api/orders?order_no=' + encodeURIComponent(orderNo) + '&token=' + encodeURIComponent(token), {
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(function(res){ 
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  })
+  .then(function(data){
+    var o = data.order || {};
+    var badges = { pending:['pending','PENDING VERIFICATION'], confirmed:['confirmed','CONFIRMED'], change_pending:['change_pending','RESCHEDULE PENDING'], completed:['completed','COMPLETED'], cancelled:['cancelled','CANCELLED'] };
+    var b = badges[o.status] || badges.pending;
+    $('badge').className = 'badge ' + b[0];
+    $('badge').textContent = b[1];
+    $('order-no').textContent = o.order_no || orderNo;
+    $('f-name').textContent = ((o.first_name||'') + ' ' + (o.last_name||'')).trim() || '—';
+    $('f-city').textContent = o.city || '—';
+    $('f-service').textContent = (o.service_type || '—') + (o.num_days > 1 ? ' · ' + o.num_days + ' days' : '');
+    $('f-guide').textContent = o.guide_level || '—';
+    $('f-travelers').textContent = o.travelers || '—';
+    $('f-date').textContent = o.travel_date || o.travel_month || 'To be confirmed';
+    $('f-hotel').textContent = o.hotel || '—';
+    $('f-payment').textContent = (o.payment_method || '—') + (o.transaction_id ? '' : '');
+    $('f-price').textContent = o.price_cny ? '¥' + o.price_cny + ' (≈ $' + Math.round(o.price_cny/7.2) + ')' : 'To be quoted';
+    $('f-created').textContent = o.created_at ? new Date(o.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}) : '—';
+    var notes = {
+      pending: 'We are verifying your payment. Our travel consultant will confirm with you within 24 hours.',
+      confirmed: 'Your booking is confirmed! Your guide will meet you at the agreed time and place.',
+      change_pending: 'Your reschedule request is awaiting confirmation from our team.',
+      completed: 'This tour has been completed. Thank you for traveling with us — we would love to see you again!',
+      cancelled: 'This order has been cancelled. If you believe this is a mistake, contact us right away.'
+    };
+    $('note').textContent = notes[o.status] || notes.pending;
+    show('order');
+  })
+  .catch(function(){ show('error'); });
+})();
+</script>
+</body>
+</html>

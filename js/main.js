@@ -982,7 +982,7 @@ const VCG = {
 // ========== AUTH STATE ==========
 function getUser() { return VCG.get('user', null); }
 function setUser(user) { VCG.set('user', user); updateAuthUI(); }
-function logout() { VCG.remove('user'); updateAuthUI(); showToast('Logged out successfully', 'success'); setTimeout(() => location.href = 'index.html', 800); }
+function logout() { try { var supabase = window.VCGSupabase && window.VCGSupabase.init(); if (supabase) supabase.auth.signOut(); } catch(e) {} VCG.remove('user'); updateAuthUI(); showToast('Logged out successfully', 'success'); setTimeout(function() { location.href = 'index.html'; }, 800); }
 
 function updateAuthUI() {
   const user = getUser();
