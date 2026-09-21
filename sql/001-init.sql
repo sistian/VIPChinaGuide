@@ -172,6 +172,10 @@ as $$
   where id = (select id from auth.users where lower(email) = lower(p_email));
 $$;
 
+-- ⚠️ 安全：只允许 service_role（服务端）执行，阻断匿名/登录用户自助提权
+revoke execute on function public.set_admin(text) from public, anon, authenticated;
+grant execute on function public.set_admin(text) to service_role;
+
 -- 免费取消检查：行程前 ≥ 7 天（供 API 调用前的参考实现）
 -- 用法：select public.can_free_cancel('订单uuid');
 create or replace function public.can_free_cancel(p_order_id uuid)
