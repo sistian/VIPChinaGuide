@@ -13,7 +13,8 @@ import { rateLimit } from '../_lib/rate-limit.js';
 import { isDbConfigured, getDB } from '../_lib/db.js';
 import { requireAdmin } from '../_lib/auth.js';
 
-const VALID_STATUSES = ['pending', 'confirmed', 'active', 'change_pending', 'completed', 'cancelled'];
+// 与 sql/001-init.sql 的 check 约束保持一致（数据库是唯一事实来源）
+const VALID_STATUSES = ['pending', 'confirmed', 'change_pending', 'completed', 'cancelled'];
 
 export default async function handler(req, res) {
   if (cors(req, res)) return;

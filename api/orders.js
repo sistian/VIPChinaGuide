@@ -14,6 +14,7 @@ import { cors, json, errJson, clientIp } from './_lib/respond.js';
 import { isEmail, str, int, isHoneypotTripped } from './_lib/validate.js';
 import { rateLimit } from './_lib/rate-limit.js';
 import { isDbConfigured, getDB } from './_lib/db.js';
+import { verifyManageToken } from './_lib/auth.js';
 import {
   sendMail, renderOrderTable, renderCustomerConfirmation,
   adminNotifyEmail, mailerConfigured,
@@ -281,13 +282,8 @@ async function lookupOrder(req, res) {
   }
   if (!data) return errJson(res, 404, 'Order not found');
 
-  const hash = sha256(token);
-  const valid = data.manage_token_hash
-    && hash === data.manage_token_hash
-    && data.manage_token_expires_at
-    && new Date(data.manage_token_expires_at).getTime() > Date.now();
-
-  if (!valid) {
+  // 恒时比较 + 过期检查（统一走 _lib/auth.js，防时序侧信道）
+  if (!verifyManageToken(data, token)) {
     return errJson(res, 404, 'Order not found'); // 不区分"链接错误/过期"，防探测
   }
 

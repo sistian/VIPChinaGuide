@@ -382,9 +382,15 @@ function handleSignUp(e) {
   })
     .then(function(res) {
       if (res.error) { showToast(res.error.message || 'Sign up failed.', 'error'); btn.disabled = false; btn.textContent = orig; }
-      else if (res.data.user) {
+      else if (res.data && res.data.session) {
+        // 无需邮箱验证：已直接登录，跳转账户页
+        showToast('Account created!', 'success');
+        setTimeout(function() { location.href = 'account.html'; }, 800);
+      }
+      else if (res.data && res.data.user) {
+        // 需邮箱验证：留在当前页提示，不跳走
         showToast('Account created! Check your email to confirm before signing in.', 'success');
-        setTimeout(function() { location.href = 'account.html'; }, 2000);
+        btn.disabled = false; btn.textContent = orig;
       }
     })
     .catch(function(err) { showToast('Network error, please retry.', 'error'); btn.disabled = false; btn.textContent = orig; });

@@ -151,7 +151,6 @@ window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
       <button class="nav-pill active" data-filter="all" onclick="filterOrders('all')">All Orders</button>
       <button class="nav-pill" data-filter="pending" onclick="filterOrders('pending')">Pending</button>
       <button class="nav-pill" data-filter="confirmed" onclick="filterOrders('confirmed')">Confirmed</button>
-      <button class="nav-pill" data-filter="active" onclick="filterOrders('active')">Active</button>
       <button class="nav-pill" data-filter="change_pending" onclick="filterOrders('change_pending')">Change Req</button>
       <button class="nav-pill" data-filter="completed" onclick="filterOrders('completed')">Completed</button>
       <button class="nav-pill" data-filter="cancelled" onclick="filterOrders('cancelled')">Cancelled</button>
@@ -370,8 +369,8 @@ function typeLabel(t) {
 }
 function levelLabel(l) { return l === 'expert' ? 'Expert' : l ? 'Escort' : '—'; }
 
-var STATUS_OPTIONS = ['pending', 'confirmed', 'active', 'change_pending', 'completed', 'cancelled'];
-var STATUS_CLASS = { pending: 'status-pending', confirmed: 'status-confirmed', active: 'status-active', change_pending: 'status-pending', completed: 'status-completed', cancelled: 'status-cancelled' };
+var STATUS_OPTIONS = ['pending', 'confirmed', 'change_pending', 'completed', 'cancelled'];
+var STATUS_CLASS = { pending: 'status-pending', confirmed: 'status-confirmed', change_pending: 'status-pending', completed: 'status-completed', cancelled: 'status-cancelled' };
 
 function renderAdminOrders() {
   const container = document.getElementById('adminOrders');
@@ -464,7 +463,6 @@ function renderStats() {
     total: allOrders.length,
     pending: allOrders.filter(function (o) { return o.status === 'pending'; }).length,
     confirmed: allOrders.filter(function (o) { return o.status === 'confirmed'; }).length,
-    active: allOrders.filter(function (o) { return o.status === 'active'; }).length,
     change: allOrders.filter(function (o) { return o.status === 'change_pending'; }).length,
     completed: allOrders.filter(function (o) { return o.status === 'completed'; }).length,
     cancelled: allOrders.filter(function (o) { return o.status === 'cancelled'; }).length,
@@ -474,7 +472,6 @@ function renderStats() {
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--primary);">${stats.total}</div><div style="font-size:12px; color:var(--text-secondary);">Total Orders</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--accent);">${stats.pending}</div><div style="font-size:12px; color:var(--text-secondary);">Pending</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--primary);">${stats.confirmed}</div><div style="font-size:12px; color:var(--text-secondary);">Confirmed</div></div>
-    <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--primary);">${stats.active}</div><div style="font-size:12px; color:var(--text-secondary);">Active</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--accent);">${stats.change}</div><div style="font-size:12px; color:var(--text-secondary);">Change Requests</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--primary);">${stats.completed}</div><div style="font-size:12px; color:var(--text-secondary);">Completed</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--accent);">¥${stats.revenue.toLocaleString()}</div><div style="font-size:12px; color:var(--text-secondary);">Revenue (non-cancelled)</div></div>
@@ -484,7 +481,6 @@ function renderStats() {
 async function adminSignOut() {
   const supa = getSupa();
   try { if (supa) await supa.auth.signOut(); } catch (_) {}
-  try { localStorage.removeItem('vcg_admin_session'); } catch (_) {}
   location.href = 'admin-login.html';
 }
 

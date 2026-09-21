@@ -296,6 +296,11 @@ window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
 </footer>
 <script src="js/main.js"></script>
 <script>
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
 function renderAccount(user, supabaseOrders) {
   var container = document.getElementById('accountContent');
   var localOrders = user ? getOrders().filter(function(o){ return o.email === user.email; }) : [];
@@ -308,7 +313,7 @@ function renderAccount(user, supabaseOrders) {
     return;
   }
   var name = user.name || user.email.split('@')[0];
-  var initials = name.charAt(0).toUpperCase();
+  var initials = esc(name.charAt(0).toUpperCase());
   var highlight = new URLSearchParams(window.location.search).get('order');
   var html = '';
   if (all.length === 0) {
@@ -318,20 +323,21 @@ function renderAccount(user, supabaseOrders) {
       var st = o.status||'pending';
       var scls = st==='confirmed'?'status-confirmed':st==='completed'?'status-completed':st==='cancelled'?'status-cancelled':'status-pending';
       var slbl = st.charAt(0).toUpperCase()+st.slice(1);
-      var cName = (typeof CITIES!=='undefined' && CITIES.find ? (CITIES.find(function(c){return c.id===o.city;})||{}).name:'')||o.city||'';
-      var svc = o.service_type||o.serviceType||'';
+      var cName = esc((typeof CITIES!=='undefined' && CITIES.find ? (CITIES.find(function(c){return c.id===o.city;})||{}).name:'')||o.city||'');
+      var svc = esc(o.service_type||o.serviceType||'');
       var lvl = (o.guide_level||o.guideLevel)==='expert'?'Expert Guide':'Escort';
-      var trav = o.travelers||o.num_days||1;
-      var price = o.price_cny||o.price||0;
-      var oid = o.order_no||o.id;
-      var odate = o.travel_date||o.travel_month||'';
+      var trav = esc(o.travelers||o.num_days||1);
+      var price = esc(o.price_cny||o.price||0);
+      var oid = esc(o.order_no||o.id);
+      var odate = esc(o.travel_date||o.travel_month||'');
+      var ehotel = o.hotel?esc(o.hotel):'';
       var ml = o.order_no ? 'manage-order.html?order_no='+encodeURIComponent(o.order_no) : null;
       var dl = ml||('order-lookup.html?order='+encodeURIComponent(o.id||'')+'&email='+encodeURIComponent(o.email||''));
       var hl = oid === highlight;
-      return '<div class="card" style="padding:28px;margin-bottom:20px;'+(hl?'border:2px solid var(--primary);box-shadow:0 0 0 4px rgba(13,148,136,0.1);':'')+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;"><div><div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px">Order #'+oid+'</div><h3 style="font-size:20px;margin-bottom:4px">'+cName+(svc?' — '+svc:'')+'</h3>'+(odate?'<div style="font-size:14px;color:var(--text-secondary)">'+odate+'</div>':'')+'</div><span class="badge '+scls+'">'+slbl+'</span></div><div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:16px;font-size:14px;color:var(--text-secondary)"><div><i class="fas fa-user" style="color:var(--primary);margin-right:6px"></i>'+lvl+'</div><div><i class="fas fa-users" style="color:var(--primary);margin-right:6px"></i>'+trav+' traveler'+(trav>1?'s':'')+'</div>'+(o.hotel?'<div><i class="fas fa-hotel" style="color:var(--primary);margin-right:6px"></i>'+o.hotel+'</div>':'')+'</div><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid var(--bg-warm);padding-top:16px;"><div style="font-size:20px;font-weight:700;color:var(--accent)">'+(price?'¥'+price:'TBD')+'</div><div style="display:flex;gap:8px"><a href="'+dl+'" class="btn-ghost" style="padding:8px 16px;font-size:13px">View Details</a></div></div></div>';
+      return '<div class="card" style="padding:28px;margin-bottom:20px;'+(hl?'border:2px solid var(--primary);box-shadow:0 0 0 4px rgba(13,148,136,0.1);':'')+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;"><div><div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px">Order #'+oid+'</div><h3 style="font-size:20px;margin-bottom:4px">'+cName+(svc?' — '+svc:'')+'</h3>'+(odate?'<div style="font-size:14px;color:var(--text-secondary)">'+odate+'</div>':'')+'</div><span class="badge '+scls+'">'+esc(slbl)+'</span></div><div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:16px;font-size:14px;color:var(--text-secondary)"><div><i class="fas fa-user" style="color:var(--primary);margin-right:6px"></i>'+lvl+'</div><div><i class="fas fa-users" style="color:var(--primary);margin-right:6px"></i>'+trav+' traveler'+(trav>1?'s':'')+'</div>'+(ehotel?'<div><i class="fas fa-hotel" style="color:var(--primary);margin-right:6px"></i>'+ehotel+'</div>':'')+'</div><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid var(--bg-warm);padding-top:16px;"><div style="font-size:20px;font-weight:700;color:var(--accent)">'+(price?'¥'+price:'TBD')+'</div><div style="display:flex;gap:8px"><a href="'+dl+'" class="btn-ghost" style="padding:8px 16px;font-size:13px">View Details</a></div></div></div>';
     }).join('');
   }
-  container.innerHTML = '<div class="card" style="padding:28px;margin-bottom:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><div style="width:56px;height:56px;border-radius:50%;background:var(--primary);color:var(--text);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700">'+initials+'</div><div><h2 style="font-size:20px;margin-bottom:2px">'+name+'</h2><p style="font-size:14px;color:var(--text-secondary);margin:0">'+user.email+'</p></div><div style="margin-left:auto"><button onclick="logout()" class="btn-ghost" style="padding:8px 16px;font-size:13px;color:var(--text-secondary)">Logout</button></div></div><h2 style="font-size:22px;margin-bottom:20px">My Bookings</h2>'+html;
+  container.innerHTML = '<div class="card" style="padding:28px;margin-bottom:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><div style="width:56px;height:56px;border-radius:50%;background:var(--primary);color:var(--text);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700">'+initials+'</div><div><h2 style="font-size:20px;margin-bottom:2px">'+esc(name)+'</h2><p style="font-size:14px;color:var(--text-secondary);margin:0">'+esc(user.email)+'</p></div><div style="margin-left:auto"><button onclick="logout()" class="btn-ghost" style="padding:8px 16px;font-size:13px;color:var(--text-secondary)">Logout</button></div></div><h2 style="font-size:22px;margin-bottom:20px">My Bookings</h2>'+html;
 }
 const user = getUser();
 if (user) renderAccount(user, []);
@@ -347,7 +353,7 @@ if (user) renderAccount(user, []);
     var appUser = { id: u.id, name: meta.full_name || u.email.split('@')[0], email: u.email };
     setUser(appUser);
     // Fetch user's orders from Supabase
-    supabase.from('orders').select('*').eq('user_id', u.id).order('created_at', {ascending:false}).then(function(qres) {
+    supabase.from('orders').select('id,order_no,status,city,service_type,guide_level,num_days,travelers,travel_date,travel_month,hotel,price_cny,created_at').eq('user_id', u.id).order('created_at', {ascending:false}).then(function(qres) {
       renderAccount(appUser, qres.data || []);
     }).catch(function() { renderAccount(appUser, []); });
   }).catch(function() { renderAccount(null, []); });

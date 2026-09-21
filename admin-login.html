@@ -317,13 +317,24 @@ function handleAdminLogin(e) {
   if (!supabase) { showToast('Auth not configured.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
   supabase.auth.signInWithPassword({ email: email, password: password })
     .then(function(res) {
-      if (res.error) { showToast(res.error.message || 'Sign in failed.', 'error'); btn.disabled = false; btn.textContent = orig; }
-      else {
-        // 登录成功，写入本地标记，跳转后台
-        try { localStorage.setItem('vcg_admin_session', '1'); } catch(_){}
-        showToast('Admin login successful! Redirecting...', 'success');
-        setTimeout(function() { location.href = 'admin.html'; }, 800);
-      }
+      if (res.error) { showToast(res.error.message || 'Sign in failed.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
+      // 校验管理员角色（profiles.role，RLS 仅允许读自己的资料）
+      supabase.from('profiles').select('role').single()
+        .then(function(pr) {
+          if (!pr.error && pr.data && pr.data.role === 'admin') {
+            showToast('Admin login successful! Redirecting...', 'success');
+            setTimeout(function() { location.href = 'admin.html'; }, 800);
+          } else {
+            supabase.auth.signOut();
+            showToast('This account does not have admin access.', 'error');
+            btn.disabled = false; btn.textContent = orig;
+          }
+        })
+        .catch(function() {
+          supabase.auth.signOut();
+          showToast('Could not verify admin role. Please retry.', 'error');
+          btn.disabled = false; btn.textContent = orig;
+        });
     })
     .catch(function(err) { showToast('Network error, please retry.', 'error'); btn.disabled = false; btn.textContent = orig; });
 }
