@@ -1345,6 +1345,23 @@ if(urlParams.get('level')) document.getElementById('guideLevel').value = urlPara
 calculatePrice();
 updateSubmitButtonState();
 
+// ===== 统一 data-action 点击委托（向导导航/支付选择/提交/弹窗）=====
+document.addEventListener('click', function(e){
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const action = el.dataset.action;
+  switch(action){
+    case 'go-to-step2': e.preventDefault(); goToStep2(); break;
+    case 'go-to-step3': e.preventDefault(); goToStep3(); break;
+    case 'go-to-step': e.preventDefault(); goToStep(parseInt(el.dataset.step,10)||1); break;
+    case 'select-payment': selectPayment(el.dataset.method); break;
+    case 'submit-order': e.preventDefault(); submitOrder(); break;
+    case 'toggle-wa-popup': e.preventDefault(); toggleWAPopup(); break;
+    case 'close-wa-popup': closeWAPopup(e); break;
+    case 'stop-propagation': e.stopPropagation(); break;
+  }
+});
+
 function highlightBookingMatches(val) {
   if (!val || val.length < 2) {
     document.querySelectorAll('.city-option-hl, .guide-option-hl').forEach(el => el.classList.remove('guide-option-hl'));
