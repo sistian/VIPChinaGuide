@@ -72,28 +72,36 @@ async function listOrders(req, res) {
 
 async function logEvent(db, orderId, actor, eventType, detail) {
   try {
+    // actor 列有 check 约束（customer/admin/system）；操作者身份放 detail
     await db.from('order_events').insert({ order_id: orderId, actor, event_type: eventType, detail });
   } catch (e) {
     console.error('[admin/orders] event log failed:', e && e.message);
   }
 }
 
-// 改期审批结果邮件（尽力而为）
+// 改期审批结果邮件（关键动作：调用方 await，确保响应前完成）
+// 仅【批准】时轮换 manage_token（订单已实质变更，发新链接)；
+// 拒绝时订单未变，保留客户当前链接，便于其继续操作（再申请/取消）
 async function emailChangeDecision(db, order, approved, note) {
-  if (!mailerConfigured()) return;
-  try {
-    // 重新生成 72h 管理链接，避免客户旧链接过期
+  let manageUrl = null;
+  if (approved) {
+    // 同步轮换：安全相关的状态变更不放在后台任务里竞态
     const token = newManageToken();
-    await db.from('orders').update({
+    const { error: rotErr } = await db.from('orders').update({
       manage_token_hash: hashToken(token),
       manage_token_expires_at: new Date(Date.now() + MANAGE_TOKEN_TTL_HOURS * 3600 * 1000).toISOString(),
     }).eq('id', order.id);
-
-    const manageUrl = `${frontendBaseUrl()}/manage-order.html?order_no=${encodeURIComponent(order.order_no)}&token=${encodeURIComponent(token)}`;
-    const view = {
-      order_no: order.order_no, city: order.city,
-      travel_date: order.travel_date || '', travel_month: order.travel_month || '',
-    };
+    if (!rotErr) {
+      manageUrl = `${frontendBaseUrl()}/manage-order.html?order_no=${encodeURIComponent(order.order_no)}&token=${encodeURIComponent(token)}`;
+    }
+  }
+  if (!mailerConfigured()) return;
+  const view = {
+    order_no: order.order_no, city: order.city,
+    travel_date: order.travel_date || '', travel_month: order.travel_month || '',
+  };
+  let ok = true, err = null;
+  try {
     await sendMail({
       to: order.email,
       subject: approved
@@ -102,17 +110,17 @@ async function emailChangeDecision(db, order, approved, note) {
       html: renderChangeDecisionCustomer(view, approved, approved ? order.change_request_new_date : null, note, manageUrl),
       replyTo: adminNotifyEmail(),
     });
-    await db.from('email_log').insert({
-      order_id: order.id, to_email: order.email,
-      subject: approved ? '改期已批准' : '改期已拒绝', status: 'sent',
-    }).catch(() => {});
   } catch (e) {
+    ok = false; err = e;
     console.error('[admin/orders] decision email failed:', e && e.message);
+  }
+  try {
     await db.from('email_log').insert({
       order_id: order.id, to_email: order.email,
-      subject: approved ? '改期已批准' : '改期已拒绝', status: 'failed', error: String(e && e.message).slice(0, 500),
-    }).catch(() => {});
-  }
+      subject: approved ? '改期已批准' : '改期已拒绝', status: ok ? 'sent' : 'failed',
+      error: err ? String(err && err.message).slice(0, 500) : null,
+    });
+  } catch (_) {}
 }
 
 // PATCH /api/admin/orders
@@ -162,8 +170,8 @@ async function updateOrder(req, res) {
         console.error('[admin/orders] approve failed:', updErr.message);
         return errJson(res, 500, 'Failed to approve change');
       }
-      await logEvent(db, existing.id, user.id, 'date_change_approved', {
-        from: existing.travel_date || existing.travel_month, to: cr.new_date, note: note || null,
+      await logEvent(db, existing.id, 'admin', 'date_change_approved', {
+        admin_id: user.id, from: existing.travel_date || existing.travel_month, to: cr.new_date, note: note || null,
       });
     } else {
       const { error: updErr } = await db.from('orders').update({
@@ -174,13 +182,13 @@ async function updateOrder(req, res) {
         console.error('[admin/orders] reject failed:', updErr.message);
         return errJson(res, 500, 'Failed to reject change');
       }
-      await logEvent(db, existing.id, user.id, 'date_change_rejected', {
-        requested: cr.new_date, note: note || null,
+      await logEvent(db, existing.id, 'admin', 'date_change_rejected', {
+        admin_id: user.id, requested: cr.new_date, note: note || null,
       });
     }
 
-    // 邮件通知客户（内部已处理失败兜底）
-    emailChangeDecision(db, {
+    // 邮件通知客户（关键动作，await 确保响应前完成）
+    await emailChangeDecision(db, {
       id: existing.id, order_no: existing.order_no, email: existing.email, city: existing.city,
       travel_date: existing.travel_date, travel_month: existing.travel_month,
       change_request_new_date: cr.new_date,
@@ -208,8 +216,8 @@ async function updateOrder(req, res) {
       update.travel_date = cr.new_date;
       update.travel_month = null;
       update.change_request = null;
-      await logEvent(db, existing.id, user.id, 'date_change_approved', {
-        from: existing.travel_date || existing.travel_month, to: cr.new_date, via: 'status_change',
+      await logEvent(db, existing.id, 'admin', 'date_change_approved', {
+        admin_id: user.id, from: existing.travel_date || existing.travel_month, to: cr.new_date, via: 'status_change',
       });
     } else if (status !== 'change_pending') {
       update.change_request = null; // 取消/完成等场景丢弃未决申请
@@ -227,8 +235,8 @@ async function updateOrder(req, res) {
 
   // 记录事件（状态变更；上面联动场景已记过更详细的事件，这里只记纯状态流转）
   if (!(existing.status === 'change_pending' && status === 'confirmed')) {
-    await logEvent(db, existing.id, user.id, 'status_changed', {
-      from: existing.status, to: status, note: note || null,
+    await logEvent(db, existing.id, 'admin', 'status_changed', {
+      admin_id: user.id, from: existing.status, to: status, note: note || null,
     });
   }
 

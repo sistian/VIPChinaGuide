@@ -380,14 +380,18 @@ async function manageOrder(req, res) {
       detail: { from: order.travel_date || order.travel_month, to: newDate, note: note || null },
     }).then(() => {}).catch((e) => console.error('[orders:manage] event insert failed:', e && e.message));
 
-    // 通知管理员（尽力而为，不阻塞客户请求）
-    sendMail({
-      to: adminNotifyEmail(),
-      subject: `【待审批】改期申请 ${order.order_no}: ${order.travel_date || order.travel_month || '—'} → ${newDate}`,
-      html: renderRescheduleRequestAdmin(mailView, newDate, note),
-      replyTo: order.email,
-    }).then(() => logEmail(db, order.id, adminNotifyEmail(), '改期申请通知', true, null))
-      .catch((e) => logEmail(db, order.id, adminNotifyEmail(), '改期申请通知', false, e));
+    // 通知管理员（改期申请是审批流程的触发器：await 确保发出/落库后再响应）
+    try {
+      await sendMail({
+        to: adminNotifyEmail(),
+        subject: `【待审批】改期申请 ${order.order_no}: ${order.travel_date || order.travel_month || '—'} → ${newDate}`,
+        html: renderRescheduleRequestAdmin(mailView, newDate, note),
+        replyTo: order.email,
+      });
+      await logEmail(db, order.id, adminNotifyEmail(), '改期申请通知', true, null);
+    } catch (e) {
+      await logEmail(db, order.id, adminNotifyEmail(), '改期申请通知', false, e);
+    }
 
     return json(res, 200, { success: true, status: 'change_pending', message: 'Reschedule request submitted. We will confirm by email within 24 hours.' });
   }
@@ -417,7 +421,7 @@ async function manageOrder(req, res) {
     detail: { reason: note || null, was_change_pending: order.status === 'change_pending' },
   }).then(() => {}).catch((e) => console.error('[orders:manage] event insert failed:', e && e.message));
 
-  const mails = [
+  const mails = await Promise.allSettled([
     sendMail({
       to: adminNotifyEmail(),
       subject: `【已取消】订单 ${order.order_no} 客户免费取消`,
@@ -430,10 +434,11 @@ async function manageOrder(req, res) {
       html: renderCancelConfirmCustomer(mailView),
       replyTo: adminNotifyEmail(),
     }),
-  ];
-  Promise.allSettled(mails).then((rs) => {
-    rs.forEach((r, i) => logEmail(db, order.id, i === 0 ? adminNotifyEmail() : order.email, '取消通知', r.status === 'fulfilled', r.reason));
-  });
+  ]);
+  for (let i = 0; i < mails.length; i++) {
+    const r = mails[i];
+    await logEmail(db, order.id, i === 0 ? adminNotifyEmail() : order.email, '取消通知', r.status === 'fulfilled', r.reason);
+  }
 
   return json(res, 200, { success: true, status: 'cancelled', message: 'Your booking has been cancelled. A confirmation email is on its way.' });
 }

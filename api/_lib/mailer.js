@@ -33,6 +33,9 @@ function getTransporter() {
       port: PORT,
       secure: PORT === 465,
       auth: { user: USER, pass: PASS },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000,
     });
   }
   return transporter;
@@ -132,10 +135,10 @@ export function renderChangeDecisionCustomer(o, approved, newDate, reason, manag
         ${approved ? `<tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">Previous Date</td><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#94a3b8;text-decoration:line-through">${e(o.travel_date || o.travel_month || '—')}</td></tr>` : ''}
         ${reason ? `<tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">Note from us</td><td style="padding:8px 12px;border:1px solid #e2e8f0">${e(reason)}</td></tr>` : ''}
       </table>
-      <div style="text-align:center;margin:24px 0">
+      ${manageUrl ? `<div style="text-align:center;margin:24px 0">
         <a href="${e(manageUrl)}" style="display:inline-block;background:#0d9488;color:#fff;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:bold">View My Order</a>
         <p style="color:#94a3b8;font-size:12px;margin-top:10px">This private link is valid for 72 hours</p>
-      </div>
+      </div>` : `<p style="text-align:center;margin:24px 0;color:#64748b;font-size:13px">You can still manage your booking with the link in your original confirmation email, or just reply to this message.</p>`}
       <p style="border-top:1px solid #e2e8f0;padding-top:16px;color:#64748b;font-size:13px">Questions? Just reply to this email, or contact us:<br>📧 82839626@qq.com · 📱 WhatsApp / WeChat: +86 155 2777 1775</p>
     </div>
     <p style="text-align:center;color:#94a3b8;font-size:12px;margin-top:16px">VIPChinaGuide · Private China Tours with Licensed Guides</p>
