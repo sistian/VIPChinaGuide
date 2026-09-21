@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://suhvbuhppiqqaylvdzsg.supabase.co; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -613,6 +613,12 @@ img{max-width:100%;display:block}
   .nav-links a:last-child{border-bottom:none}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.SUPABASE_URL = 'https://suhvbuhppiqqaylvdzsg.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
+</script>
+<script src="lib/supabase-client.js"></script>
 </head>
 <body>
 
@@ -630,6 +636,7 @@ img{max-width:100%;display:block}
       <a href="booking.html">Book Now</a>
       <a href="faq.html">FAQ</a>
       <a href="about.html">About</a>
+      <a href="login.html" style="font-weight:700">Sign In</a>
     </nav>
   </div>
 </header>
@@ -3893,6 +3900,27 @@ document.getElementById('tourLightbox').addEventListener('contextmenu', function
   </div>
 </section>
 
+<section class="section" id="homeRegister" style="background:var(--bg)">
+  <div class="container" style="max-width:640px">
+    <div id="homeRegisterInner" style="background:var(--card-bg);padding:36px;border-radius:16px;box-shadow:var(--shadow-lg);border:1px solid var(--border)">
+      <h2 style="font-size:26px;font-weight:800;text-align:center;margin:0 0 8px;color:var(--text)">Create Your Account</h2>
+      <p style="text-align:center;color:var(--text-light);font-size:15px;margin:0 0 24px">Track your bookings, manage orders, and receive trip updates — all in one place.</p>
+      <form id="homeSignUpForm" onsubmit="handleHomeSignUp(event)" style="display:grid;gap:14px">
+        <input type="text" id="hsuName" placeholder="Full name" autocomplete="name" required style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;box-sizing:border-box;background:#fff;color:var(--text)">
+        <input type="email" id="hsuEmail" placeholder="Email address" autocomplete="email" required style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;box-sizing:border-box;background:#fff;color:var(--text)">
+        <input type="password" id="hsuPassword" placeholder="Password (at least 6 characters)" autocomplete="new-password" minlength="6" required style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;box-sizing:border-box;background:#fff;color:var(--text)">
+        <button type="submit" id="hsuBtn" style="width:100%;padding:15px;border:none;border-radius:10px;background:var(--primary);color:#fff;font-size:15px;font-weight:700;cursor:pointer;box-shadow:var(--shadow)">Create Account</button>
+      </form>
+      <div id="homeRegDone" style="display:none;text-align:center;padding:8px 0 4px">
+        <div style="font-size:42px;line-height:1">🎉</div>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text);margin:12px 0 8px">Almost done — check your email</h3>
+        <p style="color:var(--text-light);font-size:14px;margin:0 0 16px">We sent a confirmation link to <b id="homeRegEmail" style="color:var(--text)"></b>. Click it to activate your account, then <a href="login.html" style="color:var(--primary);font-weight:600">sign in here</a>.</p>
+      </div>
+      <p style="text-align:center;font-size:14px;color:var(--text-light);margin:16px 0 0">Already have an account? <a href="login.html" style="color:var(--primary);font-weight:700">Sign in</a></p>
+    </div>
+  </div>
+</section>
+
 <section class="cta-section">
   <div class="container">
     <h2>Ready to Explore China?</h2>
@@ -4118,6 +4146,68 @@ function goToBooking(){
 }
 </script>
 
+<script>
+// 首页快速注册（Supabase Auth）
+function homeToast(msg, type) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;padding:12px 22px;border-radius:10px;color:#fff;font-weight:600;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);background:' + (type === 'error' ? '#dc2626' : '#16a34a');
+  document.body.appendChild(t);
+  setTimeout(function () { t.style.transition = 'opacity .4s'; t.style.opacity = '0'; }, 3200);
+  setTimeout(function () { if (t.parentNode) t.remove(); }, 3800);
+}
+
+function handleHomeSignUp(e) {
+  e.preventDefault();
+  var name = document.getElementById('hsuName').value.trim();
+  var email = document.getElementById('hsuEmail').value.trim();
+  var password = document.getElementById('hsuPassword').value;
+  if (!name || !email || !password) { homeToast('Please fill in all fields.', 'error'); return; }
+  if (password.length < 6) { homeToast('Password must be at least 6 characters.', 'error'); return; }
+  var btn = document.getElementById('hsuBtn');
+  var orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Creating account...';
+  var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
+  if (!supabase) { homeToast('Sign-up is temporarily unavailable.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
+  supabase.auth.signUp({ email: email, password: password, options: { data: { full_name: name } } })
+    .then(function (res) {
+      if (res.error) {
+        homeToast(res.error.message || 'Sign up failed.', 'error');
+        btn.disabled = false; btn.textContent = orig;
+      } else if (res.data && res.data.session) {
+        // 无需邮箱验证：已直接登录，跳转账户页
+        homeToast('Account created!', 'success');
+        setTimeout(function () { location.href = 'account.html'; }, 1200);
+      } else {
+        // 需邮箱验证：显示确认提示
+        document.getElementById('homeSignUpForm').style.display = 'none';
+        document.getElementById('homeRegEmail').textContent = email;
+        document.getElementById('homeRegDone').style.display = 'block';
+      }
+    })
+    .catch(function () {
+      homeToast('Network error, please retry.', 'error');
+      btn.disabled = false; btn.textContent = orig;
+    });
+}
+
+// 已登录用户：注册卡换成账户入口
+(function () {
+  var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
+  if (!supabase) return;
+  supabase.auth.getSession().then(function (r) {
+    if (r.data && r.data.session) {
+      var wrap = document.getElementById('homeRegisterInner');
+      if (wrap) {
+        wrap.innerHTML = '<h2 style="font-size:24px;font-weight:800;color:var(--text);margin:0 0 8px;text-align:center">You are signed in</h2>' +
+          '<p style="color:var(--text-light);margin:0 0 18px;text-align:center">Manage your bookings from your account page.</p>' +
+          '<a href="account.html" style="display:block;width:100%;padding:15px;border-radius:10px;background:var(--primary);color:#fff;font-size:15px;font-weight:700;text-align:center;text-decoration:none;box-shadow:var(--shadow)">Go to My Account</a>' +
+          '<p style="text-align:center;font-size:14px;color:var(--text-light);margin:16px 0 0"><a href="login.html" style="color:var(--primary);font-weight:600">Use a different account</a></p>';
+      }
+    }
+  }).catch(function () {});
+})();
+</script>
 <script src="js/security.js"></script>
 
 <!-- WhatsApp Float Button -->
