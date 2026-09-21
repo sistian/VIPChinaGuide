@@ -3,7 +3,7 @@
 <head>
   <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
 
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://vipchinaguide-backend-api.vercel.app; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://suhvbuhppiqqaylvdzsg.supabase.co; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <meta http-equiv="Permissions-Policy" content="geolocation=(self), microphone=(), camera=(), payment=(self), usb=(), magnetometer=(), gyroscope=(), accelerometer=()">
@@ -1264,7 +1264,7 @@ function completeOrder(paymentMethod, transactionId){
   sendOrderToBackend(order);
 }
 
-function sendOrderToBackend(order){
+async function sendOrderToBackend(order){
   // 同源部署：直接提交本站 /api/orders（落库 + 管理员通知 + 客户确认邮件）
   const API_URL = '/api/orders';
 
@@ -1272,12 +1272,19 @@ function sendOrderToBackend(order){
   const honeypot = document.getElementById('website_url');
   if (honeypot) order.website_url = honeypot.value;
 
+  // 登录用户附加 Supabase JWT（后端据以关联 user_id）
+  const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+  const supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
+  if (supabase) {
+    const { data } = await supabase.auth.getSession();
+    if (data && data.session && data.session.access_token) {
+      headers['Authorization'] = 'Bearer ' + data.session.access_token;
+    }
+  }
+
   fetch(API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
+    headers: headers,
     body: JSON.stringify(order)
   })
   .then(async res => {

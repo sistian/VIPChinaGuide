@@ -126,6 +126,19 @@ async function createOrder(req, res) {
 
   const raw = req.body || {};
 
+  // 从 Authorization header 提取 Supabase JWT，验证后获取 user_id（关联登录用户的订单）
+  let userId = null;
+  const authHeader = req.headers.authorization || '';
+  if (authHeader.startsWith('Bearer ')) {
+    const token = authHeader.slice(7).trim();
+    if (token && isDbConfigured()) {
+      try {
+        const { data } = await getDB().auth.getUser(token);
+        if (data && data.user) userId = data.user.id;
+      } catch (_) { /* ignore auth errors, guest checkout */ }
+    }
+  }
+
   // 蜜罐：对机器人假装成功
   if (isHoneypotTripped(raw)) {
     return json(res, 200, { success: true, order_no: genOrderNo() });
@@ -161,6 +174,7 @@ async function createOrder(req, res) {
           order_no: orderNo,
           manage_token_hash: tokenHash,
           manage_token_expires_at: tokenExpires,
+          user_id: userId, // 关联登录用户；未登录时为 null
         }).select('id, order_no').single();
         if (error) throw error;
         inserted = data;

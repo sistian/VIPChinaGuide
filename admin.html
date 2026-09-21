@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://suhvbuhppiqqaylvdzsg.supabase.co; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -113,6 +113,12 @@
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr 1fr!important;gap:16px!important;align-items:start}.footer-col{text-align:left!important;min-width:0}.footer-col *{overflow-wrap:break-word;word-break:break-word}.footer-col h4{text-align:center}}
 </style>
 <link rel="canonical" href="https://www.vipchinaguide.com/admin.html">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.SUPABASE_URL = 'https://suhvbuhppiqqaylvdzsg.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
+</script>
+<script src="lib/supabase-client.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -135,18 +141,21 @@
 <section style="padding:120px 0 40px; background:var(--gradient-hero); color:var(--text);">
   <div class="container">
     <h1 style="font-size:36px; font-weight:800; color:var(--text); margin-bottom:8px;" class="reveal">Admin Dashboard</h1>
-    <p style="font-size:16px; color:var(--text-secondary);" class="reveal">Manage orders, update statuses, and view all bookings.</p>
+    <p style="font-size:16px; color:var(--text-secondary);" class="reveal">Manage orders, update statuses, and view all bookings. <span id="adminWho" style="opacity:.75;"></span></p>
+    <button type="button" onclick="adminSignOut()" style="margin-top:16px; padding:10px 22px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.12); color:var(--text); font-weight:600; cursor:pointer;">Sign out</button>
   </div>
 </section>
 <section class="section" style="padding:40px 0 80px;">
   <div class="container" style="max-width:1100px;">
     <div class="nav-pills" style="margin-bottom:24px;">
-      <button class="nav-pill active" id="tabAll" onclick="filterOrders('all')">All Orders</button>
-      <button class="nav-pill" id="tabPending" onclick="filterOrders('pending')">Pending</button>
-      <button class="nav-pill" id="tabConfirmed" onclick="filterOrders('confirmed')">Confirmed</button>
-      <button class="nav-pill" id="tabActive" onclick="filterOrders('active')">Active</button>
-      <button class="nav-pill" id="tabCompleted" onclick="filterOrders('completed')">Completed</button>
-      <button class="nav-pill" id="tabCancelled" onclick="filterOrders('cancelled')">Cancelled</button>
+      <button class="nav-pill active" data-filter="all" onclick="filterOrders('all')">All Orders</button>
+      <button class="nav-pill" data-filter="pending" onclick="filterOrders('pending')">Pending</button>
+      <button class="nav-pill" data-filter="confirmed" onclick="filterOrders('confirmed')">Confirmed</button>
+      <button class="nav-pill" data-filter="active" onclick="filterOrders('active')">Active</button>
+      <button class="nav-pill" data-filter="change_pending" onclick="filterOrders('change_pending')">Change Req</button>
+      <button class="nav-pill" data-filter="completed" onclick="filterOrders('completed')">Completed</button>
+      <button class="nav-pill" data-filter="cancelled" onclick="filterOrders('cancelled')">Cancelled</button>
+      <button class="nav-pill" onclick="loadOrders()" title="Reload from server">⟳ Refresh</button>
     </div>
     <div id="adminOrders"></div>
     <div class="card" style="padding:28px; margin-top:32px;">
@@ -295,54 +304,119 @@
 </footer>
 <script src="js/main.js"></script>
 <script>
+// P4 Admin Dashboard — real data via /api/admin/orders (Supabase Auth + admin role)
+let allOrders = [];
 let currentFilter = 'all';
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function fmtDate(v) {
+  if (!v) return '—';
+  const d = new Date(v);
+  if (isNaN(d.getTime())) return esc(v);
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function getSupa() { return window.VCGSupabase ? window.VCGSupabase.init() : null; }
+
+async function getFreshSession() {
+  const supa = getSupa();
+  if (!supa) return null;
+  try {
+    const { data } = await supa.auth.getSession();
+    return (data && data.session) ? data.session : null;
+  } catch (_) { return null; }
+}
+
+async function adminInit() {
+  const session = await getFreshSession();
+  if (!session) { location.replace('admin-login.html'); return; }
+  try {
+    const supa = getSupa();
+    const { data } = await supa.auth.getUser(session.access_token);
+    const who = document.getElementById('adminWho');
+    if (who && data && data.user) who.textContent = '· Signed in as ' + data.user.email;
+  } catch (_) {}
+  await loadOrders();
+}
+
+async function loadOrders(silent) {
+  const container = document.getElementById('adminOrders');
+  if (!silent) container.innerHTML = '<div class="card" style="padding:40px; text-align:center; color:var(--text-secondary);">Loading orders…</div>';
+  const session = await getFreshSession();
+  if (!session) { location.replace('admin-login.html'); return; }
+  try {
+    const res = await fetch('/api/admin/orders', {
+      headers: { 'Authorization': 'Bearer ' + session.access_token, 'Accept': 'application/json' }
+    });
+    if (res.status === 401 || res.status === 403) { location.replace('admin-login.html'); return; }
+    const body = await res.json().catch(function () { return {}; });
+    if (!res.ok || !body.success) throw new Error(body.error || ('HTTP ' + res.status));
+    allOrders = body.orders || [];
+    renderAdminOrders();
+    renderStats();
+  } catch (e) {
+    container.innerHTML = '<div class="card" style="padding:40px; text-align:center; color:var(--text-secondary);">Failed to load orders: ' + esc(e.message) + '<br><button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="loadOrders()">Retry</button></div>';
+  }
+}
+
+function typeLabel(t) {
+  var map = { experience: 'Experience', guide_halfday: 'Half Day', guide_fullday: 'Full Day', guide_multiday: 'Multi-Day', airport: 'Airport' };
+  return map[t] || (t ? esc(t) : '—');
+}
+function levelLabel(l) { return l === 'expert' ? 'Expert' : l ? 'Escort' : '—'; }
+
+var STATUS_OPTIONS = ['pending', 'confirmed', 'active', 'change_pending', 'completed', 'cancelled'];
+var STATUS_CLASS = { pending: 'status-pending', confirmed: 'status-confirmed', active: 'status-active', change_pending: 'status-pending', completed: 'status-completed', cancelled: 'status-cancelled' };
+
 function renderAdminOrders() {
   const container = document.getElementById('adminOrders');
-  const orders = getOrders().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  const filtered = currentFilter === 'all' ? orders : orders.filter(o => o.status === currentFilter);
+  const orders = allOrders.slice().sort(function (a, b) { return new Date(b.created_at) - new Date(a.created_at); });
+  const filtered = currentFilter === 'all' ? orders : orders.filter(function (o) { return o.status === currentFilter; });
   if (filtered.length === 0) {
     container.innerHTML = '<div class="card" style="padding:40px; text-align:center; color:var(--text-secondary);">No orders in this category.</div>';
     return;
   }
   container.innerHTML = `
     <div class="card" style="overflow-x:auto;">
-      <table class="data-table" style="min-width:900px;">
+      <table class="data-table" style="min-width:1000px;">
         <thead>
           <tr>
             <th>Order #</th>
             <th>Customer</th>
             <th>City</th>
             <th>Type</th>
-            <th>Date</th>
-            <th>Guide</th>
+            <th>Travel Date</th>
+            <th>Pax</th>
             <th>Total</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          ${filtered.map(o => {
-            const statusClass = o.status === 'confirmed' ? 'status-confirmed' : o.status === 'active' ? 'status-active' : o.status === 'completed' ? 'status-completed' : o.status === 'cancelled' ? 'status-cancelled' : 'status-pending';
-            const cityName = CITIES.find(c => c.id === o.city)?.name || o.city;
-            const typeLabel = o.serviceType === 'experience' ? 'Experience' : o.serviceType === 'guide_halfday' ? 'Half Day' : o.serviceType === 'guide_fullday' ? 'Full Day' : o.serviceType === 'guide_multiday' ? 'Multi-Day' : 'Airport';
-            const levelLabel = o.guideLevel === 'expert' ? 'Expert' : 'Escort';
+          ${filtered.map(function (o) {
+            var name = [o.first_name, o.last_name].filter(Boolean).join(' ') || 'Guest';
+            var dateShown = o.travel_date || o.travel_month || '';
+            var opts = STATUS_OPTIONS.map(function (s) {
+              return '<option value="' + s + '"' + (o.status === s ? ' selected' : '') + '>' + s.replace('_', ' ') + '</option>';
+            }).join('');
             return `
               <tr>
-                <td><strong>${o.id}</strong></td>
-                <td>${o.name}<br><span style="font-size:12px; color:var(--text-secondary);">${o.email}</span></td>
-                <td>${cityName}</td>
-                <td>${typeLabel}<br><span style="font-size:12px; color:var(--text-secondary);">${levelLabel}</span></td>
-                <td>${formatDate(o.tourDate)}</td>
-                <td>${o.preferredGuide ? 'Assigned' : 'Auto'}</td>
-                <td><strong style="color:var(--accent);">¥${o.total}</strong></td>
-                <td><span class="badge ${statusClass}">${o.status}</span></td>
+                <td><strong>${esc(o.order_no)}</strong><br><span style="font-size:11px; color:var(--text-secondary);">${fmtDate(o.created_at)}</span></td>
+                <td>${esc(name)}<br><span style="font-size:12px; color:var(--text-secondary);">${esc(o.email || '')}</span></td>
+                <td>${esc(o.city || '—')}</td>
+                <td>${typeLabel(o.service_type)}<br><span style="font-size:12px; color:var(--text-secondary);">${esc(levelLabel(o.guide_level))}${o.num_days ? ' · ' + esc(o.num_days) + 'd' : ''}</span></td>
+                <td>${dateShown ? esc(dateShown) : '—'}</td>
+                <td>${esc(o.travelers || '—')}</td>
+                <td><strong style="color:var(--accent);">${o.price_cny ? '¥' + Number(o.price_cny).toLocaleString() : '—'}</strong></td>
+                <td><span class="badge ${STATUS_CLASS[o.status] || 'status-pending'}">${esc(String(o.status || '').replace('_', ' '))}</span></td>
                 <td>
-                  <select onchange="updateOrderStatus('${o.id}', this.value)" style="padding:4px 8px; font-size:12px; border-radius:var(--radius-sm); border:1px solid rgba(0,0,0,0.08);">
-                    <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
-                    <option value="confirmed" ${o.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
-                    <option value="active" ${o.status === 'active' ? 'selected' : ''}>Active</option>
-                    <option value="completed" ${o.status === 'completed' ? 'selected' : ''}>Completed</option>
-                    <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                  <select onchange="updateOrderStatus('${esc(o.order_no)}', this.value)" style="padding:4px 8px; font-size:12px; border-radius:var(--radius-sm); border:1px solid rgba(0,0,0,0.08);">
+                    ${opts}
                   </select>
                 </td>
               </tr>
@@ -353,45 +427,68 @@ function renderAdminOrders() {
     </div>
   `;
 }
-function updateOrderStatus(orderId, newStatus) {
-  const orders = getOrders();
-  const order = orders.find(o => o.id === orderId);
-  if (order) {
-    order.status = newStatus;
-    VCG.set('orders', orders);
-    showToast(`Order ${orderId} updated to ${newStatus}`, 'success');
+
+async function updateOrderStatus(orderNo, newStatus) {
+  if (!orderNo || !newStatus) return;
+  const session = await getFreshSession();
+  if (!session) { location.replace('admin-login.html'); return; }
+  try {
+    const res = await fetch('/api/admin/orders', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token, 'Accept': 'application/json' },
+      body: JSON.stringify({ order_no: orderNo, status: newStatus })
+    });
+    const body = await res.json().catch(function () { return {}; });
+    if (!res.ok || !body.success) throw new Error(body.error || ('HTTP ' + res.status));
+    var o = allOrders.find(function (x) { return x.order_no === orderNo; });
+    if (o) o.status = newStatus;
+    showToast('Order ' + orderNo + ' updated to ' + newStatus.replace('_', ' '), 'success');
     renderAdminOrders();
     renderStats();
+  } catch (e) {
+    showToast('Update failed: ' + (e.message || 'error'), 'error');
+    renderAdminOrders(); // revert the select to the server-side status
   }
 }
+
 function filterOrders(status) {
   currentFilter = status;
-  document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab' + status.charAt(0).toUpperCase() + status.slice(1)).classList.add('active');
+  document.querySelectorAll('.nav-pill').forEach(function (p) {
+    p.classList.toggle('active', p.dataset && p.dataset.filter === status);
+  });
   renderAdminOrders();
 }
+
 function renderStats() {
-  const orders = getOrders();
   const stats = {
-    total: orders.length,
-    pending: orders.filter(o => o.status === 'pending').length,
-    confirmed: orders.filter(o => o.status === 'confirmed').length,
-    active: orders.filter(o => o.status === 'active').length,
-    completed: orders.filter(o => o.status === 'completed').length,
-    cancelled: orders.filter(o => o.status === 'cancelled').length,
-    revenue: orders.filter(o => o.status !== 'cancelled').reduce((sum, o) => sum + o.total, 0)
+    total: allOrders.length,
+    pending: allOrders.filter(function (o) { return o.status === 'pending'; }).length,
+    confirmed: allOrders.filter(function (o) { return o.status === 'confirmed'; }).length,
+    active: allOrders.filter(function (o) { return o.status === 'active'; }).length,
+    change: allOrders.filter(function (o) { return o.status === 'change_pending'; }).length,
+    completed: allOrders.filter(function (o) { return o.status === 'completed'; }).length,
+    cancelled: allOrders.filter(function (o) { return o.status === 'cancelled'; }).length,
+    revenue: allOrders.filter(function (o) { return o.status !== 'cancelled'; }).reduce(function (sum, o) { return sum + (Number(o.price_cny) || 0); }, 0)
   };
   document.getElementById('adminStats').innerHTML = `
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--primary);">${stats.total}</div><div style="font-size:12px; color:var(--text-secondary);">Total Orders</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--accent);">${stats.pending}</div><div style="font-size:12px; color:var(--text-secondary);">Pending</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--primary);">${stats.confirmed}</div><div style="font-size:12px; color:var(--text-secondary);">Confirmed</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--primary);">${stats.active}</div><div style="font-size:12px; color:var(--text-secondary);">Active</div></div>
+    <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--accent);">${stats.change}</div><div style="font-size:12px; color:var(--text-secondary);">Change Requests</div></div>
     <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--primary);">${stats.completed}</div><div style="font-size:12px; color:var(--text-secondary);">Completed</div></div>
-    <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--accent);">¥${stats.revenue}</div><div style="font-size:12px; color:var(--text-secondary);">Revenue</div></div>
+    <div class="card" style="padding:16px; text-align:center;"><div style="font-size:24px; font-weight:700; color:var(--accent);">¥${stats.revenue.toLocaleString()}</div><div style="font-size:12px; color:var(--text-secondary);">Revenue (non-cancelled)</div></div>
   `;
 }
-renderAdminOrders();
-renderStats();
+
+async function adminSignOut() {
+  const supa = getSupa();
+  try { if (supa) await supa.auth.signOut(); } catch (_) {}
+  try { localStorage.removeItem('vcg_admin_session'); } catch (_) {}
+  location.href = 'admin-login.html';
+}
+
+adminInit();
 </script>
 
 <script src="js/security.js"></script>

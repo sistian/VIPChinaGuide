@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://suhvbuhppiqqaylvdzsg.supabase.co; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -113,6 +113,12 @@
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr 1fr!important;gap:16px!important;align-items:start}.footer-col{text-align:left!important;min-width:0}.footer-col *{overflow-wrap:break-word;word-break:break-word}.footer-col h4{text-align:center}}
 </style>
 <link rel="canonical" href="https://www.vipchinaguide.com/admin-login.html">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.SUPABASE_URL = 'https://suhvbuhppiqqaylvdzsg.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
+</script>
+<script src="lib/supabase-client.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -300,8 +306,26 @@
 <script>
 function handleAdminLogin(e) {
   e.preventDefault();
-  showToast('Admin login successful! Redirecting...', 'success');
-  setTimeout(() => { location.href = 'admin.html'; }, 800);
+  const form = e.target;
+  const email = form.email.value.trim();
+  const password = form.password.value;
+  if (!email || !password) { showToast('Please enter email and password.', 'error'); return; }
+  const btn = form.querySelector('button[type=submit]');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
+  if (!supabase) { showToast('Auth not configured.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
+  supabase.auth.signInWithPassword({ email: email, password: password })
+    .then(function(res) {
+      if (res.error) { showToast(res.error.message || 'Sign in failed.', 'error'); btn.disabled = false; btn.textContent = orig; }
+      else {
+        // 登录成功，写入本地标记，跳转后台
+        try { localStorage.setItem('vcg_admin_session', '1'); } catch(_){}
+        showToast('Admin login successful! Redirecting...', 'success');
+        setTimeout(function() { location.href = 'admin.html'; }, 800);
+      }
+    })
+    .catch(function(err) { showToast('Network error, please retry.', 'error'); btn.disabled = false; btn.textContent = orig; });
 }
 </script>
 
