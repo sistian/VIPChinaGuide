@@ -36,6 +36,19 @@ dd{font-weight:600;text-align:right;word-break:break-word}
 .note{margin-top:20px;padding:14px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;color:#92400e;font-size:13px;line-height:1.6}
 .help{margin-top:16px;text-align:center;color:var(--text-light);font-size:13px;line-height:1.8}
 .help a{color:var(--primary);text-decoration:none;font-weight:600}
+.act-note{margin-top:20px;padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.6}
+.act-btns{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.btn{flex:1;min-width:140px;padding:13px 18px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;border:none}
+.btn-resched{background:var(--primary);color:#fff}
+.btn-cancel{background:#fff;color:#b91c1c;border:2px solid #fecaca}
+.btn-ghost{background:#f1f5f9;color:var(--text);border:1px solid var(--border)}
+.res-form{display:none;margin-top:20px;padding:18px;background:#f8fafc;border:1px solid var(--border);border-radius:12px;text-align:left}
+.res-form label{display:block;font-size:13px;font-weight:600;color:var(--text);margin:12px 0 6px}
+.res-form input,.res-form textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit}
+.res-form textarea{min-height:64px;resize:vertical}
+.act-msg{margin-top:16px;font-size:13px;line-height:1.6;display:none;padding:12px 14px;border-radius:10px}
+.act-msg.ok{display:block;background:#d1fae5;color:#065f46}
+.act-msg.err{display:block;background:#fee2e2;color:#991b1b}
 .footer{margin-top:auto;padding:24px 0 8px;color:#94a3b8;font-size:12px;text-align:center}
 </style>
 </head>
@@ -75,6 +88,28 @@ dd{font-weight:600;text-align:right;word-break:break-word}
         <div><dt>Submitted</dt><dd id="f-created">—</dd></div>
       </dl>
       <div class="note" id="note"></div>
+
+      <div id="actions" style="display:none">
+        <div id="chgNotice" class="act-note" style="display:none;background:#ede9fe;color:#5b21b6">Your reschedule request is pending. Requested new date: <b id="chgDate"></b>. We'll confirm by email within 24 hours.</div>
+        <div class="act-btns">
+          <button type="button" id="btnResched" class="btn btn-resched">📅 Request Reschedule</button>
+          <button type="button" id="btnCancel" class="btn btn-cancel">✕ Cancel Booking</button>
+        </div>
+        <div id="cancelContact" class="act-note" style="display:none;background:#fff7ed;color:#9a3412">This booking is within 7 days of departure (or has no exact date yet), so self-service cancellation is closed. Contact us and our team will help right away:<br>📧 <a href="mailto:82839626@qq.com" style="color:var(--primary);font-weight:600">82839626@qq.com</a> · 📱 WhatsApp: +86 155 2777 1775</div>
+        <form id="resForm" class="res-form">
+          <b style="font-size:14px">📅 Request a New Travel Date</b>
+          <label for="newDate">New date *</label>
+          <input type="date" id="newDate" required>
+          <label for="newNote">Reason / note (optional)</label>
+          <textarea id="newNote" maxlength="500" placeholder="e.g. Flight changed, prefer one week later…"></textarea>
+          <div class="act-btns" style="margin-top:16px">
+            <button type="submit" id="resSubmit" class="btn btn-resched">Submit Request</button>
+            <button type="button" id="resClose" class="btn btn-ghost">Back</button>
+          </div>
+          <p style="font-size:12px;color:var(--text-light);margin-top:10px;line-height:1.6">Reschedules are free but need our confirmation. Your request will be reviewed within 24 hours.</p>
+        </form>
+        <p id="actMsg" class="act-msg"></p>
+      </div>
     </div>
   </div>
 
@@ -130,9 +165,88 @@ dd{font-weight:600;text-align:right;word-break:break-word}
       cancelled: 'This order has been cancelled. If you believe this is a mistake, contact us right away.'
     };
     $('note').textContent = notes[o.status] || notes.pending;
+    initActions(o);
     show('order');
   })
   .catch(function(){ show('error'); });
+
+  // ———— P5：自助改期 / 免费取消 ————
+  function apiMsg(text, ok) {
+    var el = $('actMsg');
+    el.className = 'act-msg ' + (ok ? 'ok' : 'err');
+    el.textContent = text;
+  }
+  function daysUntil(d) {
+    if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return null;
+    return Math.floor((new Date(d + 'T00:00:00Z').getTime() - Date.now()) / 86400000);
+  }
+  function manageCall(payload) {
+    return fetch('/api/orders', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(Object.assign({ order_no: orderNo, token: token }, payload))
+    }).then(function(res) {
+      return res.json().catch(function(){ return {}; }).then(function(body) {
+        return { ok: res.ok && body.success !== false, status: res.status, body: body };
+      });
+    });
+  }
+  function initActions(o) {
+    var wrap = $('actions');
+    if (!wrap) return;
+    if (o.status === 'change_pending') {
+      wrap.style.display = 'block';
+      $('chgNotice').style.display = 'block';
+      $('chgDate').textContent = (o.change_request && o.change_request.new_date) || '—';
+      $('btnResched').style.display = 'none'; // 已有待审批申请，不能重复提交
+    } else if (o.status !== 'pending' && o.status !== 'confirmed') {
+      wrap.style.display = 'none'; return;
+    } else {
+      wrap.style.display = 'block';
+    }
+
+    // 免费取消资格（行程前 ≥ 7 天且有具体日期）
+    var days = daysUntil(o.travel_date);
+    var canFree = days !== null && days >= 7;
+    if (!canFree) {
+      $('btnCancel').style.display = 'none';
+      $('cancelContact').style.display = 'block';
+    }
+
+    $('btnResched').addEventListener('click', function() {
+      var f = $('resForm');
+      f.style.display = f.style.display === 'none' ? 'block' : 'none';
+      var inp = $('newDate');
+      var t = new Date(Date.now() + 86400000), mx = new Date(Date.now() + 730 * 86400000);
+      var iso = function(d){ return d.toISOString().slice(0,10); };
+      inp.min = iso(t); inp.max = iso(mx);
+      if (o.travel_date) inp.value = o.travel_date;
+    });
+    $('resClose').addEventListener('click', function() { $('resForm').style.display = 'none'; });
+
+    $('resForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var nd = $('newDate').value, nt = $('newNote').value.trim();
+      if (!nd) { apiMsg('Please pick a new date.', false); return; }
+      if (o.travel_date && nd === o.travel_date) { apiMsg('That is already your travel date — please pick a different date.', false); return; }
+      var btn = $('resSubmit'); btn.disabled = true; btn.textContent = 'Submitting…';
+      manageCall({ action: 'reschedule', new_date: nd, note: nt }).then(function(r) {
+        if (r.ok) { apiMsg('✅ Request submitted! We\'ll confirm by email within 24 hours. Refreshing…', true); setTimeout(function(){ location.reload(); }, 1500); }
+        else { btn.disabled = false; btn.textContent = 'Submit Request'; apiMsg(r.body && r.body.error || 'Request failed, please retry.', false); }
+      }).catch(function() { btn.disabled = false; btn.textContent = 'Submit Request'; apiMsg('Network error, please retry.', false); });
+    });
+
+    $('btnCancel').addEventListener('click', function() {
+      if (!window.confirm('Cancel this booking? This cannot be undone.')) return;
+      if (!window.confirm('Are you sure? Free cancellation is final — you\'ll receive a confirmation email.')) return;
+      var reason = (window.prompt('Optional: tell us why you\'re cancelling (for service improvement):') || '').slice(0, 500);
+      var btn = $('btnCancel'); btn.disabled = true;
+      manageCall({ action: 'cancel', note: reason }).then(function(r) {
+        if (r.ok) { apiMsg('✅ Booking cancelled. A confirmation email is on its way. Refreshing…', true); setTimeout(function(){ location.reload(); }, 1500); }
+        else { btn.disabled = false; apiMsg(r.body && r.body.error || 'Cancel failed, please retry.', false); }
+      }).catch(function() { btn.disabled = false; apiMsg('Network error, please retry.', false); });
+    });
+  }
 })();
 </script>
 </body>

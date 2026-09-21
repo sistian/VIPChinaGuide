@@ -409,7 +409,7 @@ function renderAdminOrders() {
                 <td>${esc(name)}<br><span style="font-size:12px; color:var(--text-secondary);">${esc(o.email || '')}</span></td>
                 <td>${esc(o.city || '—')}</td>
                 <td>${typeLabel(o.service_type)}<br><span style="font-size:12px; color:var(--text-secondary);">${esc(levelLabel(o.guide_level))}${o.num_days ? ' · ' + esc(o.num_days) + 'd' : ''}</span></td>
-                <td>${dateShown ? esc(dateShown) : '—'}</td>
+                <td>${dateShown ? esc(dateShown) : '—'}${(o.status === 'change_pending' && o.change_request && o.change_request.new_date) ? `<br><span style="color:#6d28d9;font-weight:700;">→ ${esc(o.change_request.new_date)}</span><br><span style="font-size:11px;color:var(--text-secondary);">reschedule requested</span>` : ''}</td>
                 <td>${esc(o.travelers || '—')}</td>
                 <td><strong style="color:var(--accent);">${o.price_cny ? '¥' + Number(o.price_cny).toLocaleString() : '—'}</strong></td>
                 <td><span class="badge ${STATUS_CLASS[o.status] || 'status-pending'}">${esc(String(o.status || '').replace('_', ' '))}</span></td>
@@ -417,6 +417,11 @@ function renderAdminOrders() {
                   <select onchange="updateOrderStatus('${esc(o.order_no)}', this.value)" style="padding:4px 8px; font-size:12px; border-radius:var(--radius-sm); border:1px solid rgba(0,0,0,0.08);">
                     ${opts}
                   </select>
+                  ${(o.status === 'change_pending' && o.change_request && o.change_request.new_date) ? `
+                  <div style="margin-top:6px;display:flex;gap:6px;">
+                    <button type="button" onclick="approveChange('${esc(o.order_no)}')" style="padding:4px 10px;font-size:12px;font-weight:700;border:none;border-radius:6px;background:#16a34a;color:#fff;cursor:pointer;">✓ Approve</button>
+                    <button type="button" onclick="declineChange('${esc(o.order_no)}')" style="padding:4px 10px;font-size:12px;font-weight:700;border:none;border-radius:6px;background:#fee2e2;color:#b91c1c;cursor:pointer;">✕ Decline</button>
+                  </div>` : ''}
                 </td>
               </tr>
             `;
@@ -425,6 +430,34 @@ function renderAdminOrders() {
       </table>
     </div>
   `;
+}
+
+// ———— P5 改期审批 ————
+async function approveChange(orderNo) {
+  if (!window.confirm('Approve this reschedule request? The new date will be applied and the customer notified.')) return;
+  await changeAction(orderNo, { action: 'approve_change' }, 'Reschedule approved');
+}
+async function declineChange(orderNo) {
+  var reason = window.prompt('Optional reason for declining (will be emailed to the customer):') || '';
+  await changeAction(orderNo, { action: 'reject_change', note: reason.slice(0, 500) }, 'Reschedule declined');
+}
+async function changeAction(orderNo, payload, okMsg) {
+  const session = await getFreshSession();
+  if (!session) { location.replace('admin-login.html'); return; }
+  try {
+    const res = await fetch('/api/admin/orders', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token, 'Accept': 'application/json' },
+      body: JSON.stringify(Object.assign({ order_no: orderNo }, payload))
+    });
+    const body = await res.json().catch(function () { return {}; });
+    if (!res.ok || !body.success) throw new Error(body.error || ('HTTP ' + res.status));
+    showToast(okMsg + ' — ' + orderNo, 'success');
+    await loadOrders(true);
+  } catch (e) {
+    showToast('Action failed: ' + (e.message || 'error'), 'error');
+    await loadOrders(true);
+  }
 }
 
 async function updateOrderStatus(orderNo, newStatus) {

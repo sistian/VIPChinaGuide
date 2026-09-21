@@ -95,7 +95,91 @@ export function renderOrderTable(o) {
   </div>`;
 }
 
-// 客户下单确认邮件（英文，含订单管理链接）
+// 客户提交改期申请 → 通知管理员审批
+export function renderRescheduleRequestAdmin(o, reqDate, note) {
+  const e = escapeHtml;
+  const fullName = e(`${o.first_name || ''} ${o.last_name || ''}`.trim());
+  return `
+  <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+    <h2 style="color:#0d9488;border-bottom:2px solid #0d9488;padding-bottom:10px">📅 VIPChinaGuide 改期申请（待审批）</h2>
+    <table style="border-collapse:collapse;width:100%;margin-top:20px">
+      <tr style="background:#f8fafc"><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold;width:140px">订单编号</td><td style="padding:12px;border:1px solid #e2e8f0">${e(o.order_no)}</td></tr>
+      <tr><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">客户</td><td style="padding:12px;border:1px solid #e2e8f0">${fullName} &lt;${e(o.email)}&gt;</td></tr>
+      <tr style="background:#f8fafc"><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">原日期</td><td style="padding:12px;border:1px solid #e2e8f0">${e(o.travel_date || o.travel_month || '—')}</td></tr>
+      <tr><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">申请新日期</td><td style="padding:12px;border:1px solid #e2e8f0"><b style="color:#f97316;font-size:16px">${e(reqDate)}</b></td></tr>
+      <tr style="background:#f8fafc"><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">客户备注</td><td style="padding:12px;border:1px solid #e2e8f0">${e(note || '—')}</td></tr>
+      <tr><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">当前状态</td><td style="padding:12px;border:1px solid #e2e8f0">change_pending（待审批）</td></tr>
+    </table>
+    <p style="margin-top:20px">请到管理后台审批：<a href="${e(process.env.FRONTEND_URL || 'https://www.vipchinaguide.com').split(',')[0].trim().replace(/\/+$/, '')}/admin.html" style="color:#0d9488">Admin Dashboard → Change Req</a></p>
+    <p style="color:#64748b;font-size:13px">本邮件由 VIPChinaGuide 自动发送</p>
+  </div>`;
+}
+
+// 改期审批结果 → 通知客户（approved / declined）
+export function renderChangeDecisionCustomer(o, approved, newDate, reason, manageUrl) {
+  const e = escapeHtml;
+  const banner = approved
+    ? `<div style="font-size:40px;text-align:center">✅</div><h2 style="color:#0d9488;text-align:center;margin:12px 0 4px">Reschedule Confirmed!</h2><p style="color:#64748b;text-align:center;margin:0">Your new travel date has been approved.</p>`
+    : `<div style="font-size:40px;text-align:center">ℹ️</div><h2 style="color:#64748b;text-align:center;margin:12px 0 4px">Reschedule Request Declined</h2><p style="color:#64748b;text-align:center;margin:0">Unfortunately we could not accommodate your requested date.</p>`;
+  return `
+  <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f8fafc;padding:24px;border-radius:12px">
+    <div style="background:#fff;border-radius:12px;padding:32px;border:1px solid #e2e8f0">
+      ${banner}
+      <table style="border-collapse:collapse;width:100%;margin:20px 0">
+        <tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">Order No.</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:bold">${e(o.order_no)}</td></tr>
+        <tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">City</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:bold">${e(o.city || '—')}</td></tr>
+        <tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">${approved ? 'New Travel Date' : 'Requested Date'}</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:bold;color:${approved ? '#16a34a' : '#94a3b8'}">${e(newDate || '—')}</td></tr>
+        ${approved ? `<tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">Previous Date</td><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#94a3b8;text-decoration:line-through">${e(o.travel_date || o.travel_month || '—')}</td></tr>` : ''}
+        ${reason ? `<tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">Note from us</td><td style="padding:8px 12px;border:1px solid #e2e8f0">${e(reason)}</td></tr>` : ''}
+      </table>
+      <div style="text-align:center;margin:24px 0">
+        <a href="${e(manageUrl)}" style="display:inline-block;background:#0d9488;color:#fff;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:bold">View My Order</a>
+        <p style="color:#94a3b8;font-size:12px;margin-top:10px">This private link is valid for 72 hours</p>
+      </div>
+      <p style="border-top:1px solid #e2e8f0;padding-top:16px;color:#64748b;font-size:13px">Questions? Just reply to this email, or contact us:<br>📧 82839626@qq.com · 📱 WhatsApp / WeChat: +86 155 2777 1775</p>
+    </div>
+    <p style="text-align:center;color:#94a3b8;font-size:12px;margin-top:16px">VIPChinaGuide · Private China Tours with Licensed Guides</p>
+  </div>`;
+}
+
+// 客户取消订单 → 通知管理员
+export function renderCancelAdmin(o, reason) {
+  const e = escapeHtml;
+  const fullName = e(`${o.first_name || ''} ${o.last_name || ''}`.trim());
+  const priceStr = o.price_cny ? '¥' + e(o.price_cny) : '—';
+  return `
+  <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+    <h2 style="color:#dc2626;border-bottom:2px solid #dc2626;padding-bottom:10px">❌ VIPChinaGuide 客户已取消订单（免费取消）</h2>
+    <table style="border-collapse:collapse;width:100%;margin-top:20px">
+      <tr style="background:#f8fafc"><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold;width:140px">订单编号</td><td style="padding:12px;border:1px solid #e2e8f0">${e(o.order_no)}</td></tr>
+      <tr><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">客户</td><td style="padding:12px;border:1px solid #e2e8f0">${fullName} &lt;${e(o.email)}&gt;</td></tr>
+      <tr style="background:#f8fafc"><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">行程日期</td><td style="padding:12px;border:1px solid #e2e8f0">${e(o.travel_date || o.travel_month || '—')}</td></tr>
+      <tr><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">取消原因</td><td style="padding:12px;border:1px solid #e2e8f0">${e(reason || 'Not specified')}</td></tr>
+      <tr style="background:#f8fafc"><td style="padding:12px;border:1px solid #e2e8f0;font-weight:bold">金额</td><td style="padding:12px;border:1px solid #e2e8f0">${priceStr}</td></tr>
+    </table>
+    <p style="margin-top:20px;color:#64748b;font-size:13px">客户通过邮件管理链接自助取消（行程前 ≥ 7 天免费取消）。如需退款操作请线下处理。</p>
+  </div>`;
+}
+
+// 取消确认 → 通知客户
+export function renderCancelConfirmCustomer(o) {
+  const e = escapeHtml;
+  return `
+  <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f8fafc;padding:24px;border-radius:12px">
+    <div style="background:#fff;border-radius:12px;padding:32px;border:1px solid #e2e8f0">
+      <div style="font-size:40px;text-align:center">🤝</div>
+      <h2 style="color:#0d9488;text-align:center;margin:12px 0 4px">Booking Cancelled</h2>
+      <p style="color:#64748b;text-align:center;margin:0 0 20px">Your order has been cancelled as requested (free cancellation, ≥ 7 days before departure).</p>
+      <table style="border-collapse:collapse;width:100%">
+        <tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">Order No.</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:bold">${e(o.order_no)}</td></tr>
+        <tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">City</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:bold">${e(o.city || '—')}</td></tr>
+        <tr><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#64748b;font-size:13px">Travel Date</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:bold">${e(o.travel_date || o.travel_month || '—')}</td></tr>
+      </table>
+      <p style="margin-top:20px;color:#334155;font-size:14px">If this was a mistake, contact us within 24 hours and we'll do our best to help.<br>📧 82839626@qq.com · 📱 WhatsApp: +86 155 2777 1775</p>
+    </div>
+    <p style="text-align:center;color:#94a3b8;font-size:12px;margin-top:16px">VIPChinaGuide · Private China Tours with Licensed Guides</p>
+  </div>`;
+}
 export function renderCustomerConfirmation(o, manageUrl) {
   const e = escapeHtml;
   const item = (label, value) =>

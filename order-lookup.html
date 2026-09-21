@@ -535,6 +535,7 @@ a{text-decoration:none;color:inherit}
 </footer>
 
 <script>
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 const cityNames = {beijing:'Beijing',shanghai:'Shanghai',xian:"Xi'an",chengdu:'Chengdu',guilin:'Guilin',wuhan:'Wuhan',changsha:'Changsha',shiyan:'Shiyan / Wudang Mountain',zhangjiajie:'Zhangjiajie',chongqing:'Chongqing',lhasa:'Lhasa',urumqi:'Urumqi',dali:'Dali',lijiang:'Lijiang',xishuangbanna:'Xishuangbanna',guangzhou:'Guangzhou',shenzhen:'Shenzhen',hangzhou:'Hangzhou'};
 const typeNames = {halfday:'Half Day (4h)',fullday:'Full Day (8h)',multiday:'Multi-Day',airport:'Airport Transfer'};
 const levelNames = {escort:'Escort Guide',expert:'Expert Guide'};
@@ -552,7 +553,7 @@ function lookupOrder(){
     return;
   }
 
-  const statusClass = 'status-' + order.status;
+  const statusClass = 'status-' + String(order.status).replace(/[^a-z_]/g,'');
   result.innerHTML = `
     <div style="background:#d1fae5;border-radius:12px;padding:20px;margin-top:24px;text-align:center">
       <div style="font-size:32px;margin-bottom:8px">✅</div>
@@ -562,21 +563,21 @@ function lookupOrder(){
     <div class="order-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
         <div>
-          <div style="font-size:13px;color:var(--text-light);margin-bottom:4px">Order #${order.id}</div>
-          <h3 style="font-size:20px;margin-bottom:4px">${cityNames[order.city]||order.city} — ${typeNames[order.type]||order.type}</h3>
-          <div style="font-size:14px;color:var(--text-light)">${order.date}</div>
+          <div style="font-size:13px;color:var(--text-light);margin-bottom:4px">Order #${esc(order.id)}</div>
+          <h3 style="font-size:20px;margin-bottom:4px">${esc(cityNames[order.city]||order.city)} — ${esc(typeNames[order.type]||order.type)}</h3>
+          <div style="font-size:14px;color:var(--text-light)">${esc(order.date)}</div>
         </div>
-        <span class="status-badge ${statusClass}">${order.status}</span>
+        <span class="status-badge ${statusClass}">${esc(order.status)}</span>
       </div>
       <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:16px;font-size:14px;color:var(--text-light)">
-        <div>👤 ${levelNames[order.level]||order.level}</div>
-        <div>👥 ${order.travelers} traveler${order.travelers>1?'s':''}</div>
-        <div>🏨 ${order.hotel}</div>
+        <div>👤 ${esc(levelNames[order.level]||order.level)}</div>
+        <div>👥 ${esc(order.travelers)} traveler${order.travelers>1?'s':''}</div>
+        <div>🏨 ${esc(order.hotel)}</div>
       </div>
       <div style="border-top:1px solid var(--border);padding-top:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
           <span style="font-size:14px;color:var(--text-light)">Total</span>
-          <span style="font-size:22px;font-weight:700;color:var(--accent)">¥${order.price}</span>
+          <span style="font-size:22px;font-weight:700;color:var(--accent)">¥${esc(order.price)}</span>
         </div>
         <div style="background:#fff;border-radius:8px;padding:16px;font-size:13px;color:var(--text-light);line-height:1.6">
           <strong style="color:var(--text)">Customer Service Contact:</strong><br>

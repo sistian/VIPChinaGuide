@@ -1,8 +1,11 @@
 // P2 订单核心接口（同源 /api/orders）
 //
-// POST /api/orders  下单：校验 → 落库(含 manage_token SHA-256) → 管理员+客户双向邮件
+// POST  /api/orders  下单：校验 → 落库(含 manage_token SHA-256) → 管理员+客户双向邮件
 //                   Supabase 未配置时自动降级为"仅管理员邮件"（保持网站可用，等钥匙配好即自动落库）
-// GET  /api/orders?order_no=VCG-xxx&token=xxx  凭确认邮件里的管理链接查订单（无需注册）
+// GET   /api/orders?order_no=VCG-xxx&token=xxx  凭确认邮件里的管理链接查订单（无需注册）
+// PATCH /api/orders  凭 token 自助操作（P5）：
+//         { order_no, token, action: 'reschedule', new_date, note? }  → 改期申请（等管理员审批）
+//         { order_no, token, action: 'cancel', note? }               → 免费取消（行程前 ≥ 7 天）
 //
 // 依赖业务规则（2026-09-17 已确认）：
 //   - 游客可下单（user_id 为空）
@@ -11,12 +14,14 @@
 
 import crypto from 'node:crypto';
 import { cors, json, errJson, clientIp } from './_lib/respond.js';
-import { isEmail, str, int, isHoneypotTripped } from './_lib/validate.js';
+import { isEmail, str, int, isDate, isHoneypotTripped } from './_lib/validate.js';
 import { rateLimit } from './_lib/rate-limit.js';
 import { isDbConfigured, getDB } from './_lib/db.js';
-import { verifyManageToken } from './_lib/auth.js';
+import { verifyManageToken, newManageToken, hashToken } from './_lib/auth.js';
 import {
   sendMail, renderOrderTable, renderCustomerConfirmation,
+  renderRescheduleRequestAdmin, renderChangeDecisionCustomer,
+  renderCancelAdmin, renderCancelConfirmCustomer,
   adminNotifyEmail, mailerConfigured,
 } from './_lib/mailer.js';
 
@@ -111,8 +116,9 @@ export default async function handler(req, res) {
 
   if (req.method === 'POST') return createOrder(req, res);
   if (req.method === 'GET') return lookupOrder(req, res);
+  if (req.method === 'PATCH') return manageOrder(req, res);
 
-  res.setHeader('Allow', 'POST, GET, OPTIONS');
+  res.setHeader('Allow', 'POST, GET, PATCH, OPTIONS');
   return errJson(res, 405, 'Method not allowed');
 }
 
@@ -272,7 +278,7 @@ async function lookupOrder(req, res) {
 
   const db = getDB();
   const { data, error } = await db.from('orders')
-    .select('order_no,status,first_name,last_name,city,service_type,guide_level,num_days,travelers,travel_month,travel_date,hotel,requests,price_cny,payment_method,transaction_id,created_at,updated_at,manage_token_hash,manage_token_expires_at')
+    .select('order_no,status,change_request,first_name,last_name,city,service_type,guide_level,num_days,travelers,travel_month,travel_date,hotel,requests,price_cny,payment_method,transaction_id,created_at,updated_at,manage_token_hash,manage_token_expires_at')
     .eq('order_no', orderNo)
     .maybeSingle();
 
@@ -290,4 +296,144 @@ async function lookupOrder(req, res) {
   // 不返回 email/passport/dob 等敏感字段（链接可能被转发）
   const { manage_token_hash, manage_token_expires_at, ...safe } = data;
   return json(res, 200, { success: true, order: safe });
+}
+
+// ———————————————— PATCH 凭 token 自助改期 / 免费取消（P5） ————————————————
+
+// 免费取消资格：具体行程日期存在且距今 ≥ 7 天（无具体日期/临近出发 → 转人工）
+function freeCancelEligible(travelDateStr) {
+  if (!isDate(travelDateStr)) return false;
+  const diffDays = Math.floor((new Date(travelDateStr + 'T00:00:00Z').getTime() - Date.now()) / 86400000);
+  return diffDays >= 7;
+}
+
+async function manageOrder(req, res) {
+  const rl = rateLimit('orders-manage:' + clientIp(req), 15, 10 * 60 * 1000);
+  if (!rl.ok) {
+    return errJson(res, 429, 'Too many requests, please retry later', { retryAfterSec: rl.retryAfterSec });
+  }
+  if (!isDbConfigured()) return errJson(res, 503, 'Order service not available yet');
+
+  const body = req.body || {};
+  const orderNo = str(body.order_no, 40);
+  const token = str(body.token, 200);
+  const action = str(body.action, 20);
+  const note = str(body.note, 500);
+  const newDate = isDate(body.new_date) ? body.new_date : null;
+
+  if (!orderNo || !token) return errJson(res, 400, 'Missing required fields: order_no, token');
+  if (action !== 'reschedule' && action !== 'cancel') {
+    return errJson(res, 400, "action must be 'reschedule' or 'cancel'");
+  }
+
+  const db = getDB();
+  const { data: order, error } = await db.from('orders')
+    .select('id,order_no,status,change_request,travel_date,travel_month,first_name,last_name,email,city,price_cny,manage_token_hash,manage_token_expires_at')
+    .eq('order_no', orderNo)
+    .maybeSingle();
+  if (error) {
+    console.error('[orders:manage] lookup failed:', error.message);
+    return errJson(res, 500, 'Lookup failed');
+  }
+  if (!order || !verifyManageToken(order, token)) {
+    return errJson(res, 404, 'Order not found'); // 防探测
+  }
+
+  const mailView = {
+    order_no: order.order_no,
+    first_name: order.first_name, last_name: order.last_name,
+    email: order.email, city: order.city,
+    travel_date: order.travel_date || '', travel_month: order.travel_month || '',
+    price_cny: order.price_cny,
+  };
+
+  // ———— 改期申请 ————
+  if (action === 'reschedule') {
+    if (!['pending', 'confirmed'].includes(order.status)) {
+      return errJson(res, 409, `Reschedule not available for status '${order.status}'`);
+    }
+    if (!newDate) return errJson(res, 400, 'new_date must be a valid date (YYYY-MM-DD)');
+
+    const today = new Date(); today.setHours(0,0,0,0);
+    const d = new Date(newDate + 'T00:00:00Z');
+    const minDay = new Date(today.getTime() + 86400000);   // 至少明天
+    const maxDay = new Date(today.getTime() + 730 * 86400000); // 最远 2 年
+    if (d < minDay || d > maxDay) {
+      return errJson(res, 400, 'new_date must be between tomorrow and 2 years from now');
+    }
+    if (order.travel_date && order.travel_date === newDate) {
+      return errJson(res, 400, 'new_date is the same as current travel date');
+    }
+
+    const { error: updErr } = await db.from('orders').update({
+      status: 'change_pending',
+      change_request: { new_date: newDate, note: note || null, requested_at: new Date().toISOString() },
+    }).eq('id', order.id);
+
+    if (updErr) {
+      console.error('[orders:manage] reschedule update failed:', updErr.message);
+      return errJson(res, 500, 'Failed to submit request');
+    }
+
+    db.from('order_events').insert({
+      order_id: order.id, actor: 'customer', event_type: 'date_change_requested',
+      detail: { from: order.travel_date || order.travel_month, to: newDate, note: note || null },
+    }).then(() => {}).catch((e) => console.error('[orders:manage] event insert failed:', e && e.message));
+
+    // 通知管理员（尽力而为，不阻塞客户请求）
+    sendMail({
+      to: adminNotifyEmail(),
+      subject: `【待审批】改期申请 ${order.order_no}: ${order.travel_date || order.travel_month || '—'} → ${newDate}`,
+      html: renderRescheduleRequestAdmin(mailView, newDate, note),
+      replyTo: order.email,
+    }).then(() => logEmail(db, order.id, adminNotifyEmail(), '改期申请通知', true, null))
+      .catch((e) => logEmail(db, order.id, adminNotifyEmail(), '改期申请通知', false, e));
+
+    return json(res, 200, { success: true, status: 'change_pending', message: 'Reschedule request submitted. We will confirm by email within 24 hours.' });
+  }
+
+  // ———— 免费取消 ————
+  if (!['pending', 'confirmed', 'change_pending'].includes(order.status)) {
+    return errJson(res, 409, `Cancel not available for status '${order.status}'`);
+  }
+  if (!freeCancelEligible(order.travel_date)) {
+    // 无具体日期或 7 天内 → 转人工，不动状态
+    return errJson(res, 422, 'Free cancellation (≥ 7 days before departure) is not available for this order. Please contact us and our team will help.', { contact_required: true });
+  }
+
+  const { error: cancelErr } = await db.from('orders').update({
+    status: 'cancelled',
+    cancel_reason: note || 'Cancelled by customer (free cancellation)',
+    change_request: null,
+  }).eq('id', order.id);
+
+  if (cancelErr) {
+    console.error('[orders:manage] cancel update failed:', cancelErr.message);
+    return errJson(res, 500, 'Failed to cancel order');
+  }
+
+  db.from('order_events').insert({
+    order_id: order.id, actor: 'customer', event_type: 'cancelled',
+    detail: { reason: note || null, was_change_pending: order.status === 'change_pending' },
+  }).then(() => {}).catch((e) => console.error('[orders:manage] event insert failed:', e && e.message));
+
+  const mails = [
+    sendMail({
+      to: adminNotifyEmail(),
+      subject: `【已取消】订单 ${order.order_no} 客户免费取消`,
+      html: renderCancelAdmin(mailView, note),
+      replyTo: order.email,
+    }),
+    sendMail({
+      to: order.email,
+      subject: `Your VIPChinaGuide Booking ${order.order_no} has been cancelled`,
+      html: renderCancelConfirmCustomer(mailView),
+      replyTo: adminNotifyEmail(),
+    }),
+  ];
+  Promise.allSettled(mails).then((rs) => {
+    rs.forEach((r, i) => logEmail(db, order.id, i === 0 ? adminNotifyEmail() : order.email, '取消通知', r.status === 'fulfilled', r.reason));
+  });
+
+  return json(res, 200, { success: true, status: 'cancelled', message: 'Your booking has been cancelled. A confirmation email is on its way.' });
 }
