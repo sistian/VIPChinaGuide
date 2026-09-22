@@ -4172,7 +4172,7 @@ function handleHomeSignUp(e) {
   supabase.auth.signUp({ email: email, password: password, options: { data: { full_name: name } } })
     .then(function (res) {
       if (res.error) {
-        homeToast(res.error.message || 'Sign up failed.', 'error');
+        homeToast((/already (been )?registered/i.test(res.error.message || '') ? 'This email already has an account — please sign in instead.' : (res.error.message || 'Sign up failed.')), 'error');
         btn.disabled = false; btn.textContent = orig;
       } else if (res.data && res.data.session) {
         // 无需邮箱验证：已直接登录，跳转账户页
