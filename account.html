@@ -146,6 +146,16 @@ window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
 </section>
 <section class="section" style="padding:40px 0 80px;">
   <div class="container" style="max-width:900px;">
+    <div id="adminBar" class="card" style="display:none;padding:20px 26px;margin-bottom:22px;border:2px solid var(--primary);align-items:center;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span style="font-size:26px;line-height:1">🛡️</span>
+        <div>
+          <strong style="font-size:16px;">Administrator Account</strong>
+          <div style="font-size:13px;color:var(--text-secondary);">You are signed in as an admin of VIPChinaGuide.</div>
+        </div>
+      </div>
+      <a href="admin.html" class="btn-primary" style="margin-left:auto;padding:10px 22px;font-size:14px;text-decoration:none;display:inline-block;">Open Admin Dashboard →</a>
+    </div>
     <div id="accountContent">
       <div class="card" style="padding:40px; text-align:center;">
         <div style="font-size:48px; margin-bottom:16px;">🔒</div>
@@ -352,6 +362,13 @@ if (user) renderAccount(user, []);
     var meta = u.user_metadata || {};
     var appUser = { id: u.id, name: meta.full_name || u.email.split('@')[0], email: u.email };
     setUser(appUser);
+    // 管理员识别：读取本人 profiles.role（RLS 仅允许读自己的行）
+    supabase.from('profiles').select('role').single().then(function(pr) {
+      if (!pr.error && pr.data && pr.data.role === 'admin') {
+        var bar = document.getElementById('adminBar');
+        if (bar) bar.style.display = 'flex';
+      }
+    }).catch(function() {});
     // Fetch user's orders from Supabase
     supabase.from('orders').select('id,order_no,status,city,service_type,guide_level,num_days,travelers,travel_date,travel_month,hotel,price_cny,created_at').eq('user_id', u.id).order('created_at', {ascending:false}).then(function(qres) {
       renderAccount(appUser, qres.data || []);
