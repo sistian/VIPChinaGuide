@@ -619,6 +619,7 @@ window.SUPABASE_URL = 'https://suhvbuhppiqqaylvdzsg.supabase.co';
 window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
 </script>
 <script src="lib/supabase-client.js"></script>
+<script src="lib/captcha.js"></script>
 </head>
 <body>
 
@@ -3909,6 +3910,8 @@ document.getElementById('tourLightbox').addEventListener('contextmenu', function
         <input type="text" id="hsuName" placeholder="Full name" autocomplete="name" required style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;box-sizing:border-box;background:#fff;color:var(--text)">
         <input type="email" id="hsuEmail" placeholder="Email address" autocomplete="email" required style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;box-sizing:border-box;background:#fff;color:var(--text)">
         <input type="password" id="hsuPassword" placeholder="Password (at least 6 characters)" autocomplete="new-password" minlength="6" required style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;box-sizing:border-box;background:#fff;color:var(--text)">
+        <input type="password" id="hsuPassword2" placeholder="Confirm password" autocomplete="new-password" minlength="6" required style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;box-sizing:border-box;background:#fff;color:var(--text)">
+        <div id="tsHome"></div>
         <button type="submit" id="hsuBtn" style="width:100%;padding:15px;border:none;border-radius:10px;background:var(--primary);color:#fff;font-size:15px;font-weight:700;cursor:pointer;box-shadow:var(--shadow)">Create Account</button>
       </form>
       <div id="homeRegDone" style="display:none;text-align:center;padding:8px 0 4px">
@@ -4162,18 +4165,23 @@ function handleHomeSignUp(e) {
   var name = document.getElementById('hsuName').value.trim();
   var email = document.getElementById('hsuEmail').value.trim();
   var password = document.getElementById('hsuPassword').value;
+  var password2 = document.getElementById('hsuPassword2').value;
   if (!name || !email || !password) { homeToast('Please fill in all fields.', 'error'); return; }
   if (password.length < 6) { homeToast('Password must be at least 6 characters.', 'error'); return; }
+  if (password !== password2) { homeToast('Passwords do not match.', 'error'); return; }
+  if (window.VCGTurnstile && !VCGTurnstile.ready('tsHome')) { homeToast('Please complete the human verification.', 'error'); return; }
+  var captchaToken = window.VCGTurnstile ? VCGTurnstile.token('tsHome') : null;
   var btn = document.getElementById('hsuBtn');
   var orig = btn.textContent;
   btn.disabled = true; btn.textContent = 'Creating account...';
   var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
   if (!supabase) { homeToast('Sign-up is temporarily unavailable.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
-  supabase.auth.signUp({ email: email, password: password, options: { data: { full_name: name } } })
+  supabase.auth.signUp({ email: email, password: password, options: captchaToken ? { data: { full_name: name }, captchaToken: captchaToken } : { data: { full_name: name } } })
     .then(function (res) {
       if (res.error) {
         homeToast((/already (been )?registered/i.test(res.error.message || '') ? 'This email already has an account — please sign in instead.' : (res.error.message || 'Sign up failed.')), 'error');
         btn.disabled = false; btn.textContent = orig;
+        if (window.VCGTurnstile) VCGTurnstile.reset('tsHome');
       } else if (res.data && res.data.session) {
         // 无需邮箱验证：已直接登录，跳转账户页
         homeToast('Account created!', 'success');
@@ -4188,8 +4196,11 @@ function handleHomeSignUp(e) {
     .catch(function () {
       homeToast('Network error, please retry.', 'error');
       btn.disabled = false; btn.textContent = orig;
+      if (window.VCGTurnstile) VCGTurnstile.reset('tsHome');
     });
 }
+// 首页注册卡：页面加载后挂载人机验证组件（未配置时为无操作）
+if (window.VCGTurnstile) VCGTurnstile.mount('tsHome');
 
 // 已登录用户：注册卡换成账户入口
 (function () {

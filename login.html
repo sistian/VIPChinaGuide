@@ -119,6 +119,7 @@ window.SUPABASE_URL = 'https://suhvbuhppiqqaylvdzsg.supabase.co';
 window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
 </script>
 <script src="lib/supabase-client.js"></script>
+<script src="lib/captcha.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -160,6 +161,7 @@ window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
           <label class="form-label">Password</label>
           <input type="password" name="password" required class="form-input" placeholder="••••••••" autocomplete="current-password">
         </div>
+        <div class="form-group" id="tsSignin"></div>
         <button type="submit" class="btn-primary" style="width:100%; padding:14px; font-size:16px;">Sign In</button>
         <p style="text-align:center; font-size:13px; color:var(--text-secondary); margin-top:16px;">
           Don't have an account? <a href="javascript:void(0)" onclick="switchTab('signup')" style="color:var(--primary); font-weight:600;">Sign Up</a>
@@ -179,6 +181,11 @@ window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
           <input type="password" name="password" required class="form-input" placeholder="Min 6 characters" autocomplete="new-password">
           <p class="form-hint">Your password is encrypted and stored securely.</p>
         </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" name="password2" required class="form-input" placeholder="Re-enter your password" autocomplete="new-password">
+        </div>
+        <div class="form-group" id="tsSignup"></div>
         <button type="submit" class="btn-primary" style="width:100%; padding:14px; font-size:16px;">Create Account</button>
         <p style="text-align:center; font-size:13px; color:var(--text-secondary); margin-top:16px;">
           Already have an account? <a href="javascript:void(0)" onclick="switchTab('signin')" style="color:var(--primary); font-weight:600;">Sign In</a>
@@ -338,8 +345,8 @@ function switchTab(tab) {
   const signUpForm = document.getElementById('signUpForm');
   const tabSignIn = document.getElementById('tabSignIn');
   const tabSignUp = document.getElementById('tabSignUp');
-  if (tab === 'signup') { signInForm.style.display = 'none'; signUpForm.style.display = 'block'; tabSignIn.classList.remove('active'); tabSignUp.classList.add('active'); }
-  else { signInForm.style.display = 'block'; signUpForm.style.display = 'none'; tabSignUp.classList.remove('active'); tabSignIn.classList.add('active'); }
+  if (tab === 'signup') { signInForm.style.display = 'none'; signUpForm.style.display = 'block'; tabSignIn.classList.remove('active'); tabSignUp.classList.add('active'); if (window.VCGTurnstile) VCGTurnstile.mount('tsSignup'); }
+  else { signInForm.style.display = 'block'; signUpForm.style.display = 'none'; tabSignUp.classList.remove('active'); tabSignIn.classList.add('active'); if (window.VCGTurnstile) VCGTurnstile.mount('tsSignin'); }
 }
 function handleSignIn(e) {
   e.preventDefault();
@@ -347,13 +354,15 @@ function handleSignIn(e) {
   const email = form.email.value.trim();
   const password = form.password.value;
   if (!email || !password) { showToast('Please enter email and password.', 'error'); return; }
+  if (window.VCGTurnstile && !VCGTurnstile.ready('tsSignin')) { showToast('Please complete the human verification.', 'error'); return; }
+  var captchaToken = window.VCGTurnstile ? VCGTurnstile.token('tsSignin') : null;
   const btn = form.querySelector('button[type=submit]');
   const orig = btn.textContent; btn.disabled = true; btn.textContent = 'Signing in...';
   var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
   if (!supabase) { showToast('Auth not configured.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
-  supabase.auth.signInWithPassword({ email: email, password: password })
+  supabase.auth.signInWithPassword({ email: email, password: password, options: captchaToken ? { captchaToken: captchaToken } : {} })
     .then(function(res) {
-      if (res.error) { showToast(res.error.message || 'Sign in failed.', 'error'); btn.disabled = false; btn.textContent = orig; }
+      if (res.error) { showToast(res.error.message || 'Sign in failed.', 'error'); btn.disabled = false; btn.textContent = orig; if (window.VCGTurnstile) VCGTurnstile.reset('tsSignin'); }
       else {
         var user = res.data.user;
         var meta = user.user_metadata || {};
@@ -372,19 +381,22 @@ function handleSignUp(e) {
   const password = form.password.value;
   if (!name || !email || !password) { showToast('Please fill in all fields.', 'error'); return; }
   if (password.length < 6) { showToast('Password must be at least 6 characters.', 'error'); return; }
+  if (password !== form.password2.value) { showToast('Passwords do not match.', 'error'); return; }
+  if (window.VCGTurnstile && !VCGTurnstile.ready('tsSignup')) { showToast('Please complete the human verification.', 'error'); return; }
+  var captchaToken = window.VCGTurnstile ? VCGTurnstile.token('tsSignup') : null;
   const btn = form.querySelector('button[type=submit]');
   const orig = btn.textContent; btn.disabled = true; btn.textContent = 'Creating account...';
   var supabase = window.VCGSupabase ? window.VCGSupabase.init() : null;
   if (!supabase) { showToast('Auth not configured.', 'error'); btn.disabled = false; btn.textContent = orig; return; }
   supabase.auth.signUp({
     email: email, password: password,
-    options: { data: { full_name: name } }
+    options: captchaToken ? { data: { full_name: name }, captchaToken: captchaToken } : { data: { full_name: name } }
   })
     .then(function(res) {
       if (res.error) {
         var emsg = res.error.message || 'Sign up failed.';
         if (/already (been )?registered/i.test(emsg)) emsg = 'This email already has an account — please switch to Sign In.';
-        showToast(emsg, 'error'); btn.disabled = false; btn.textContent = orig; }
+        showToast(emsg, 'error'); btn.disabled = false; btn.textContent = orig; if (window.VCGTurnstile) VCGTurnstile.reset('tsSignup'); }
       else if (res.data && res.data.session) {
         // 无需邮箱验证：已直接登录，跳转账户页
         showToast('Account created!', 'success');
