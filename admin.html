@@ -113,7 +113,7 @@
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr 1fr!important;gap:16px!important;align-items:start}.footer-col{text-align:left!important;min-width:0}.footer-col *{overflow-wrap:break-word;word-break:break-word}.footer-col h4{text-align:center}}
 </style>
 <link rel="canonical" href="https://www.vipchinaguide.com/admin.html">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="lib/vendor/supabase-js.js"></script>
 <script>
 window.SUPABASE_URL = 'https://suhvbuhppiqqaylvdzsg.supabase.co';
 window.SUPABASE_ANON_KEY = 'sb_publishable_S0M_0p6mBdKsA31paLEH6Q_WWDlpdtZ';
@@ -323,9 +323,9 @@ function fmtDate(v) {
 function getSupa() { return window.VCGSupabase ? window.VCGSupabase.init() : null; }
 
 async function getFreshSession() {
-  const supa = getSupa();
-  if (!supa) return null;
   try {
+    const supa = getSupa();
+    if (!supa) return null;
     const { data } = await supa.auth.getSession();
     return (data && data.session) ? data.session : null;
   } catch (_) { return null; }
