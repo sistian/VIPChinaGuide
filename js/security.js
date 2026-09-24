@@ -176,6 +176,9 @@
     // ===== 7. MALICIOUS PATH DETECTION =====
     detectMaliciousPath: function() {
       const path = window.location.pathname.toLowerCase();
+      // 本站合法页面白名单：includes 匹配会误伤 /admin.html、/admin-login.html、/test-footer-*.html
+      const ownPages = ['/admin.html', '/admin-login.html'];
+      if (ownPages.indexOf(path) !== -1 || path.indexOf('/test-footer-') === 0) return;
       for (const forbidden of this.config.forbiddenPaths) {
         if (path.includes(forbidden)) {
           console.warn('[Security] Malicious path detected:', path);
