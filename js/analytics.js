@@ -16,7 +16,7 @@
   // ★↓↓ 站点配置（换站只需改这里） ★↓↓
   var SITE = {
   "name": "vipchinaguide",
-  "gaId": "G-SRWV6CY5ND",
+  "gaId": "G-0M4R7RK78D",
   "forms": {
     "contactForm": "contact_submit",
     "resForm": "reservation_submit",
