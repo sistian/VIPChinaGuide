@@ -62,15 +62,13 @@ body {
   overflow-x: hidden;
 }
 
-::selection { background: var(--primary-light); color: var(--primary-dark); }
-
-h1, h2, h3, h4, h5, h6 {
+::selection { background: var(--primary-light); color: var(--primary-dark); }h1, h2, h3, h4, h5, h6, .lvl-h1, .lvl-h2, .lvl-h3, .lvl-h4, .lvl-h5, .lvl-h6 {
   font-weight: 700;
   line-height: 1.2;
   color: var(--text);
   font-family: var(--font-display);
   letter-spacing: -0.02em;
-}
+
 
 .text-gradient {
   background: var(--gradient-coral-mint);
@@ -253,8 +251,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
 .footer-brand .logo { margin-bottom: 12px; }
-.footer-brand p { font-size: 14px; line-height: 1.6; color: #94a3b8; }
-.footer-col h4 {
+.footer-brand p { font-size: 14px; line-height: 1.6; color: #94a3b8; }.footer-col h4, .footer-col .lvl-h4, .footer-col .footer-h {
   color: #fff;
   font-family: var(--font-sans);
   font-size: 13px;
@@ -262,7 +259,7 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 700;
-}
+
 .footer-col ul { list-style: none; }
 .footer-col li { margin-bottom: 10px; }
 .footer-col a { color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s; }
@@ -280,8 +277,7 @@ h1, h2, h3, h4, h5, h6 {
   padding:16px 0;
   margin-top:0;
   background:rgba(15,23,42,0.3);
-}
-.footer-friendly-links h4{
+}.footer-friendly-links h4, .footer-friendly-links .lvl-h4, .footer-friendly-links .footer-h {
   font-size:14px;
   font-weight:700;
   color:#f8fafc;
@@ -290,7 +286,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items:center;
   justify-content:center;
   gap:6px;
-}
+
 .footer-friendly-links h4 i{color:#818cf8;font-size:12px;}
 .friendly-links-list{
   display:flex;
@@ -410,10 +406,8 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.footer-badge .badge-link:hover { color: #fff; }
-
-/* Generic column */
-.footer-col h5 {
+.footer-badge .badge-link:hover { color: #fff; }/* Generic column */
+.footer-col h5, /* Generic column */ .footer-col .lvl-h5, /* Generic column */ .footer-col .footer-h {
   font-size: 11px;
   font-weight: 700;
   color: #fff;
@@ -422,7 +416,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
-}
+
 .footer-col ul {
   list-style: none;
   padding: 0;
@@ -465,15 +459,14 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-.footer-friendly-links h5 {
+}.footer-friendly-links h5, .footer-friendly-links .lvl-h5, .footer-friendly-links .footer-h {
   font-size: 11px;
   font-weight: 700;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-bottom: 4px;
-}
+
 .friendly-links-list {
   display: flex;
   flex-wrap: wrap;
@@ -776,8 +769,7 @@ h1, h2, h3, h4, h5, h6 {
   padding:16px 0;
   margin-top:0;
   background:rgba(15,23,42,0.3);
-}
-.footer-friendly-links h4{
+}.footer-friendly-links h4, .footer-friendly-links .lvl-h4, .footer-friendly-links .footer-h {
   font-size:14px;
   font-weight:700;
   color:#f8fafc;
@@ -786,7 +778,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items:center;
   justify-content:center;
   gap:6px;
-}
+
 .footer-friendly-links h4 i{color:#818cf8;font-size:12px;}
 .friendly-links-list{
   display:flex;
@@ -807,8 +799,7 @@ h1, h2, h3, h4, h5, h6 {
 .friendly-links-list a i{font-size:11px;color:#818cf8;transition:color .2s;}
 .friendly-links-list a:hover{color:#f8fafc;}
 .friendly-links-list a:hover i{color:#22d3ee;}
-.friendly-links-list{justify-content:center;}
-.footer-friendly-links h4{text-align:center;justify-content:center;}
+.friendly-links-list{justify-content:center;}.footer-friendly-links h4, .footer-friendly-links .lvl-h4, .footer-friendly-links .footer-h {text-align:center;justify-content:center;
 .footer-bottom{padding-top:16px!important;font-size:12px!important}
 /* ============================================================
    RESPONSIVE BREAKPOINTS — added by system upgrade
@@ -844,8 +835,7 @@ h1, h2, h3, h4, h5, h6 {
   .footer-col { text-align: center; }
   .footer-social { justify-content: center; }
   .footer-bottom { text-align: center; }
-  .cta-section { padding: 48px 16px; }
-  .cta-section h2 { font-size: 24px !important; }
+  .cta-section { padding: 48px 16px; }.cta-section h2, .cta-section .lvl-h2 { font-size: 24px !important; 
   .cta-section p { font-size: 14px !important; }
   .guide-card { padding: 16px; }
   .guide-header { flex-direction: column; text-align: center; }
@@ -986,3 +976,6 @@ h1, h2, h3, h4, h5, h6 {
   .hero-cta { flex-direction: row !important; }
   .section { padding: 24px 16px !important; }
 }
+
+/* 标题语义化改造：.lvl-hN 保留改动前的视觉尺寸（浏览器默认层级） */
+.lvl-h1{font-size:2em}.lvl-h2{font-size:1.5em}.lvl-h3{font-size:1.17em}.lvl-h4{font-size:1em}.lvl-h5{font-size:0.83em}.lvl-h6{font-size:0.67em}

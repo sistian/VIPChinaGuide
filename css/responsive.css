@@ -43,8 +43,7 @@
   .footer-social { justify-content: center; }
   .footer-bottom { text-align: center; }
 
-  .cta-section { padding: 48px 16px; }
-  .cta-section h2 { font-size: 24px; }
+  .cta-section { padding: 48px 16px; }.cta-section h2, .cta-section .lvl-h2 { font-size: 24px; 
   .cta-section p { font-size: 14px; }
 
   .guide-card { padding: 20px; }
@@ -223,3 +222,6 @@
   .hero-title { font-size: 24px !important; }
   .hero-cta { flex-direction: row; }
 }
+
+/* 标题语义化改造：.lvl-hN 保留改动前的视觉尺寸（浏览器默认层级） */
+.lvl-h1{font-size:2em}.lvl-h2{font-size:1.5em}.lvl-h3{font-size:1.17em}.lvl-h4{font-size:1em}.lvl-h5{font-size:0.83em}.lvl-h6{font-size:0.67em}
